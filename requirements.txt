@@ -1,0 +1,5 @@
+duckdb>=0.10
+numpy>=1.26
+pandas>=2.0
+matplotlib>=3.8
+pytest>=7
