@@ -29,6 +29,7 @@ At senior analytics levels, the hard part isn't running the query — it's frami
 - **DuckDB** for portable SQL (runs anywhere, includes window functions)
 - **Spark SQL** for scale demonstrations (syntax notes called out where different)
 - **Python**: pandas, numpy, matplotlib for analysis + charts
+- **[experiment-toolkit](https://github.com/wavde/experiment-toolkit)** — my own PyPI package — when I need CUPED, sequential tests, or staggered DiD on top of the analytics layer.
 
 ## How to run
 
