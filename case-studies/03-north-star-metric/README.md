@@ -94,15 +94,7 @@ Each leaf is a team's KPI. Each parent is a CEO-readable rollup. Goodhart's Law 
 ```bash
 cd case-studies/03-north-star-metric
 python ../01-funnel-and-retention/src/generate_data.py    # if needed
-python -c "
-import duckdb
-from pathlib import Path
-db = Path('../01-funnel-and-retention/data/ecommerce.db')
-con = duckdb.connect(str(db), read_only=True)
-print(con.execute(open('sql/01_north_star_daily.sql').read()).fetch_df().tail(14))
-print()
-print(con.execute(open('sql/02_decomposition.sql').read()).fetch_df())
-"
+python src/run_analysis.py
 ```
 
 `sql/01_north_star_daily.sql` produces the daily WPAU time series.

@@ -1,5 +1,6 @@
 -- Weekly cohort retention: for users who signed up in week W,
--- what fraction returned (had any event) in week W+k for k = 1..12?
+-- what fraction returned (had any event) in week W+k for k = 0..11
+-- (a 12-week retention curve, indexed from the sign-up week).
 
 WITH cohorts AS (
     SELECT

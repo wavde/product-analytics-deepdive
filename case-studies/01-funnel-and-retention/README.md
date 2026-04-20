@@ -5,10 +5,10 @@
 
 ## TL;DR
 
-On this simulated storefront:
-- Overall view → purchase conversion is **13.5%**, dominated by the 65% drop-off between "view" and "add to cart".
-- **Mobile converts 35% worse than desktop** at the cart step — the biggest addressable opportunity.
-- Weekly retention follows a classic power-law decay: **~40% at W+1, ~15% at W+4, ~8% at W+12**, with heavy-tailed "power user" cohorts accounting for most long-term revenue.
+With `seed=7` (default):
+- Overall view → purchase conversion is **~13.5%**, dominated by the 65% drop-off between "view" and "add to cart".
+- **Mobile converts ~35% worse than desktop** at the cart step — the biggest addressable opportunity.
+- Weekly retention follows a power-law decay: **~40% at W+1, ~15% at W+4, ~8% by W+11**, with heavy-tailed "power user" cohorts accounting for most long-term revenue.
 
 ## Business framing
 

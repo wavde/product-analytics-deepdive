@@ -36,10 +36,10 @@ Decile users by lifetime revenue; compute each decile's share + cumulative %. Dr
 
 ### 4. K-means engagement (`src/segment.py`)
 Four standardized features per active user:
-`sessions_28d, active_days_28d, purchase_count, revenue_cents`
+`views_28d, active_days_28d, purchase_count, revenue_cents`
 
 Fit k=4 with `random_state=0`. Centroids are translated to business names heuristically:
-- `power_users`: top revenue quartile of clusters
+- `power_users`: highest-revenue cluster
 - `engaged_buyers`: ≥1 purchase
 - `active_browsers`: ≥5 active days, no purchase
 - `casual_visitors`: everyone else
@@ -53,19 +53,20 @@ python ../01-funnel-and-retention/src/generate_data.py
 python src/run_analysis.py
 ```
 
-Expected output (n_users=20,000, seed=7):
+With `seed=7` (default), the output has the shape below. Exact decile rows are in the SQL output; the qualitative pattern is:
 
 ```
 === 03_revenue_concentration.sql ===
-revenue_decile  n_users  decile_revenue_dollars  pct_of_total_revenue  cumulative_pct
-             1     XXX                XXXXXX.XX                 30-35           30-35
-             2     XXX                XXXXXX.XX                 15-20           45-55
-... (top 3 deciles ~70% of revenue)
+Top decile contributes ~30-35% of revenue.
+Top three deciles contribute ~65-75% cumulative.
+Bottom five deciles combined contribute <15%.
 
 === K-means engagement segmentation (k=4) ===
-cluster      segment   n_users  sessions_28d  active_days_28d  purchase_count  revenue_dollars
-      0  power_users       ~5%             40                12             3-5             80+
-      ...
+Four clusters separate cleanly into:
+  power_users      — top-revenue cluster, 5-10% of users, most purchases
+  engaged_buyers   — >=1 purchase, moderate activity
+  active_browsers  — >=5 active days, no purchase
+  casual_visitors  — light single-session users, majority of the base
 ```
 
 ## Limitations & what I'd do next
