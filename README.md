@@ -4,6 +4,8 @@
 
 ![CI](https://github.com/wavde/product-analytics-deepdive/actions/workflows/ci.yml/badge.svg)
 
+![hero](docs/hero.png)
+
 ## Why this repo
 
 At senior analytics levels, the hard part isn't running the query — it's framing the question, defining the metric, and writing the memo that drives the decision. Every case study here includes:
