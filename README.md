@@ -19,8 +19,8 @@ At senior analytics levels, the hard part isn't running the query — it's frami
 | # | Case Study | Primary concepts | Status |
 |---|-----------|------------------|--------|
 | 01 | [Funnel + retention on simulated e-commerce](case-studies/01-funnel-and-retention/) | Conversion funnel, cohort retention, north-star metric | ✅ Complete |
-| 02 | Cohort engagement & segmentation | k-means / RFM / power-users | 🚧 Planned |
-| 03 | North-star metric design memo | Metric tradeoffs, gaming risk, decomposition | 🚧 Planned |
+| 02 | [Cohort engagement & segmentation](case-studies/02-engagement-segmentation/) | RFM, power-user (L-28) curve, k-means | ✅ Complete |
+| 03 | [North-star metric design memo](case-studies/03-north-star-metric/) | Metric tradeoffs, WAU × conversion decomposition, gaming risk | ✅ Complete |
 
 ## Stack
 
