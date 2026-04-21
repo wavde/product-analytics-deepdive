@@ -10,7 +10,7 @@ __pycache__/
 .vscode/
 .idea/
 
-data/*.db
-data/*.csv
-data/*.parquet
-!data/README.md
+**/data/*.db
+**/data/*.csv
+**/data/*.parquet
+!**/data/README.md
