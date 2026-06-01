@@ -57,7 +57,9 @@ def generate(n_users: int = 20_000, seed: int = 7) -> None:
         "purchase":     0.70,   # conditional on checkout
     }
 
-    for uid, signup, rate in zip(users["user_id"], users["signup_date"], activity_rate):
+    for uid, signup, rate in zip(
+        users["user_id"], users["signup_date"], activity_rate, strict=False
+    ):
         days_active_max = (END_DATE - signup).days
         if days_active_max <= 0:
             continue

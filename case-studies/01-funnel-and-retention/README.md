@@ -1,7 +1,7 @@
 # Case Study 01 — Funnel Conversion + Cohort Retention
 
 **Dataset:** Simulated 3-month e-commerce event log (20,000 users, ~hundreds of thousands of events), generated locally.
-**Tools:** DuckDB (portable SQL with window functions), Python (pandas).
+**Tools:** DuckDB (local SQL engine with window functions), Python (pandas).
 
 ## TL;DR
 
@@ -46,7 +46,7 @@ Each query uses:
 - **First-session funnel.** We anchor to each user's first `view_product` and ask whether subsequent stages happened within 24 hours. This avoids inflating conversion rate via repeat sessions.
 - **Window for retention.** Weeks are defined via `DATE_TRUNC('week', ...)` so W+0 is the signup week itself (expected to be ~100%, used as sanity check).
 - **Right-censoring.** For cohorts near the end of the data window, late weeks (W+10, W+11) are mechanically zero. A real memo would either drop those cohort-weeks or use a hazard-model framing.
-- **DuckDB vs Spark SQL.** Syntax is 99% identical. The main differences:
+- **Dialect notes.** The checked-in queries are DuckDB SQL. Spark translations need small rewrites:
   - DuckDB: `INTERVAL 24 HOUR` ; Spark: `INTERVAL '24' HOUR`
   - DuckDB supports `FILTER (WHERE ...)` ; Spark needs `SUM(CASE WHEN ... THEN 1 END)`.
 

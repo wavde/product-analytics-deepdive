@@ -22,14 +22,14 @@ Each case includes:
 
 1. A business question framed as a PM / DS partnership would frame it.
 2. An explicit metric definition with the tradeoffs stated.
-3. SQL (Postgres, Spark SQL, DuckDB) as the primary tool.
+3. SQL as the primary tool, written and tested against **DuckDB** in this repo.
 4. Python where SQL does not express it cleanly (bootstrap intervals, charts).
 5. A memo that would survive an interview take-home review.
 
 ## Stack
 
-- **DuckDB** as the portable SQL engine (window functions, runs locally).
-- **Spark SQL** for scale patterns, with dialect notes where it differs.
+- **DuckDB** as the local SQL engine for all included, tested queries.
+- **Postgres-style SQL patterns** where they naturally overlap with DuckDB; dialect-specific syntax is not presented as Spark-compatible unless called out explicitly.
 - **Python**: pandas, numpy, matplotlib for analysis and charts.
 - **[experiment-toolkit](https://github.com/wavde/experiment-toolkit)** where the analytics layer needs CUPED, sequential tests, or staggered DiD.
 

@@ -24,7 +24,7 @@ def panel_funnel(ax: plt.Axes) -> None:
     counts = [100_000, 42_000, 19_000, 8_500]
     colors = ["#4c72b0", "#4c72b0", "#dd8452", "#55a868"]
     bars = ax.barh(steps[::-1], counts[::-1], color=colors[::-1])
-    for bar, c in zip(bars, counts[::-1]):
+    for bar, c in zip(bars, counts[::-1], strict=False):
         pct = c / counts[0] * 100
         ax.text(c + 1500, bar.get_y() + bar.get_height() / 2,
                 f"{c:,} ({pct:.0f}%)", va="center", fontsize=9)
@@ -56,7 +56,7 @@ def panel_segments(ax: plt.Axes) -> None:
     labels = ["Churn risk", "Casual", "Power users", "Explorers"]
     colors = ["#d62728", "#8c8c8c", "#2ca02c", "#1f77b4"]
     sizes = [800, 1500, 400, 600]
-    for (cx, cy), lbl, col, n in zip(centers, labels, colors, sizes):
+    for (cx, cy), lbl, col, n in zip(centers, labels, colors, sizes, strict=False):
         x = RNG.normal(cx, 0.6, size=n)
         y = RNG.normal(cy, 0.6, size=n)
         ax.scatter(x, y, s=10, alpha=0.45, color=col, label=f"{lbl} (n={n})")

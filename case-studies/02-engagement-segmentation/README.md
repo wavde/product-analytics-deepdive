@@ -4,7 +4,7 @@
 
 ## TL;DR
 
-Combine **RFM** (interpretable, ops-friendly) with **k-means on engagement features** (data-driven, captures non-linear groupings) for a defensible segmentation. Top revenue decile drives ~55% of total revenue; the L-28 power-user curve has a clear bimodal shape (one-time visitors vs. weekly returners), and k=4 cleanly separates *casual visitors / active browsers / engaged buyers / power users*.
+Combine **RFM** (interpretable, ops-friendly) with **k-means on engagement features** (data-driven, captures non-linear groupings) for a defensible segmentation. Top revenue decile drives ~32% of total revenue; the L-28 power-user curve has a clear bimodal shape (one-time visitors vs. weekly returners), and k=4 cleanly separates *casual visitors / active browsers / engaged buyers / power users*.
 
 ## Why two methods, not one
 
@@ -57,7 +57,7 @@ With `seed=7` (default), the output has the shape below. Exact decile rows are i
 
 ```
 === 03_revenue_concentration.sql ===
-Top decile contributes ~30-35% of revenue.
+Top decile contributes ~32% of revenue.
 Top three deciles contribute ~65-75% cumulative.
 Bottom five deciles combined contribute <15%.
 
