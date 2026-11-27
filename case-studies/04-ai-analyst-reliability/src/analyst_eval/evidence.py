@@ -100,8 +100,85 @@ def build_evidence(db_path: Path | str = DB_PATH, key_path: Path = ANSWER_KEY_PA
             ["deduplicated on order_id", "business time zone"])
         n_ref, = con.execute("SELECT COUNT(*) FROM refunds").fetchone()
         ev["n_refunds"] = _entry(n_ref, "rows in refunds", ["count"])
+        ev.update(_run_evidence(con, key))
     finally:
         con.close()
+    return ev
+
+
+RUN_CHECKS = ["every logged query re-executed against a fresh build (cli.py validate)",
+              "graded against answer_key.json"]
+
+
+def _run_evidence(con, key: dict[str, dict]) -> dict[str, dict]:
+    """Evidence derived from the saved Copilot-agent run, if there is one."""
+    import statistics
+
+    from analyst_eval.gold import create_gold_views
+    from analyst_eval.grading import grade_answer
+    from analyst_eval.questions import QUESTIONS_BY_ID, TOLERANCE
+    from analyst_eval.runs import list_runs, load_run
+
+    runs = [p for p in list_runs() if load_run(p)[0].get("runner_kind") == "copilot-agent"]
+    if not runs:
+        return {}
+    _, answers, _ = load_run(runs[-1])
+
+    create_gold_views(con, Fixes().without("timezone"))
+    utc_gold = {}
+    for q in QUESTIONS_BY_ID.values():
+        if q.gold_sql:
+            row = con.execute(q.gold_sql).fetchone()
+            utc_gold[q.id] = None if row[0] is None else float(row[0])
+
+    ev: dict[str, dict] = {}
+    for cond in sorted({a["condition"] for a in answers}):
+        xs = [a for a in answers if a["condition"] == cond]
+        grades = [grade_answer(a, key[a["question_id"]]) for a in xs]
+        wrong = [(a, g) for a, g in zip(xs, grades, strict=True) if not g.correct]
+        n = len(xs)
+
+        def tz_only(a) -> bool:
+            q = QUESTIONS_BY_ID[a["question_id"]]
+            alt = utc_gold.get(q.id)
+            return (a["value"] is not None and alt is not None
+                    and abs(alt - a["value"]) <= TOLERANCE.get(q.unit or "", 0))
+
+        p = f"run.{cond}."
+        ev[p + "n"] = _entry(n, f"answers in {cond}", RUN_CHECKS)
+        ev[p + "correct"] = _entry(sum(g.correct for g in grades), "correct answers", RUN_CHECKS)
+        ev[p + "accuracy_pct"] = _entry(100 * sum(g.correct for g in grades) / n,
+                                        "percent correct", RUN_CHECKS)
+        ev[p + "material_pct"] = _entry(100 * sum(g.material_ok for g in grades) / n,
+                                        "percent within 1% of gold", RUN_CHECKS)
+        ev[p + "wrong"] = _entry(len(wrong), "answers not correct", RUN_CHECKS)
+        ev[p + "material_wrong"] = _entry(sum(not g.material_ok for _, g in wrong),
+                                          "answers more than 1% from gold", RUN_CHECKS)
+        ev[p + "confidently_wrong"] = _entry(
+            sum(g.outcome == "confidently_wrong" for g in grades),
+            "wrong with status answered", RUN_CHECKS)
+        ev[p + "caveated_wrong"] = _entry(sum(g.outcome == "caveated_wrong" for g in grades),
+                                          "wrong with status answered_with_caveat", RUN_CHECKS)
+        ev[p + "matched_naive"] = _entry(sum(g.fell_for_naive for g in grades),
+                                         "wrong answers equal to the naive query's", RUN_CHECKS)
+        ev[p + "wrong_tz_only"] = _entry(
+            sum(tz_only(a) for a, _ in wrong),
+            "wrong answers equal to gold computed in UTC instead of Pacific time",
+            RUN_CHECKS + ["gold recomputed with only the timezone rule switched off"])
+        ev[p + "sql_per_q"] = _entry(statistics.mean(a["sql_calls"] for a in xs),
+                                     "mean logged queries per question", RUN_CHECKS)
+        ev[p + "median_seconds"] = _entry(
+            statistics.median(a["extra"]["wall_seconds"] for a in xs),
+            "median seconds from first to last tool call", RUN_CHECKS)
+        rc = [a["reconcile"] for a in xs if a.get("reconcile")]
+        if rc:
+            ev[p + "reconciled"] = _entry(len(rc), "answers that went through reconcile",
+                                          RUN_CHECKS)
+            ev[p + "reconcile_match"] = _entry(sum(r["match"] is True for r in rc),
+                                               "reconciles where routes matched", RUN_CHECKS)
+            ev[p + "reconcile_changed"] = _entry(sum(bool(r["changed"]) for r in rc),
+                                                 "reconciles that changed the answer",
+                                                 RUN_CHECKS)
     return ev
 
 

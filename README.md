@@ -17,7 +17,7 @@ Intended audience: analysts and data scientists who want a reference for shape-o
 | 01 | [Funnel and retention on simulated e-commerce](case-studies/01-funnel-and-retention/) | Conversion funnel, cohort retention, north-star framing | Complete |
 | 02 | [Cohort engagement and segmentation](case-studies/02-engagement-segmentation/) | RFM, L-28 power-user curve, k-means | Complete |
 | 03 | [North-star metric design memo](case-studies/03-north-star-metric/) | Metric tradeoffs, WAU × conversion decomposition, gaming risk | Complete |
-| 04 | [Is context a measurable intervention for AI analysts?](case-studies/04-ai-analyst-reliability/) | Context packs, agent skills, graded question set with planted data traps, confidently-wrong rate | Harness complete; model results pending |
+| 04 | [Is context a measurable intervention for AI analysts?](case-studies/04-ai-analyst-reliability/) | Context packs, agent skills, graded question set with planted data traps, confidently-wrong rate | Complete |
 
 Each case includes:
 

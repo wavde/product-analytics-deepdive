@@ -5,10 +5,13 @@ a `meta` line (provider, model, prompt hashes, answer-key hash, pricing), one `a
 line per condition x question x trial (full transcript, final answer, token counts), and
 an `end` line.
 
-CI replays every file here against a fresh warehouse build (`python src/cli.py validate`)
-and fails if any SQL result, data-diff or parsed answer differs, or if the context,
-skills or answer key changed since the run. After adding a run, regenerate
+CI validates every file here against a fresh warehouse build (`python src/cli.py validate`).
+API runs are replayed turn by turn. Copilot-agent runs (`runner_kind: copilot-agent`) are
+validated by re-executing every logged query and reconcile diff and rebuilding each graded
+field from its tool log. Validation fails if any result differs, or if the context, skills,
+tool or answer key changed since the run. After adding a run, regenerate
 `results/summary.md` with `python src/cli.py report` and update the README's results
 section.
 
-No runs have been recorded yet.
+`full_github-copilot_claude-opus-5.5.jsonl` holds 160 answers (40 questions × 4 core
+conditions, one trial).

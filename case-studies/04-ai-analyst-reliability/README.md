@@ -2,7 +2,7 @@
 
 **Audience:** Data science and analytics leads deciding how much to invest in context for AI analyst agents
 **Author:** Senior Data Scientist, Analytics
-**Status:** Harness, data and question set complete. **Results pending:** no live model runs have been recorded yet.
+**Status:** Complete for one model. 160 graded answers from `claude-opus-5.5` (40 questions × 4 conditions, one trial), run as GitHub Copilot sub-agents in blind folders. Every logged query has been re-run against a fresh build to validate the results.
 
 ## Question
 
@@ -10,15 +10,24 @@
 
 ## TL;DR
 
-- **Results pending.** No model has been run through this harness yet, so this memo makes no claim about how any model performs. The results table is generated from saved runs (`results/summary.md`) and is empty until a run is recorded.
-- **What is established now** is that the test has teeth. The warehouse reuses case 01's simulated store and adds the mess real event data accumulates. A reasonable first-draft query, the kind an analyst new to the warehouse would write, gets every trap and ambiguous question wrong:
-
 <!-- cited:start -->
-- The naive query misses tolerance on 27 of 40 questions [E:naive_wrong_answerable] [E:n_questions], which is 100% of the trap and ambiguous questions [E:naive_wrong_non_control_pct] and none of the controls [E:naive_wrong_controls].
-- On 25 of those 27 [E:naive_material_wrong_non_control] [E:n_non_control_answerable] the error is more than one percent of the true value, so it would change a decision, not just fail a reconciliation.
+- **Written business conventions are what work.** With the full context pack the model answered 40 of 40 correctly [E:run.full_context.correct] [E:run.full_context.n]. With no context it got 13 [E:run.no_context.correct], and with the schema catalog alone 15 [E:run.schema_only.correct].
+- **The model wasn't naive without context.** By exploring the data it found the duplicate events, QA accounts and messaging rows on its own. None of its wrong answers equalled the naive first-draft query's answer [E:run.no_context.matched_naive].
+- **What it couldn't find was convention.** 19 of its 27 misses [E:run.no_context.wrong_tz_only] [E:run.no_context.wrong] are exactly the right answer computed in UTC instead of the business's Pacific time. The rest are definitional: gross vs net revenue, refund rate by count vs by dollars, retention window.
+- **It flagged its uncertainty.** 26 of the 27 misses carried a caveat [E:run.no_context.caveated_wrong] [E:run.no_context.wrong]. Only 1 was confidently wrong [E:run.no_context.confidently_wrong].
+- **Reconciliation was ceremony on this set.** There were 34 independent recomputations [E:run.full_context_reconcile.reconciled]. All of them matched [E:run.full_context_reconcile.reconcile_match], none changed an answer [E:run.full_context_reconcile.reconcile_changed], and median time per question rose from 12.5 to 24.2 seconds [E:run.full_context.median_seconds] [E:run.full_context_reconcile.median_seconds].
 <!-- cited:end -->
 
-- **The design choice that matters:** context is treated as a treatment in an experiment. Every condition gets the same questions, the same SQL tool and the same explicit permission to abstain; only the context changes. That makes "confidently wrong" comparable across conditions instead of an artefact of one prompt being allowed to say "I don't know".
+**Practitioner takeaway:** write down what the data can't tell a model: reporting time zone, how refunds are attributed, what "active", "revenue" and "retention" mean, and when a period is complete. Don't spend context on traps a capable model finds by profiling the data. Keep reconciliation for weaker models or warehouses with real join bugs; here it found nothing to fix.
+
+The test has teeth. A reasonable first-draft query, the kind an analyst new to this warehouse would write, gets every trap and ambiguous question wrong:
+
+<!-- cited:start -->
+- The naive query misses tolerance on 27 of 40 questions [E:naive_wrong_answerable] [E:n_questions]. That is 100% of the trap and ambiguous questions [E:naive_wrong_non_control_pct] and none of the controls [E:naive_wrong_controls].
+- On 25 of those 27 [E:naive_material_wrong_non_control] [E:n_non_control_answerable], the error is more than one percent of the true value, so it would change a decision, not just fail a reconciliation.
+<!-- cited:end -->
+
+**The design choice that matters:** context is treated as a treatment in an experiment. Every condition gets the same questions, the same SQL tool and the same explicit permission to abstain; only the context changes. That makes "confidently wrong" comparable across conditions, rather than a side effect of only one prompt being allowed to say "I don't know".
 
 ## Why build it this way
 
@@ -121,9 +130,58 @@ The last row is the uncomfortable one for any grading scheme: two real errors th
 
 ## Results
 
-**Results pending.** No live model run has been recorded, so there are no accuracy, confidently-wrong or cost figures yet, and no conclusion about which context is ceremony. `results/summary.md` is generated from validated runs in `runs/` and currently says the same.
+### How the run was executed
 
-When runs exist, this section will report, per condition: accuracy, materially-correct rate, confidently-wrong rate, cost per correct answer, accuracy broken down by live trap, and lift over `no_context` with a 95% CI.
+No API key was available, so the experiment ran inside GitHub Copilot.
+
+- **The analysts:** each answer came from a fresh `claude-opus-5.5` sub-agent working on one question in one condition.
+- **The blind folder:** each agent worked in a folder outside the repo containing only:
+  - the raw database
+  - that condition's `AGENT.md`, which holds the same protocol and context the API harness would send as a system prompt
+  - `tool.py`, its only way to query the data and submit an answer
+- **What's excluded:** there was no answer key, gold SQL or grading code in the folder.
+- **The record:** `tool.py` logs every query, result and answer itself, so the record doesn't depend on what the agent reported. `cli.py import-agent-run` turns those logs into `runs/full_github-copilot_claude-opus-5.5.jsonl`. Validation re-runs every logged query against a freshly built warehouse; CI does the same.
+
+### Scorecard
+
+<!-- cited:start -->
+| Condition | Correct | Within one percent | Confidently wrong | Wrong with caveat | Queries per question | Median seconds |
+|---|---|---|---|---|---|---|
+| no_context | 13 [E:run.no_context.correct] | 72.5% [E:run.no_context.material_pct] | 1 [E:run.no_context.confidently_wrong] | 26 [E:run.no_context.caveated_wrong] | 3.8 [E:run.no_context.sql_per_q] | 30.1 [E:run.no_context.median_seconds] |
+| schema_only | 15 [E:run.schema_only.correct] | 80% [E:run.schema_only.material_pct] | 1 [E:run.schema_only.confidently_wrong] | 24 [E:run.schema_only.caveated_wrong] | 2.5 [E:run.schema_only.sql_per_q] | 16.3 [E:run.schema_only.median_seconds] |
+| full_context | 40 [E:run.full_context.correct] | 100% [E:run.full_context.material_pct] | 0 [E:run.full_context.confidently_wrong] | 0 [E:run.full_context.caveated_wrong] | 2.0 [E:run.full_context.sql_per_q] | 12.5 [E:run.full_context.median_seconds] |
+| full_context_reconcile | 40 [E:run.full_context_reconcile.correct] | 100% [E:run.full_context_reconcile.material_pct] | 0 [E:run.full_context_reconcile.confidently_wrong] | 0 [E:run.full_context_reconcile.caveated_wrong] | 1.9 [E:run.full_context_reconcile.sql_per_q] | 24.2 [E:run.full_context_reconcile.median_seconds] |
+<!-- cited:end -->
+
+Each condition has 40 answers. Accuracy by live trap and the paired-bootstrap lift over `no_context` are in [`results/summary.md`](results/summary.md), which is generated from the validated run. Tokens and dollar cost can't be measured through Copilot, so the cost columns there read `n/a`. Queries per question and wall time stand in for cost.
+
+### What the errors were
+
+<!-- cited:start -->
+- **Time zone dominates.** Without context, 19 of 27 misses [E:run.no_context.wrong_tz_only] [E:run.no_context.wrong] match the gold answer recomputed with only the Pacific-time rule switched off. With the schema alone it is 21 of 25 [E:run.schema_only.wrong_tz_only] [E:run.schema_only.wrong]. Every agent saw UTC-looking timestamps, and several said in their caveat that the reporting zone was unknown. None could get it right without being told.
+- **Most of those misses are small.** Only 11 no-context answers [E:run.no_context.material_wrong] and 8 schema-only answers [E:run.schema_only.material_wrong] were more than one percent off. The big ones were definitional: "revenue" answered gross, "refund rate" answered by order count, "ARPU" before refunds, and daily counts where a third of a day moves.
+- **The discoverable traps weren't a problem.** No answer in any condition equalled the naive query's answer [E:run.no_context.matched_naive] [E:run.schema_only.matched_naive]. With no documentation, the agents found duplicate event ids, the internal-account flag, messaging events and the load watermark by profiling the data.
+<!-- cited:end -->
+
+### Which context earned its place
+
+| Component | Verdict for this model | Evidence |
+|---|---|---|
+| Metric definitions + reporting conventions (`definitions.md`) | **Essential.** The only fix for time zone, refund attribution and ambiguous terms. | Every miss in the two lighter conditions is a convention the data can't reveal. Both full-context conditions scored 40/40. |
+| Schema catalog (`schema.md`) | **Marginal.** It reduced exploration (fewer queries, shorter runs) and turned one sessionisation into an abstention, but barely moved accuracy. | 15 vs 13 correct. The lift CI includes zero (`results/summary.md`). |
+| Known-traps notes (`traps.md`) | **Probably ceremony for the discoverable traps** (duplicates, QA accounts, messaging events), since agents without it found them anyway. **Untested in isolation**, because the ablations that split it out weren't run. | Matched-naive count is zero without any traps notes. |
+| `answer-from-definitions` skill | **Untested in isolation**, for the same reason. | — |
+| Reconcile step | **Ceremony on this set.** It never disagreed and never changed an answer, and it roughly doubled median time. Its value can't be shown when full context leaves nothing to catch. | See the TL;DR figures. |
+
+### How the predictions held up
+
+1. *Schema fixes units and uninstrumented abstentions but not business rules.* **Mostly right.** Units were never a problem even with no context, and the schema did produce the abstention on sessions. Business-rule errors were untouched.
+2. *Definitions drive the gain on ambiguous questions; the traps file drives duplicates and partial periods.* **Half right.** Definitions did carry the ambiguous questions, but the agents handled duplicates with no traps file at all. The ablations needed to settle this weren't run.
+3. *The skill mainly turns confident errors into caveated ones.* **Wrong premise.** Without context the agents were already caveating almost every miss. Context raised accuracy instead of changing confidence.
+4. *Reconciliation catches duplicate and join errors, not definitional ones, at about double the cost.* **Untestable here.** There were no errors left to catch. The time cost was about double, as predicted.
+5. *No condition is perfect on the DST time-zone trap.* **Wrong.** Given the rule in writing, every full-context answer handled it.
+
+The surprise is the second-order point: a strong model is a better data profiler than I assumed, and a worse mind-reader. Context work should go into conventions, not data quirks.
 
 ## Predictions, written before any run
 
@@ -144,7 +202,9 @@ Recorded now so the results can't be rationalised afterwards. None of these is a
 3. **Small n.** 40 questions gives wide intervals. The harness supports repeated trials; with one model and one trial, only large effects will be distinguishable from noise.
 4. **Status is a proxy for confidence.** "Confidently wrong" relies on the model's own choice of `answered` vs `answered_with_caveat`. Models calibrate that differently.
 5. **Scalar answers only.** The set grades numbers, not charts, narratives or the quality of a written insight. The cited-memo skill is checked for traceability, not for being a good memo.
-6. **Cost estimates before a run are rough.** `cli.py plan` uses a characters-per-token heuristic; real costs come from the provider's token counts in the run file.
+6. **One model, one trial, run through Copilot.** The model was pinned, but sampling settings like temperature couldn't be. Each agent also had Copilot's own system prompt and tools on top of the protocol. A second trial, or a different model, could move individual answers. Weaker models may well need the traps notes and reconciliation that looked like ceremony here.
+7. **Isolation was by instruction, not enforcement.** The agents had general file access and were told to stay in their folder. Logs and a post-run audit found no stray files in the bundles or the repo. One agent ran its first command from the repo folder, created and deleted an empty work folder, then redid its work in the right place. File *reads* outside the folder can't be audited. The bundles sat outside the repo and contained no answers, so the main exposure was reading another condition's context folder. Nothing in the logs or the answers suggests that happened.
+8. **No token or dollar cost.** Copilot doesn't expose per-call token counts to the harness, so cost is shown as queries and wall time. The API path in `runners.py` records real tokens and cost when a key is available.
 
 ## How to run
 
@@ -157,7 +217,17 @@ python src/cli.py plan --price-in <usd_per_mtok> --price-out <usd_per_mtok>   # 
 python src/cli.py lint-memo    # check this README against results/evidence.json
 ```
 
-A live run calls a paid API and needs a key in the environment. It refuses to start without prices and a budget cap, and stops when the cap is reached:
+**Agent route (no API key):** build blind folders outside the repo, have one agent per condition × question follow that folder's `AGENT.md`, then import the tool logs:
+
+```bash
+python src/cli.py bundle --root <folder outside the repo> --python <python with duckdb>
+# run one agent per (condition, question): "Read <root>/<condition>/AGENT.md and follow it.
+#   Question id: <id>. Question: <text>."
+python src/cli.py import-agent-run --root <same folder> --model <model id> --out full
+python src/cli.py report
+```
+
+**API route:** a live run calls a paid API and needs a key in the environment. It refuses to start without prices and a budget cap, and stops when the cap is reached:
 
 ```bash
 export ANTHROPIC_API_KEY=...   # or OPENAI_API_KEY with --provider openai-compatible [--base-url ...]
@@ -178,8 +248,9 @@ Use `--conditions all` to include the two ablations and `--trials N` for repeate
 | `src/analyst_eval/warehouse.py` | Builds the trap-laden warehouse from case 01's generator |
 | `src/analyst_eval/gold.py`, `questions.py`, `answer_key.py` | Definitions as views, the 40 questions, the answer key with measured traps |
 | `src/analyst_eval/agent.py`, `conditions.py`, `runners.py` | Agent loop, the conditions, pluggable model runners (Anthropic, OpenAI-compatible, replay) |
+| `src/analyst_eval/agent_runs.py`, `bundle_tool.py` | Blind bundles for Copilot-agent runs, the logged analyst tool, log import and validation |
 | `src/analyst_eval/reconcile.py`, `grading.py`, `runs.py`, `report.py` | Data-diff, grading, run persistence and replay validation, results tables |
 | `src/analyst_eval/evidence.py`, `memo_lint.py` | Evidence for this memo and the linter that checks it |
 | `questions/answer_key.json` | Gold and naive answers and live traps per question (regenerated and compared in CI) |
-| `results/` | `evidence.json` (memo evidence) and `summary.md` (model results, pending) |
-| `runs/` | Saved model runs (none yet) |
+| `results/` | `evidence.json` (memo evidence) and `summary.md` (per-condition results) |
+| `runs/` | Saved, validated model runs |
