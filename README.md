@@ -38,7 +38,7 @@ Each case includes:
 ```bash
 python -m venv .venv
 .venv\Scripts\activate          # Windows
-pip install -r requirements.txt
+pip install -r requirements.txt pytest
 pytest                          # smoke tests; regenerates data and validates queries
 ```
 
