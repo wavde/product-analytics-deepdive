@@ -28,9 +28,9 @@ START_DATE = datetime(2025, 1, 1)
 END_DATE = datetime(2025, 3, 31)
 
 
-def generate(n_users: int = 20_000, seed: int = 7) -> None:
+def simulate(n_users: int = 20_000, seed: int = 7) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Return the simulated (users, events) frames without writing them anywhere."""
     rng = np.random.default_rng(seed)
-    DATA_DIR.mkdir(exist_ok=True)
 
     # ---- users -----------------------------------------------------------
     signup_days = rng.integers(0, (END_DATE - START_DATE).days, size=n_users)
@@ -96,6 +96,12 @@ def generate(n_users: int = 20_000, seed: int = 7) -> None:
         rows,
         columns=["user_id", "event_name", "event_time", "product_id", "revenue_cents"],
     )
+    return users, events
+
+
+def generate(n_users: int = 20_000, seed: int = 7) -> None:
+    users, events = simulate(n_users=n_users, seed=seed)
+    DATA_DIR.mkdir(exist_ok=True)
 
     # ---- write to DuckDB -------------------------------------------------
     con = duckdb.connect(str(DB_PATH))

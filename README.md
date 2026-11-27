@@ -1,6 +1,6 @@
 # Product Analytics Deep-Dive
 
-> End-to-end product analytics case studies: funnels, retention cohorts, engagement segmentation, and north-star metric design. SQL-first, memo-driven.
+> End-to-end product analytics case studies: funnels, retention cohorts, engagement segmentation, north-star metric design, and measuring whether context makes AI analysts reliable. SQL-first, memo-driven.
 
 ![CI](https://github.com/wavde/product-analytics-deepdive/actions/workflows/ci.yml/badge.svg)
 
@@ -17,6 +17,7 @@ Intended audience: analysts and data scientists who want a reference for shape-o
 | 01 | [Funnel and retention on simulated e-commerce](case-studies/01-funnel-and-retention/) | Conversion funnel, cohort retention, north-star framing | Complete |
 | 02 | [Cohort engagement and segmentation](case-studies/02-engagement-segmentation/) | RFM, L-28 power-user curve, k-means | Complete |
 | 03 | [North-star metric design memo](case-studies/03-north-star-metric/) | Metric tradeoffs, WAU × conversion decomposition, gaming risk | Complete |
+| 04 | [Is context a measurable intervention for AI analysts?](case-studies/04-ai-analyst-reliability/) | Context packs, agent skills, graded question set with planted data traps, confidently-wrong rate | Harness complete; model results pending |
 
 Each case includes:
 
@@ -32,6 +33,7 @@ Each case includes:
 - **Postgres-style SQL patterns** where they naturally overlap with DuckDB; dialect-specific syntax is not presented as Spark-compatible unless called out explicitly.
 - **Python**: pandas, numpy, matplotlib for analysis and charts.
 - **[experiment-toolkit](https://github.com/wavde/experiment-toolkit)** where the analytics layer needs CUPED, sequential tests, or staggered DiD.
+- **Case 04** calls model APIs only when run by hand (standard library HTTP, no SDK); CI stays offline and replays saved runs instead.
 
 ## How to run
 

@@ -1,0 +1,1282 @@
+{
+  "a01.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for a01",
+    "value": 2987.0
+  },
+  "a01.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for a01",
+    "value": 3192.0
+  },
+  "a01.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for a01",
+    "value": 6.8631
+  },
+  "a01.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for a01",
+    "value": 1.0686
+  },
+  "a02.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for a02",
+    "value": 61.3659
+  },
+  "a02.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for a02",
+    "value": 14.1553
+  },
+  "a02.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for a02",
+    "value": -76.933
+  },
+  "a02.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for a02",
+    "value": 0.2307
+  },
+  "a03.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for a03",
+    "value": 44767.91
+  },
+  "a03.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for a03",
+    "value": 62664.83
+  },
+  "a03.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for a03",
+    "value": 39.9771
+  },
+  "a03.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for a03",
+    "value": 1.3998
+  },
+  "a04.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for a04",
+    "value": 3498.0
+  },
+  "a04.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for a04",
+    "value": 3540.0
+  },
+  "a04.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for a04",
+    "value": 1.2007
+  },
+  "a04.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for a04",
+    "value": 1.012
+  },
+  "a05.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for a05",
+    "value": 7.1334
+  },
+  "a05.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for a05",
+    "value": 5.2427
+  },
+  "a05.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for a05",
+    "value": -26.5049
+  },
+  "a05.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for a05",
+    "value": 0.735
+  },
+  "a06.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for a06",
+    "value": 1981.0
+  },
+  "a06.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for a06",
+    "value": 2084.0
+  },
+  "a06.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for a06",
+    "value": 5.1994
+  },
+  "a06.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for a06",
+    "value": 1.052
+  },
+  "a07.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for a07",
+    "value": 38.137
+  },
+  "a07.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for a07",
+    "value": 27.7023
+  },
+  "a07.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for a07",
+    "value": -27.3611
+  },
+  "a07.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for a07",
+    "value": 0.7264
+  },
+  "a08.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for a08",
+    "value": 85.2041
+  },
+  "a08.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for a08",
+    "value": 100.0
+  },
+  "a08.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for a08",
+    "value": 17.3652
+  },
+  "a08.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for a08",
+    "value": 1.1737
+  },
+  "c01.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for c01",
+    "value": 507.0
+  },
+  "c01.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for c01",
+    "value": 507.0
+  },
+  "c01.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for c01",
+    "value": 0.0
+  },
+  "c01.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for c01",
+    "value": 1.0
+  },
+  "c02.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for c02",
+    "value": 60.0
+  },
+  "c02.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for c02",
+    "value": 60.0
+  },
+  "c02.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for c02",
+    "value": 0.0
+  },
+  "c02.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for c02",
+    "value": 1.0
+  },
+  "c03.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for c03",
+    "value": 1000.0
+  },
+  "c03.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for c03",
+    "value": 1000.0
+  },
+  "c03.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for c03",
+    "value": 0.0
+  },
+  "c03.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for c03",
+    "value": 1.0
+  },
+  "c04.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for c04",
+    "value": 1007.0
+  },
+  "c04.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for c04",
+    "value": 1007.0
+  },
+  "c04.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for c04",
+    "value": 0.0
+  },
+  "c04.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for c04",
+    "value": 1.0
+  },
+  "c05.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for c05",
+    "value": 344.0
+  },
+  "c05.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for c05",
+    "value": 344.0
+  },
+  "c05.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for c05",
+    "value": 0.0
+  },
+  "c05.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for c05",
+    "value": 1.0
+  },
+  "c06.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for c06",
+    "value": 29.9549
+  },
+  "c06.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for c06",
+    "value": 29.9436
+  },
+  "c06.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for c06",
+    "value": -0.0377
+  },
+  "c06.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for c06",
+    "value": 0.9996
+  },
+  "c07.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for c07",
+    "value": 4.94
+  },
+  "c07.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for c07",
+    "value": 4.9301
+  },
+  "c07.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for c07",
+    "value": -0.2004
+  },
+  "c07.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for c07",
+    "value": 0.998
+  },
+  "live_definition": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "questions tagged definition",
+    "value": 8.0
+  },
+  "live_duplicates": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "questions tagged duplicates (measured by disabling only this rule)",
+    "value": 10.0
+  },
+  "live_internal_accounts": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "questions tagged internal_accounts (measured by disabling only this rule)",
+    "value": 21.0
+  },
+  "live_not_instrumented": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "questions tagged not_instrumented",
+    "value": 4.0
+  },
+  "live_partial_period": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "questions tagged partial_period",
+    "value": 4.0
+  },
+  "live_refunds": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "questions tagged refunds",
+    "value": 8.0
+  },
+  "live_system_events": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "questions tagged system_events (measured by disabling only this rule)",
+    "value": 12.0
+  },
+  "live_timezone": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "questions tagged timezone (measured by disabling only this rule)",
+    "value": 23.0
+  },
+  "live_units": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "questions tagged units",
+    "value": 1.0
+  },
+  "n_ambiguous": {
+    "checks": [
+      "count"
+    ],
+    "how": "questions with category=ambiguous",
+    "value": 8.0
+  },
+  "n_control": {
+    "checks": [
+      "count"
+    ],
+    "how": "questions with category=control",
+    "value": 7.0
+  },
+  "n_non_control_answerable": {
+    "checks": [
+      "count"
+    ],
+    "how": "trap + ambiguous questions",
+    "value": 27.0
+  },
+  "n_questions": {
+    "checks": [
+      "count"
+    ],
+    "how": "rows in answer_key.json",
+    "value": 40.0
+  },
+  "n_refunds": {
+    "checks": [
+      "count"
+    ],
+    "how": "rows in refunds",
+    "value": 792.0
+  },
+  "n_trap": {
+    "checks": [
+      "count"
+    ],
+    "how": "questions with category=trap",
+    "value": 19.0
+  },
+  "n_unanswerable": {
+    "checks": [
+      "count"
+    ],
+    "how": "questions with category=unanswerable",
+    "value": 6.0
+  },
+  "naive_material_wrong_non_control": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "trap+ambiguous questions where the naive answer is more than 1% from gold",
+    "value": 25.0
+  },
+  "naive_wrong_answerable": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "answerable questions where the naive query misses tolerance",
+    "value": 27.0
+  },
+  "naive_wrong_controls": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "control questions where the naive query misses tolerance",
+    "value": 0.0
+  },
+  "naive_wrong_non_control_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "percent of trap+ambiguous questions the naive query gets wrong",
+    "value": 100.0
+  },
+  "qa_weekday_order_pct": {
+    "checks": [
+      "deduplicated on order_id",
+      "business time zone"
+    ],
+    "how": "QA orders per 100 real orders on business weekdays",
+    "value": 13.9197
+  },
+  "retry_row_pct": {
+    "checks": [
+      "COUNT(*) vs COUNT(DISTINCT)"
+    ],
+    "how": "extra rows per 100 logical user-initiated events",
+    "value": 3.9773
+  },
+  "t01.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for t01",
+    "value": 4095.0
+  },
+  "t01.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for t01",
+    "value": 4635.0
+  },
+  "t01.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for t01",
+    "value": 13.1868
+  },
+  "t01.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for t01",
+    "value": 1.1319
+  },
+  "t02.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for t02",
+    "value": 122665.44
+  },
+  "t02.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for t02",
+    "value": 138788.52
+  },
+  "t02.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for t02",
+    "value": 13.1439
+  },
+  "t02.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for t02",
+    "value": 1.1314
+  },
+  "t03.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for t03",
+    "value": 113915.26
+  },
+  "t03.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for t03",
+    "value": 132143.26
+  },
+  "t03.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for t03",
+    "value": 16.0014
+  },
+  "t03.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for t03",
+    "value": 1.16
+  },
+  "t04.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for t04",
+    "value": 372544.12
+  },
+  "t04.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for t04",
+    "value": 423566.9
+  },
+  "t04.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for t04",
+    "value": 13.6958
+  },
+  "t04.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for t04",
+    "value": 1.137
+  },
+  "t05.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for t05",
+    "value": 6.4924
+  },
+  "t05.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for t05",
+    "value": 2.3072
+  },
+  "t05.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for t05",
+    "value": -64.4631
+  },
+  "t05.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for t05",
+    "value": 0.3554
+  },
+  "t06.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for t06",
+    "value": 1148.0
+  },
+  "t06.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for t06",
+    "value": 3501.0
+  },
+  "t06.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for t06",
+    "value": 204.9652
+  },
+  "t06.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for t06",
+    "value": 3.0497
+  },
+  "t07.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for t07",
+    "value": 1306.0
+  },
+  "t07.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for t07",
+    "value": 1276.0
+  },
+  "t07.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for t07",
+    "value": -2.2971
+  },
+  "t07.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for t07",
+    "value": 0.977
+  },
+  "t08.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for t08",
+    "value": 3706.0
+  },
+  "t08.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for t08",
+    "value": 4512.0
+  },
+  "t08.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for t08",
+    "value": 21.7485
+  },
+  "t08.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for t08",
+    "value": 1.2175
+  },
+  "t09.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for t09",
+    "value": 1482.0
+  },
+  "t09.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for t09",
+    "value": 1654.0
+  },
+  "t09.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for t09",
+    "value": 11.6059
+  },
+  "t09.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for t09",
+    "value": 1.1161
+  },
+  "t10.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for t10",
+    "value": 3057.0
+  },
+  "t10.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for t10",
+    "value": 3056.0
+  },
+  "t10.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for t10",
+    "value": -0.0327
+  },
+  "t10.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for t10",
+    "value": 0.9997
+  },
+  "t11.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for t11",
+    "value": 37.781
+  },
+  "t11.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for t11",
+    "value": 31.4376
+  },
+  "t11.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for t11",
+    "value": -16.7899
+  },
+  "t11.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for t11",
+    "value": 0.8321
+  },
+  "t12.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for t12",
+    "value": 407.0
+  },
+  "t12.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for t12",
+    "value": 435.0
+  },
+  "t12.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for t12",
+    "value": 6.8796
+  },
+  "t12.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for t12",
+    "value": 1.0688
+  },
+  "t13.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for t13",
+    "value": 19487.0
+  },
+  "t13.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for t13",
+    "value": 21769.0
+  },
+  "t13.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for t13",
+    "value": 11.7104
+  },
+  "t13.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for t13",
+    "value": 1.1171
+  },
+  "t14.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for t14",
+    "value": 1183.0
+  },
+  "t14.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for t14",
+    "value": 1187.0
+  },
+  "t14.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for t14",
+    "value": 0.3381
+  },
+  "t14.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for t14",
+    "value": 1.0034
+  },
+  "t15.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for t15",
+    "value": 332.0
+  },
+  "t15.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for t15",
+    "value": 243.0
+  },
+  "t15.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for t15",
+    "value": -26.8072
+  },
+  "t15.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for t15",
+    "value": 0.7319
+  },
+  "t16.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for t16",
+    "value": 80.8673
+  },
+  "t16.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for t16",
+    "value": 100.0
+  },
+  "t16.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for t16",
+    "value": 23.6594
+  },
+  "t16.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for t16",
+    "value": 1.2366
+  },
+  "t17.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for t17",
+    "value": 61.6461
+  },
+  "t17.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for t17",
+    "value": 56.9488
+  },
+  "t17.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for t17",
+    "value": -7.6198
+  },
+  "t17.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for t17",
+    "value": 0.9238
+  },
+  "t18.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for t18",
+    "value": 176.1
+  },
+  "t18.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for t18",
+    "value": 17610.0
+  },
+  "t18.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for t18",
+    "value": 9900.0
+  },
+  "t18.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for t18",
+    "value": 100.0
+  },
+  "t19.gold": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "gold_sql for t19",
+    "value": 1540.0
+  },
+  "t19.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for t19",
+    "value": 903.0
+  },
+  "t19.naive_error_pct": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "(naive - gold) / gold for t19",
+    "value": -41.3636
+  },
+  "t19.naive_over_gold_x": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive / gold for t19",
+    "value": 0.5864
+  },
+  "u01.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for u01",
+    "value": 0.0
+  },
+  "u04.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for u04",
+    "value": 45907.0
+  },
+  "u05.naive": {
+    "checks": [
+      "gold computed through views implementing every ground rule in definitions.md",
+      "answer key regenerated from a fresh warehouse build and compared in CI"
+    ],
+    "how": "naive_sql for u05",
+    "value": 903.0
+  }
+}
