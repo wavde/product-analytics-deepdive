@@ -102,13 +102,18 @@ def read_skill(name: str) -> str:
 
 
 def system_prompt(condition: Condition, max_sql: int) -> str:
-    parts = [PROTOCOL.format(max_sql=max_sql)]
+    return "\n\n".join([PROTOCOL.format(max_sql=max_sql), *context_parts(condition)])
+
+
+def context_parts(condition: Condition) -> list[str]:
+    """The condition's context files and skills, as they appear in every prompt variant."""
+    parts = []
     for f in condition.context_files:
         parts.append(f"<context file=\"{f}\">\n{(CONTEXT_DIR / f).read_text(encoding='utf-8')}"
                      "\n</context>")
     for s in condition.skills:
         parts.append(f"<skill name=\"{s}\">\n{read_skill(s)}\n</skill>")
-    return "\n\n".join(parts)
+    return parts
 
 
 def reconcile_prompt() -> str:

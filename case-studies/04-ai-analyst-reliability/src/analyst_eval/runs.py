@@ -197,6 +197,8 @@ def replay_answer(rec: dict, meta: dict, db_path: Path | str,
 
 def validate_run(path: Path, db_path: Path | str, setup: Setup | None = None) -> list[str]:
     meta, answers, end = load_run(path)
+    if meta.get("runner_kind") == "copilot-agent":
+        return _validate_agent_run(path, meta, answers, end, db_path)
     problems = []
     if meta.get("schema_version") != SCHEMA_VERSION:
         problems.append(f"schema_version {meta.get('schema_version')} != {SCHEMA_VERSION}")
@@ -220,6 +222,38 @@ def validate_run(path: Path, db_path: Path | str, setup: Setup | None = None) ->
             problems.append(f"{tag}: unknown question or condition")
             continue
         problems += [f"{tag}: {p}" for p in replay_answer(rec, meta, db_path, setup)]
+    return [f"{path.name}: {p}" for p in problems]
+
+
+def _validate_agent_run(path: Path, meta: dict, answers: list[dict], end: dict | None,
+                        db_path: Path | str) -> list[str]:
+    from analyst_eval.agent_runs import agent_prompt_hash, validate_agent_answer
+
+    problems = []
+    if meta.get("schema_version") != SCHEMA_VERSION:
+        problems.append(f"schema_version {meta.get('schema_version')} != {SCHEMA_VERSION}")
+    if meta.get("answer_key_sha") != file_sha(ANSWER_KEY_PATH):
+        problems.append("answer key changed since this run")
+    # Data drift is caught by re-executing every logged query below; a byte hash of the
+    # DuckDB file isn't stable across builds.
+    max_sql = meta["agent_config"]["max_sql"]
+    for cname, h in meta["conditions"].items():
+        if cname not in CONDITIONS:
+            problems.append(f"unknown condition {cname}")
+        elif agent_prompt_hash(cname, max_sql) != h:
+            problems.append(f"prompt or tool for {cname} changed since this run")
+    if end is None:
+        problems.append("run has no end line")
+    for rec in answers:
+        tag = f"{rec.get('condition')}/{rec.get('question_id')}"
+        missing = [k for k in ANSWER_FIELDS if k not in rec]
+        if missing:
+            problems.append(f"{tag}: missing fields {missing}")
+            continue
+        if rec["question_id"] not in QUESTIONS_BY_ID or rec["condition"] not in meta["conditions"]:
+            problems.append(f"{tag}: unknown question or condition")
+            continue
+        problems += [f"{tag}: {p}" for p in validate_agent_answer(rec, db_path)]
     return [f"{path.name}: {p}" for p in problems]
 
 

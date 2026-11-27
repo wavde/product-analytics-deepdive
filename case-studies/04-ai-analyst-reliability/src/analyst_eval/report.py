@@ -30,6 +30,7 @@ def summarize_runs(paths: list[Path]) -> dict:
         runs.append({
             "run_id": meta["run_id"], "file": p.name, "provider": meta["provider"],
             "model": meta["model"], "trials": meta["trials"],
+            "runner_kind": meta.get("runner_kind", "api"),
             "stopped": (end or {}).get("stopped"),
             **summarize(grades, key, pricing),
         })
@@ -52,9 +53,9 @@ def render_markdown(summary: dict) -> str:
         lines += [
             "| Condition | n | Accuracy | Materially correct (±1%) | Confidently wrong "
             "| Caveated wrong | Over-abstained "
-            "| Matched naive answer | Lift vs no_context (95% CI) | Tokens in / out per q "
-            "| Cost per q | Cost per correct |",
-            "|---|---|---|---|---|---|---|---|---|---|---|---|",
+            "| Matched naive answer | Lift vs no_context (95% CI) | SQL calls per q "
+            "| Tokens in / out per q | Cost per q | Cost per correct |",
+            "|---|---|---|---|---|---|---|---|---|---|---|---|---|",
         ]
         conds = sorted(run["conditions"], key=lambda c: order.index(c) if c in order else 99)
         for c in conds:
@@ -64,12 +65,14 @@ def render_markdown(summary: dict) -> str:
                       f"{100 * lift['ci95'][1]:+.1f})") if lift else "-"
             cost_q = r.get("cost_usd_per_q")
             cost_c = r.get("cost_usd_per_correct")
+            tokens = ("n/a" if not (r["input_tokens_per_q"] or r["output_tokens_per_q"])
+                      else f"{r['input_tokens_per_q']:.0f} / {r['output_tokens_per_q']:.0f}")
             lines.append(
                 f"| {c} | {r['n_answers']} | {_pct(r['correct_rate'])} "
                 f"| {_pct(r['materially_correct_rate'])} "
                 f"| {_pct(r['confidently_wrong_rate'])} | {_pct(r['caveated_wrong_rate'])} "
                 f"| {_pct(r['over_abstained_rate'])} | {_pct(r['fell_for_naive_rate'])} "
-                f"| {lift_s} | {r['input_tokens_per_q']:.0f} / {r['output_tokens_per_q']:.0f} "
+                f"| {lift_s} | {r['sql_calls_per_q']:.1f} | {tokens} "
                 f"| {'n/a' if cost_q is None else f'${cost_q:.4f}'} "
                 f"| {'n/a' if cost_c is None else f'${cost_c:.4f}'} |"
             )

@@ -7,6 +7,8 @@
     python src/cli.py validate       # replay every saved run offline
     python src/cli.py report         # results/summary.{json,md} from saved runs
     python src/cli.py lint-memo      # check README numbers against results/evidence.json
+    python src/cli.py bundle --root <dir outside repo> --python <python with duckdb>
+    python src/cli.py import-agent-run --root <dir> --model <id> --out <name>
 """
 
 from __future__ import annotations
@@ -130,6 +132,33 @@ def cmd_lint_memo(args) -> None:
     print("README claims all match cited evidence.")
 
 
+def cmd_bundle(args) -> None:
+    from analyst_eval.agent_runs import build_bundles
+
+    if not DB_PATH.exists():
+        cmd_build(args)
+    m = build_bundles(Path(args.root), _conditions(args.conditions), _questions(args.questions),
+                      args.python)
+    print(f"Wrote {len(m['conditions'])} blind bundle(s) for {len(m['questions'])} "
+          f"question(s) under {args.root}")
+
+
+def cmd_import_agent_run(args) -> None:
+    from analyst_eval.agent_runs import import_bundles
+
+    out = RUNS_DIR / f"{args.out}_github-copilot_{args.model}.jsonl"
+    if out.exists() and not args.overwrite:
+        raise SystemExit(f"{out} exists; pass --overwrite.")
+    import_bundles(Path(args.root), args.model, out,
+                   questions=None if args.questions == "all" else args.questions.split(","))
+    problems = validate_run(out, DB_PATH)
+    for p in problems:
+        print(p)
+    if problems:
+        raise SystemExit(1)
+    print(f"Imported and validated {out}")
+
+
 def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -153,6 +182,19 @@ def main(argv: list[str] | None = None) -> None:
             sp.add_argument("--out", help="file name prefix under runs/")
             sp.add_argument("--overwrite", action="store_true")
     sub.add_parser("validate").set_defaults(fn=cmd_validate)
+    sp = sub.add_parser("bundle", help="blind folders for Copilot-agent runs")
+    sp.add_argument("--root", required=True, help="output folder, outside the repo")
+    sp.add_argument("--python", required=True, help="python with duckdb, for the agents")
+    sp.add_argument("--conditions", default="core")
+    sp.add_argument("--questions", default="all")
+    sp.set_defaults(fn=cmd_bundle)
+    sp = sub.add_parser("import-agent-run", help="turn bundle logs into a validated run")
+    sp.add_argument("--root", required=True)
+    sp.add_argument("--model", required=True)
+    sp.add_argument("--out", required=True, help="file name prefix under runs/")
+    sp.add_argument("--questions", default="all", help="all | comma list of ids")
+    sp.add_argument("--overwrite", action="store_true")
+    sp.set_defaults(fn=cmd_import_agent_run)
     sub.add_parser("report").set_defaults(fn=cmd_report)
     sub.add_parser("lint-memo").set_defaults(fn=cmd_lint_memo)
     args = p.parse_args(argv)
