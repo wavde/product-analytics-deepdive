@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 import re
 import time
 from collections.abc import Callable
@@ -17,6 +18,17 @@ from analyst_eval.reconcile import diff_results
 from analyst_eval.runners import ModelRunner
 from analyst_eval.sqlexec import execute, format_result, to_number
 from analyst_eval.warehouse import connect_readonly
+
+
+def reconcile_changed(rc: dict) -> bool:
+    """Did reconciliation change the answer? Values are compared with a relative tolerance
+    so the same number re-serialised with different float digits doesn't count."""
+    if rc["final_status"] != rc["initial_status"]:
+        return True
+    a, b = rc["final_value"], rc["initial_value"]
+    if a is None or b is None:
+        return a is not b
+    return not math.isclose(a, b, rel_tol=1e-9, abs_tol=1e-9)
 
 VALID_STATUS = ("answered", "answered_with_caveat", "abstained")
 FORMAT_NUDGE = (
@@ -187,10 +199,7 @@ class Agent:
             if res.reconcile is not None:
                 res.reconcile["final_value"] = res.value
                 res.reconcile["final_status"] = res.status
-                res.reconcile["changed"] = (
-                    res.reconcile["final_value"] != res.reconcile["initial_value"]
-                    or res.reconcile["final_status"] != res.reconcile["initial_status"]
-                )
+                res.reconcile["changed"] = reconcile_changed(res.reconcile)
         res.wall_seconds = round(time.perf_counter() - t0, 3)
         return res
 

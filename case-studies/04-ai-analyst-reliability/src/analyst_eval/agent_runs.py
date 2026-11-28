@@ -20,6 +20,7 @@ from pathlib import Path
 
 from analyst_eval import DB_PATH
 from analyst_eval import bundle_tool as tool
+from analyst_eval.agent import reconcile_changed
 from analyst_eval.answer_key import ANSWER_KEY_PATH
 from analyst_eval.conditions import CONDITIONS, context_parts, read_skill
 from analyst_eval.questions import QUESTIONS_BY_ID, TOLERANCE, Question
@@ -174,9 +175,8 @@ def record_from_log(events: list[dict], qid: str, condition: str) -> dict:
             "match": rc["match"] if rc else None,
             "diff": rc["diff"] if rc else None,
             "final_value": rec["value"], "final_status": rec["status"],
-            "changed": rec["value"] != to_number(initial.get("value"))
-            or rec["status"] != initial.get("status"),
         }
+        rec["reconcile"]["changed"] = reconcile_changed(rec["reconcile"])
     return rec
 
 

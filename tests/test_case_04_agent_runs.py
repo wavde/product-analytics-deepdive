@@ -157,3 +157,15 @@ def test_volatile_output_is_not_compared_but_other_edits_still_are(bundles, anal
     lines[i] = json.dumps(rec)
     out.write_text("\n".join(lines) + "\n", encoding="utf-8")
     assert any("event 1" in p for p in validate_run(out, analyst_db))
+
+
+def test_reconcile_changed_ignores_float_reserialisation():
+    from analyst_eval.agent import reconcile_changed
+
+    base = {"initial_status": "answered", "final_status": "answered"}
+    assert not reconcile_changed({**base, "initial_value": 38.13701372614664,
+                                  "final_value": 38.137013726146634})
+    assert reconcile_changed({**base, "initial_value": 38.14, "final_value": 41.14})
+    assert reconcile_changed({**base, "initial_value": 1.0, "final_value": None})
+    assert reconcile_changed({"initial_status": "answered", "final_status": "answered_with_caveat",
+                              "initial_value": 1.0, "final_value": 1.0})

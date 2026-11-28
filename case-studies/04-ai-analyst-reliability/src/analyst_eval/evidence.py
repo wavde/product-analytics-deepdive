@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 import statistics
 from collections import defaultdict
+from itertools import combinations
 from pathlib import Path
 
 import duckdb
@@ -125,12 +126,23 @@ def _run_evidence(con, key: dict[str, dict]) -> dict[str, dict]:
     if not by_model:
         return {}
 
-    create_gold_views(con, Fixes().without("timezone"))
-    utc_gold = {}
-    for q in QUESTIONS_BY_ID.values():
-        if q.gold_sql:
-            row = con.execute(q.gold_sql).fetchone()
-            utc_gold[q.id] = None if row[0] is None else float(row[0])
+    # Gold recomputed with every non-empty combination of cleaning rules switched off, so a
+    # wrong answer can be attributed to data cleaning (some combination matches) or not.
+    alt_gold: dict[frozenset[str], dict[str, float | None]] = {}
+    names = Fixes.names()
+    for r in range(1, len(names) + 1):
+        for off in combinations(names, r):
+            fixes = Fixes()
+            for name in off:
+                fixes = fixes.without(name)
+            create_gold_views(con, fixes)
+            vals: dict[str, float | None] = {}
+            for q in QUESTIONS_BY_ID.values():
+                if q.gold_sql:
+                    row = con.execute(q.gold_sql).fetchone()
+                    vals[q.id] = None if row[0] is None else float(row[0])
+            alt_gold[frozenset(off)] = vals
+    create_gold_views(con)
 
     ev: dict[str, dict] = {}
     for model, all_answers in by_model.items():
@@ -153,24 +165,34 @@ def _run_evidence(con, key: dict[str, dict]) -> dict[str, dict]:
                 len(full), "questions run in every trial", RUN_CHECKS)
         for trial in sorted({a.get("trial", 0) for a in all_answers}):
             answers = [a for a in all_answers if a.get("trial", 0) == trial]
-            ev.update(_condition_evidence(f"run.{model}.t{trial}.", answers, key, utc_gold))
+            ev.update(_condition_evidence(f"run.{model}.t{trial}.", answers, key, alt_gold))
     return ev
 
 
+def _matching_rule_sets(a: dict, alt_gold: dict[frozenset[str], dict[str, float | None]]
+                        ) -> list[frozenset[str]]:
+    """Combinations of switched-off cleaning rules whose gold equals this answer."""
+    q = QUESTIONS_BY_ID[a["question_id"]]
+    if a["value"] is None:
+        return []
+    tol = TOLERANCE.get(q.unit or "", 0)
+    return [off for off, vals in alt_gold.items()
+            if vals.get(q.id) is not None and abs(vals[q.id] - a["value"]) <= tol]
+
+
 def _condition_evidence(prefix: str, answers: list[dict], key: dict[str, dict],
-                        utc_gold: dict[str, float | None]) -> dict[str, dict]:
+                        alt_gold: dict[frozenset[str], dict[str, float | None]]
+                        ) -> dict[str, dict]:
     ev: dict[str, dict] = {}
     for cond in sorted({a["condition"] for a in answers}):
         xs = [a for a in answers if a["condition"] == cond]
         grades = [grade_answer(a, key[a["question_id"]]) for a in xs]
         wrong = [(a, g) for a, g in zip(xs, grades, strict=True) if not g.correct]
         n = len(xs)
-
-        def tz_only(a) -> bool:
-            q = QUESTIONS_BY_ID[a["question_id"]]
-            alt = utc_gold.get(q.id)
-            return (a["value"] is not None and alt is not None
-                    and abs(alt - a["value"]) <= TOLERANCE.get(q.unit or "", 0))
+        matches = [_matching_rule_sets(a, alt_gold) for a, _ in wrong]
+        tz_only = sum(frozenset({"timezone"}) in ms for ms in matches)
+        kept_internal = sum(bool(ms) and all("internal_accounts" in m for m in ms)
+                            for ms in matches)
 
         p = f"{prefix}{cond}."
         ev[p + "n"] = _entry(n, f"answers in {cond}", RUN_CHECKS)
@@ -190,9 +212,18 @@ def _condition_evidence(prefix: str, answers: list[dict], key: dict[str, dict],
         ev[p + "matched_naive"] = _entry(sum(g.fell_for_naive for g in grades),
                                          "wrong answers equal to the naive query's", RUN_CHECKS)
         ev[p + "wrong_tz_only"] = _entry(
-            sum(tz_only(a) for a, _ in wrong),
+            tz_only,
             "wrong answers equal to gold computed in UTC instead of Pacific time",
             RUN_CHECKS + ["gold recomputed with only the timezone rule switched off"])
+        ev[p + "wrong_cleaning"] = _entry(
+            sum(bool(ms) for ms in matches),
+            "wrong answers equal to gold with some combination of the four data-cleaning "
+            "rules (duplicates, internal accounts, system events, time zone) switched off",
+            RUN_CHECKS + ["gold recomputed under all 15 combinations of switched-off rules"])
+        ev[p + "wrong_kept_internal"] = _entry(
+            kept_internal,
+            "wrong answers explained only by combinations that keep internal accounts in",
+            RUN_CHECKS + ["gold recomputed under all 15 combinations of switched-off rules"])
         ev[p + "sql_per_q"] = _entry(statistics.mean(a["sql_calls"] for a in xs),
                                      "mean logged queries per question", RUN_CHECKS)
         ev[p + "median_seconds"] = _entry(
