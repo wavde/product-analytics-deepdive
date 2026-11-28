@@ -6,6 +6,7 @@ Tool commands here are scripted to test the plumbing; they are not model results
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 import sys
 
@@ -134,3 +135,25 @@ def test_validation_catches_tampering(bundles, analyst_db, tmp_path, tamper):
     lines[i] = json.dumps(rec)
     out.write_text("\n".join(lines) + "\n", encoding="utf-8")
     assert validate_run(out, analyst_db)
+
+
+def test_volatile_output_is_not_compared_but_other_edits_still_are(bundles, analyst_db, tmp_path):
+    folder = bundles / "no_context"
+    _call(folder, "sql", "c01", "v.sql", "SELECT current_date AS d, COUNT(*) AS n FROM users")
+    _call(folder, "sql", "c01", "q.sql", QUESTIONS_BY_ID["c01"].naive_sql)
+    _call(folder, "answer", "c01", "a.json", _answer("naive_sql", "c01"))
+    out = import_bundles(bundles, "scripted", tmp_path / "run.jsonl", analyst_db,
+                         questions=["c01"])
+    lines = out.read_text(encoding="utf-8").splitlines()
+    i = next(n for n, ln in enumerate(lines) if '"no_context"' in ln and '"c01"' in ln)
+    rec = json.loads(lines[i])
+    vol, plain = (e for e in rec["transcript"] if e["type"] == "sql")
+    vol["output"] = re.sub(r"\d{4}-\d{2}-\d{2}", "1999-01-01", vol["output"])
+    lines[i] = json.dumps(rec)
+    out.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    assert validate_run(out, analyst_db) == []
+
+    plain["output"] = plain["output"].replace("507", "508")
+    lines[i] = json.dumps(rec)
+    out.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    assert any("event 1" in p for p in validate_run(out, analyst_db))

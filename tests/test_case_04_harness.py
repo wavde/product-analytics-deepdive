@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 import re
 
+import duckdb
 import pytest
 from analyst_eval import CASE_DIR
 from analyst_eval.agent import Agent, AgentConfig, parse_final, parse_sql
@@ -22,7 +23,7 @@ from analyst_eval.questions import QUESTIONS, QUESTIONS_BY_ID
 from analyst_eval.reconcile import diff_results
 from analyst_eval.report import PENDING, SUMMARY_JSON, SUMMARY_MD, summarize_runs
 from analyst_eval.runners import CallableRunner, Pricing
-from analyst_eval.runs import list_runs, load_run, run_eval, validate_run
+from analyst_eval.runs import engine_mismatch, list_runs, load_run, run_eval, validate_run
 from analyst_eval.sqlexec import QueryResult
 from analyst_eval.warehouse import connect_readonly
 
@@ -321,10 +322,36 @@ def test_saved_runs_are_valid_and_results_are_current(analyst_db):
         assert SUMMARY_MD.read_text(encoding="utf-8") == PENDING
         assert "Results pending" in (CASE_DIR / "README.md").read_text(encoding="utf-8")
         return
-    problems = [p for path in paths for p in validate_run(path, analyst_db)]
-    assert not problems, "\n".join(problems)
     committed = json.loads(SUMMARY_JSON.read_text(encoding="utf-8"))
     assert json.loads(json.dumps(summarize_runs(paths), sort_keys=True)) == committed
+    unreplayable = {p.name: m for p in paths if (m := engine_mismatch(load_run(p)[0]))}
+    replayable = [p for p in paths if p.name not in unreplayable]
+    problems = [p for path in replayable for p in validate_run(path, analyst_db)]
+    assert not problems, "\n".join(problems)
+    if unreplayable:
+        pytest.skip(f"replay needs the recording engine: {unreplayable}")
+
+
+def test_engine_mismatch_blocks_replay_instead_of_reporting_tampering():
+    from analyst_eval.runs import LEGACY_AGENT_ENGINE, recorded_engine
+
+    here = duckdb.__version__
+    other = f"{int(here.split('.')[0]) + 1}.0.0"
+    assert engine_mismatch({"engine": {"duckdb": here}}) is None
+    assert "different major" in engine_mismatch({"engine": {"duckdb": other}})
+    assert recorded_engine({"runner_kind": "copilot-agent"}) == LEGACY_AGENT_ENGINE
+    assert recorded_engine({}) is None
+
+
+def test_volatile_sql_detection():
+    from analyst_eval.runs import is_volatile
+
+    assert is_volatile("SELECT current_date, COUNT(*) FROM users")
+    assert is_volatile("select now() - max(event_ts) from events")
+    assert is_volatile("SELECT random() < 0.5")
+    assert not is_volatile("SELECT 'today' AS label, COUNT(*) AS today_n FROM users")
+    assert not is_volatile("SELECT COUNT(*) FROM events WHERE event_name = 'now()'")
+    assert not is_volatile(None)
 
 
 @pytest.mark.parametrize("kind", ["openai", "anthropic"])

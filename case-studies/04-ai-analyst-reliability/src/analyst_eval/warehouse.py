@@ -180,9 +180,28 @@ def build_frames(
     return {"users": users, "events": events, "refunds": refunds, "etl_watermark": watermark}
 
 
+def _to_microseconds(s: pd.Series) -> pd.Series:
+    """Round nanosecond timestamps half-up to microseconds before DuckDB sees them.
+
+    DuckDB's own nanosecond-to-microsecond cast changed between releases (1.x truncates,
+    2.x rounds half-up), which made the same seed build different warehouses. Doing the
+    rounding here keeps the build identical across versions; half-up matches the 2.x
+    build the saved agent runs were recorded against.
+    """
+    ns = s.astype("datetime64[ns]").to_numpy().view("int64")
+    us = (ns + 500) // 1000
+    out = pd.Series(us.astype("datetime64[us]"), index=s.index)
+    return out.where(s.notna())
+
+
 def write_warehouse(frames: dict[str, pd.DataFrame], db_path: Path | str) -> None:
     db_path = Path(db_path)
     db_path.parent.mkdir(parents=True, exist_ok=True)
+    frames = {
+        name: df.assign(**{c: _to_microseconds(df[c]) for c in df.columns
+                           if pd.api.types.is_datetime64_any_dtype(df[c])})
+        for name, df in frames.items()
+    }
     con = duckdb.connect(str(db_path))
     try:
         for name, df in frames.items():

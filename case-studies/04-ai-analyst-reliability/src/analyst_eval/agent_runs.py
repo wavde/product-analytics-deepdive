@@ -14,6 +14,7 @@ from __future__ import annotations
 import hashlib
 import json
 import shutil
+import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -22,7 +23,7 @@ from analyst_eval import bundle_tool as tool
 from analyst_eval.answer_key import ANSWER_KEY_PATH
 from analyst_eval.conditions import CONDITIONS, context_parts, read_skill
 from analyst_eval.questions import QUESTIONS_BY_ID, TOLERANCE, Question
-from analyst_eval.runs import SCHEMA_VERSION, canonical_transcript, file_sha
+from analyst_eval.runs import SCHEMA_VERSION, canonical_transcript, file_sha, is_volatile
 from analyst_eval.sqlexec import execute, format_result, to_number
 from analyst_eval.warehouse import DEFAULT_N_USERS, DEFAULT_SEED, connect_readonly
 
@@ -95,6 +96,13 @@ def agent_prompt_hash(condition: str, max_sql: int = MAX_SQL) -> str:
     return h.hexdigest()[:16]
 
 
+def _duckdb_version(python: str) -> str:
+    """duckdb version in the Python the agents will run, which is what the run records."""
+    out = subprocess.run([python, "-c", "import duckdb; print(duckdb.__version__)"],
+                         capture_output=True, text=True, check=True, timeout=60)
+    return out.stdout.strip()
+
+
 def build_bundles(root: Path | str, conditions: list[str], questions: list[Question],
                   python: str, db_path: Path | str = DB_PATH) -> dict:
     """Write one blind folder per condition under ``root``."""
@@ -105,6 +113,7 @@ def build_bundles(root: Path | str, conditions: list[str], questions: list[Quest
         "questions": [q.id for q in questions],
         "conditions": {c: agent_prompt_hash(c) for c in conditions},
         "db_sha": file_sha(Path(db_path)),
+        "engine": {"duckdb": _duckdb_version(python)},
     }
     for c in conditions:
         d = root / c
@@ -217,6 +226,7 @@ def import_bundles(root: Path | str, model: str, out_path: Path,
         "trials": 1, "pricing": None,
         "dataset": {"n_users": DEFAULT_N_USERS, "seed": DEFAULT_SEED},
         "db_sha": manifest["db_sha"],
+        "engine": manifest.get("engine"),
     }
     end = {"type": "end", "finished_at": datetime.now(timezone.utc).isoformat(),
            "input_tokens": 0, "output_tokens": 0, "stopped": None}
@@ -239,6 +249,8 @@ def validate_agent_answer(rec: dict, db_path: Path | str) -> list[str]:
         initial_sql = None
         for i, e in enumerate(events):
             if e["type"] == "sql":
+                if is_volatile(e["sql"]):
+                    continue  # depends on the clock or randomness; can't be reproduced
                 fresh = format_result(execute(con, e["sql"], SQL_TIMEOUT))
             elif e["type"] == "reconcile":
                 if initial_sql is None:

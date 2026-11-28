@@ -74,6 +74,18 @@ def _tiny_warehouse() -> duckdb.DuckDBPyConnection:
     return con
 
 
+def test_timestamps_round_half_up_to_microseconds_on_every_engine():
+    import pandas as pd
+    from analyst_eval.warehouse import _to_microseconds
+
+    s = pd.Series(pd.to_datetime(["2025-01-01 00:00:00.000000499",
+                                  "2025-01-01 00:00:00.000000500",
+                                  "2025-01-01 00:00:00.000001999", None]))
+    out = _to_microseconds(s)
+    assert list(out[:3].astype("int64") % 10**6) == [0, 1, 2]
+    assert pd.isna(out[3])
+
+
 def test_gold_views_apply_every_ground_rule():
     con = _tiny_warehouse()
     create_gold_views(con)

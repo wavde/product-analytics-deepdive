@@ -55,6 +55,53 @@ def canonical_transcript(transcript: list[dict]) -> list[tuple[str, list[str]]]:
     return [(m["role"], _canonical(m["content"])) for m in transcript]
 
 
+# SQL whose result depends on the wall clock or randomness can't be reproduced on replay.
+_STRING_LITERAL = re.compile(r"'(?:[^']|'')*'")
+_VOLATILE = re.compile(
+    r"\b(current_date|current_time|current_timestamp|localtime|localtimestamp)\b"
+    r"|\b(now|today|get_current_time|get_current_timestamp|transaction_timestamp|random"
+    r"|uuid|gen_random_uuid|setseed)\s*\(",
+    re.I,
+)
+
+
+def is_volatile(sql: str | None) -> bool:
+    return bool(sql) and bool(_VOLATILE.search(_STRING_LITERAL.sub("''", sql)))
+
+
+# Agent runs imported before the engine was recorded used bundles whose Python environment
+# was pinned to duckdb==2.0.1; see case README, "How the run was executed".
+LEGACY_AGENT_ENGINE = {"duckdb": "2.0.1"}
+
+
+def engine_info() -> dict[str, str]:
+    return {"duckdb": duckdb.__version__}
+
+
+def recorded_engine(meta: dict) -> dict[str, str] | None:
+    if meta.get("engine"):
+        return meta["engine"]
+    if meta.get("runner_kind") == "copilot-agent":
+        return LEGACY_AGENT_ENGINE
+    return None
+
+
+def engine_mismatch(meta: dict) -> str | None:
+    """Why this run can't be replayed on the installed engine, or None if it can.
+
+    DuckDB's SQL dialect changes across major versions (for example, 1.x rejects some
+    aliases 2.x accepts), so a run is only replayable on the major version it was recorded
+    on. A mismatch means "not verifiable here", not "tampered".
+    """
+    rec = recorded_engine(meta)
+    if rec is None:
+        return None
+    here = duckdb.__version__
+    if rec["duckdb"].split(".")[0] != here.split(".")[0]:
+        return f"recorded on duckdb {rec['duckdb']}; installed duckdb {here} is a different major"
+    return None
+
+
 def file_sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()[:16]
 
@@ -87,6 +134,7 @@ def build_meta(runner: ModelRunner, conditions: list[str], trials: int, config: 
         "trials": trials,
         "pricing": asdict(pricing) if pricing else None,
         "dataset": {"n_users": DEFAULT_N_USERS, "seed": DEFAULT_SEED},
+        "engine": engine_info(),
     }
 
 
@@ -187,7 +235,7 @@ def replay_answer(rec: dict, meta: dict, db_path: Path | str,
         problems.append(f"replay error: {res.error}")
     if not runner.exhausted:
         problems.append("replay finished before all saved assistant turns were used")
-    if canonical_transcript(res.transcript) != canonical_transcript(rec["transcript"]):
+    if _replayable(res.transcript) != _replayable(rec["transcript"]):
         problems.append("field 'transcript' differs on replay")
     for k in REPLAYED_FIELDS:
         if json.loads(json.dumps(fresh.get(k), default=str)) != rec.get(k):
@@ -195,8 +243,23 @@ def replay_answer(rec: dict, meta: dict, db_path: Path | str,
     return problems
 
 
+def _replayable(transcript: list[dict]) -> list[tuple[str, list[str]]]:
+    """Canonical transcript with tool output for volatile SQL masked (its text is kept)."""
+    from analyst_eval.agent import parse_sql
+
+    out = canonical_transcript(transcript)
+    for i, m in enumerate(transcript):
+        if m["role"] == "assistant" and is_volatile(parse_sql(m["content"])) \
+                and i + 1 < len(out) and out[i + 1][0] == "user":
+            out[i + 1] = ("user", ["<volatile>"])
+    return out
+
+
 def validate_run(path: Path, db_path: Path | str, setup: Setup | None = None) -> list[str]:
     meta, answers, end = load_run(path)
+    mismatch = engine_mismatch(meta)
+    if mismatch:
+        return [f"{path.name}: cannot replay here: {mismatch}"]
     if meta.get("runner_kind") == "copilot-agent":
         return _validate_agent_run(path, meta, answers, end, db_path)
     problems = []
