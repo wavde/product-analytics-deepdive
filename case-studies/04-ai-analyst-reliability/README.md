@@ -2,9 +2,9 @@
 
 **Audience:** Data science and analytics leads deciding how much to invest in context for AI analyst agents
 **Author:** Senior Data Scientist, Analytics
-**Status:** Complete. 560 graded answers, run as GitHub Copilot sub-agents in blind folders:
-- `claude-opus-5.5`: the four core conditions twice (two independent trials), plus the two ablations once.
-- `claude-haiku-5.5`: the four core conditions once.
+**Status:** Complete. 860 graded answers, run as GitHub Copilot sub-agents in blind folders:
+- `claude-opus-5.5` and `claude-haiku-5.5`: the four core conditions twice each (two independent trials), plus the two ablations once.
+- Both models: a holdout of 10 questions on a warehouse with one trap the context pack never mentions, with predictions committed before the run.
 
 Every logged query has been re-run against a fresh build to validate the results.
 
@@ -17,13 +17,14 @@ Every logged query has been re-run against a fresh build to validate the results
 <!-- cited:start -->
 - **Written business conventions are what work.** With the full context pack `claude-opus-5.5` answered 40 of 40 correctly [E:run.claude-opus-5.5.t0.full_context.correct] [E:run.claude-opus-5.5.t0.full_context.n]. With no context it got 13 [E:run.claude-opus-5.5.t0.no_context.correct], and with the schema catalog alone 15 [E:run.claude-opus-5.5.t0.schema_only.correct].
 - **It reproduced.** A second, independent trial scored 14 with no context [E:run.claude-opus-5.5.t1.no_context.correct], 13 with schema only [E:run.claude-opus-5.5.t1.schema_only.correct] and 40 with full context [E:run.claude-opus-5.5.t1.full_context.correct]. Without context, 37 of 40 questions [E:run.claude-opus-5.5.no_context.same_outcome] [E:run.claude-opus-5.5.no_context.n_repeated] got the same graded outcome both times.
-- **The definitions file did all the work for Opus.** Schema plus definitions alone scored 40 of 40 [E:run.claude-opus-5.5.t0.schema_definitions.correct]. The traps notes and the procedural skill added nothing measurable on top.
-- **A weaker model needed the same pack and was rescued by it.** `claude-haiku-5.5` scored 14 with no context [E:run.claude-haiku-5.5.t0.no_context.correct] and 40 with full context [E:run.claude-haiku-5.5.t0.full_context.correct]. Unlike Opus, it fell for planted traps: 6 of its misses equalled the naive query's answer [E:run.claude-haiku-5.5.t0.no_context.matched_naive], against none for Opus [E:run.claude-opus-5.5.t0.no_context.matched_naive].
+- **The definitions file did all the work, for both models.** Schema plus definitions alone scored 40 of 40 for Opus [E:run.claude-opus-5.5.t0.schema_definitions.correct] and for Haiku [E:run.claude-haiku-5.5.t0.schema_definitions.correct]. The traps notes and the procedural skill added nothing measurable on top.
+- **A weaker model needed the same pack and was rescued by it.** `claude-haiku-5.5` scored 14 then 13 with no context [E:run.claude-haiku-5.5.t0.no_context.correct] [E:run.claude-haiku-5.5.t1.no_context.correct] and 40 in both trials with full context [E:run.claude-haiku-5.5.t0.full_context.correct] [E:run.claude-haiku-5.5.t1.full_context.correct]. Unlike Opus, it fell for planted traps: 6 of its misses equalled the naive query's answer [E:run.claude-haiku-5.5.t0.no_context.matched_naive], against none for Opus [E:run.claude-opus-5.5.t0.no_context.matched_naive].
+- **The pack held on a trap it never mentions.** On a holdout warehouse with re-submitted purchases (new event id, same order), both models scored 10 of 10 with full context [E:run.claude-opus-5.5.holdout.t0.full_context.correct] [E:run.claude-haiku-5.5.holdout.t0.full_context.correct] and 0 without it [E:run.claude-opus-5.5.holdout.t0.no_context.correct] [E:run.claude-haiku-5.5.holdout.t0.no_context.correct]. That refuted my preregistered prediction. The reason matters: the written definition of an order (one per `order_id`) covered the trap without naming it.
 - **Opus wasn't naive without context; it just couldn't read minds.** 19 of its 27 misses [E:run.claude-opus-5.5.t0.no_context.wrong_tz_only] [E:run.claude-opus-5.5.t0.no_context.wrong] are exactly the right answer computed in UTC instead of the business's Pacific time. 26 of the 27 carried a caveat [E:run.claude-opus-5.5.t0.no_context.caveated_wrong] [E:run.claude-opus-5.5.t0.no_context.wrong].
-- **Reconciliation was ceremony on this set, for both models.** Three runs each forced 34 independent recomputations [E:run.claude-opus-5.5.t0.full_context_reconcile.reconciled] [E:run.claude-opus-5.5.t1.full_context_reconcile.reconciled] [E:run.claude-haiku-5.5.t0.full_context_reconcile.reconciled], and none changed an answer [E:run.claude-opus-5.5.t0.full_context_reconcile.reconcile_changed] [E:run.claude-opus-5.5.t1.full_context_reconcile.reconcile_changed] [E:run.claude-haiku-5.5.t0.full_context_reconcile.reconcile_changed]. It roughly doubled median time: 12.5 to 24.2 seconds for Opus [E:run.claude-opus-5.5.t0.full_context.median_seconds] [E:run.claude-opus-5.5.t0.full_context_reconcile.median_seconds], 21.7 to 49.6 for Haiku [E:run.claude-haiku-5.5.t0.full_context.median_seconds] [E:run.claude-haiku-5.5.t0.full_context_reconcile.median_seconds].
+- **Reconciliation was ceremony on this set, for both models.** Four runs each forced 34 independent recomputations [E:run.claude-opus-5.5.t0.full_context_reconcile.reconciled] [E:run.claude-opus-5.5.t1.full_context_reconcile.reconciled] [E:run.claude-haiku-5.5.t0.full_context_reconcile.reconciled] [E:run.claude-haiku-5.5.t1.full_context_reconcile.reconciled], and none changed an answer [E:run.claude-opus-5.5.t0.full_context_reconcile.reconcile_changed] [E:run.claude-opus-5.5.t1.full_context_reconcile.reconcile_changed] [E:run.claude-haiku-5.5.t0.full_context_reconcile.reconcile_changed] [E:run.claude-haiku-5.5.t1.full_context_reconcile.reconcile_changed]; nor did it change any on the holdout [E:run.claude-opus-5.5.holdout.t0.full_context_reconcile.reconcile_changed] [E:run.claude-haiku-5.5.holdout.t0.full_context_reconcile.reconcile_changed]. It roughly doubled median time: 12.5 to 24.2 seconds for Opus [E:run.claude-opus-5.5.t0.full_context.median_seconds] [E:run.claude-opus-5.5.t0.full_context_reconcile.median_seconds], 21.7 to 49.6 for Haiku [E:run.claude-haiku-5.5.t0.full_context.median_seconds] [E:run.claude-haiku-5.5.t0.full_context_reconcile.median_seconds].
 <!-- cited:end -->
 
-**Practitioner takeaway:** write down what the data can't tell a model: reporting time zone, how refunds are attributed, what "active", "revenue" and "retention" mean, when a period is complete, and the one-line ground rules (exclude internal accounts, one row per event id, user-initiated events only). For the strong model that was the whole job; a page of trap essays and a procedural skill added nothing. The weaker model *did* trip over the data quirks without context, and the same pack fixed it. Keep reconciliation for warehouses with real join bugs; here it found nothing to fix for either model.
+**Practitioner takeaway:** write down what the data can't tell a model: reporting time zone, how refunds are attributed, what "active", "revenue" and "retention" mean, when a period is complete, the grain of each entity (an order is one `order_id`), and the one-line ground rules (exclude internal accounts, one row per event id, user-initiated events only). For both models that was the whole job; a page of trap essays and a procedural skill added nothing. The weaker model *did* trip over the data quirks without context, and the same page fixed it. Definitions written at the right grain also caught a quirk nobody had documented. Keep reconciliation for warehouses with real join bugs; here it found nothing to fix for either model.
 
 The test has teeth. A reasonable first-draft query, the kind an analyst new to this warehouse would write, gets every trap and ambiguous question wrong:
 
@@ -145,8 +146,8 @@ No API key was available, so the experiment ran inside GitHub Copilot.
   - that condition's `AGENT.md`, which holds the same protocol and context the API harness would send as a system prompt
   - `tool.py`, its only way to query the data and submit an answer
 - **What's excluded:** there was no answer key, gold SQL or grading code in the folder.
-- **The record:** `tool.py` logs every query, result and answer itself, so the record doesn't depend on what the agent reported. `cli.py import-agent-run` turns those logs into the run files in `runs/`: `full_` (Opus, first trial), `full_t1_` (Opus, second trial), `ablation_` (Opus ablations) and `haiku_`. Validation re-runs every logged query against a freshly built warehouse; CI does the same.
-- **The second trial** used fresh bundles and fresh agents, with nothing carried over from the first. The Haiku run used bundles identical to Opus's; only the model differed.
+- **The record:** `tool.py` logs every query, result and answer itself, so the record doesn't depend on what the agent reported. `cli.py import-agent-run` turns those logs into the run files in `runs/` (listed in [`runs/README.md`](runs/README.md)). Validation re-runs every logged query against a freshly built warehouse; CI does the same.
+- **Second trials** used fresh bundles and fresh agents, with nothing carried over from the first. The Haiku runs used bundles identical to Opus's; only the model differed.
 - **One harness fix after the runs:** the importer flagged a reconciliation as having "changed" the answer when the same number came back with different trailing float digits (`38.13701372614664` vs `38.137013726146634`). Change detection now uses a relative tolerance of 1e-9; the affected run was re-imported from its raw logs, not edited.
 
 ### Scorecard: `claude-opus-5.5`, first trial
@@ -196,23 +197,22 @@ With full context there was nothing to vary: 80 of 80 answers correct in each fu
 
 ### Ablations: which part of the pack did the work?
 
-Run once, for `claude-opus-5.5`.
+Run once per model.
 
 <!-- cited:start -->
-| Condition | What's in context | Correct | Queries per question | Median seconds |
-|---|---|---|---|---|
-| full_context (first trial) | schema, definitions, traps, skill | 40 [E:run.claude-opus-5.5.t0.full_context.correct] | 2.0 [E:run.claude-opus-5.5.t0.full_context.sql_per_q] | 12.5 [E:run.claude-opus-5.5.t0.full_context.median_seconds] |
-| context_no_skill | schema, definitions, traps | 40 [E:run.claude-opus-5.5.t0.context_no_skill.correct] | 1.15 [E:run.claude-opus-5.5.t0.context_no_skill.sql_per_q] | 11.9 [E:run.claude-opus-5.5.t0.context_no_skill.median_seconds] |
-| schema_definitions | schema, definitions | 40 [E:run.claude-opus-5.5.t0.schema_definitions.correct] | 1.65 [E:run.claude-opus-5.5.t0.schema_definitions.sql_per_q] | 14.1 [E:run.claude-opus-5.5.t0.schema_definitions.median_seconds] |
+| Condition | What's in context | Opus correct | Opus queries per question | Haiku correct | Haiku queries per question |
+|---|---|---|---|---|---|
+| full_context (first trial) | schema, definitions, traps, skill | 40 [E:run.claude-opus-5.5.t0.full_context.correct] | 2.0 [E:run.claude-opus-5.5.t0.full_context.sql_per_q] | 40 [E:run.claude-haiku-5.5.t0.full_context.correct] | 2.1 [E:run.claude-haiku-5.5.t0.full_context.sql_per_q] |
+| context_no_skill | schema, definitions, traps | 40 [E:run.claude-opus-5.5.t0.context_no_skill.correct] | 1.15 [E:run.claude-opus-5.5.t0.context_no_skill.sql_per_q] | 40 [E:run.claude-haiku-5.5.t0.context_no_skill.correct] | 1.525 [E:run.claude-haiku-5.5.t0.context_no_skill.sql_per_q] |
+| schema_definitions | schema, definitions | 40 [E:run.claude-opus-5.5.t0.schema_definitions.correct] | 1.65 [E:run.claude-opus-5.5.t0.schema_definitions.sql_per_q] | 40 [E:run.claude-haiku-5.5.t0.schema_definitions.correct] | 1.825 [E:run.claude-haiku-5.5.t0.schema_definitions.sql_per_q] |
 <!-- cited:end -->
 
-- **The traps notes and the skill added nothing measurable for Opus.** Every arm that had the definitions file scored 40 of 40. Without the skill the agents ran fewer queries, not more; the skill asks for pre-flight checks, which is the likely reason.
+- **The traps notes and the skill added nothing measurable for either model.** Every arm that had the definitions file scored 40 of 40, including Haiku, which fell for the traps without context. Without the skill both models ran fewer queries, not more; the skill asks for pre-flight checks, which is the likely reason.
 - **Read this carefully.** `definitions.md` isn't only metric definitions. It states the ground rules that implement each trap fix in one line apiece: exclude internal accounts, one row per `event_id`, only user-initiated events count as activity, report in Pacific time, attribute refunds to the order date, report complete periods only. So the ablation shows that the trap *descriptions* in `traps.md` and the procedural skill were redundant once those rules were written down. It does not show that the fixes were unnecessary; the arms without the rules are `no_context` and `schema_only`, which is where every error was.
-- **Untested:** the same ablations on the weaker model. Given how differently it failed without context (below), I wouldn't extend this verdict to Haiku without running them.
 
 ### A weaker model: `claude-haiku-5.5`
 
-Same bundles, same questions, one trial.
+Same bundles, same questions. First trial:
 
 <!-- cited:start -->
 | Condition | Correct | Within one percent | Confidently wrong | Wrong with caveat | Matched naive answer | Queries per question | Median seconds |
@@ -230,21 +230,36 @@ Same bundles, same questions, one trial.
 
 It also answered the half-loaded last day's DAU with a caveat in both lighter conditions, where Opus abstained. With the full pack, every Haiku answer was correct, including abstaining on that day.
 
+**Second trial.** Fresh bundles and fresh agents again.
+
+<!-- cited:start -->
+| Condition | Correct, first trial | Correct, second trial | Same graded outcome in both |
+|---|---|---|---|
+| no_context | 14 [E:run.claude-haiku-5.5.t0.no_context.correct] | 13 [E:run.claude-haiku-5.5.t1.no_context.correct] | 32 of 40 [E:run.claude-haiku-5.5.no_context.same_outcome] [E:run.claude-haiku-5.5.no_context.n_repeated] |
+| schema_only | 13 [E:run.claude-haiku-5.5.t0.schema_only.correct] | 15 [E:run.claude-haiku-5.5.t1.schema_only.correct] | 35 of 40 [E:run.claude-haiku-5.5.schema_only.same_outcome] [E:run.claude-haiku-5.5.schema_only.n_repeated] |
+| full_context | 40 [E:run.claude-haiku-5.5.t0.full_context.correct] | 40 [E:run.claude-haiku-5.5.t1.full_context.correct] | 40 of 40 [E:run.claude-haiku-5.5.full_context.same_outcome] [E:run.claude-haiku-5.5.full_context.n_repeated] |
+| full_context_reconcile | 40 [E:run.claude-haiku-5.5.t0.full_context_reconcile.correct] | 40 [E:run.claude-haiku-5.5.t1.full_context_reconcile.correct] | 40 of 40 [E:run.claude-haiku-5.5.full_context_reconcile.same_outcome] [E:run.claude-haiku-5.5.full_context_reconcile.n_repeated] |
+
+- **The failure pattern reproduced.** Without context, 7 misses again equalled the naive answer [E:run.claude-haiku-5.5.t1.no_context.matched_naive], 8 again were explained only by keeping internal accounts in [E:run.claude-haiku-5.5.t1.no_context.wrong_kept_internal], and only 7 of 27 [E:run.claude-haiku-5.5.t1.no_context.wrong_tz_only] [E:run.claude-haiku-5.5.t1.no_context.wrong] were the time zone alone. Confidently wrong answers rose to 5 [E:run.claude-haiku-5.5.t1.no_context.confidently_wrong].
+<!-- cited:end -->
+
+Haiku is noisier than Opus without context: 8 questions changed outcome under `no_context`, against 3 for Opus. With the full pack there was again nothing to vary.
+
 ### Which context earned its place
 
 | Component | `claude-opus-5.5` | `claude-haiku-5.5` | Evidence |
 |---|---|---|---|
-| Definitions + ground rules (`definitions.md`) | **Essential, and sufficient.** | **Essential**; sufficiency untested. | Both models went from 13–15 correct without it to 40/40 with it. For Opus, schema + definitions alone scored 40/40. |
-| Schema catalog (`schema.md`) | **Marginal.** Fewer queries and shorter runs, no reliable accuracy change. | **Marginal.** Same pattern. | 15 then 13 correct vs 13 then 14 without it (Opus); 13 vs 14 (Haiku). The one abstention it seemed to cause flipped in the second trial. |
-| Known-traps notes (`traps.md`) | **Ceremony**, once the ground rules are written. | **Untested in isolation.** Haiku did fall for the traps without any context, so don't assume. | `schema_definitions` 40/40 for Opus. |
-| `answer-from-definitions` skill | **Ceremony.** Dropping it also cut queries per question. | **Untested in isolation.** | `context_no_skill` 40/40 for Opus. |
-| Reconcile step | **Ceremony on this set.** About double the time, nothing caught. | **Ceremony on this set.** About double the time, nothing caught. | Three runs of 34 reconciles, none changed an answer. Its value can't show when full context leaves nothing to catch. |
+| Definitions + ground rules (`definitions.md`) | **Essential, and sufficient.** | **Essential, and sufficient.** | Both models went from 13–15 correct without it to 40/40 with it, in both trials. Schema + definitions alone scored 40/40 for both. On the holdout, its definition of an order caught a trap nobody had documented. |
+| Schema catalog (`schema.md`) | **Marginal.** Fewer queries and shorter runs, no reliable accuracy change. | **Marginal.** Same pattern. | 15 then 13 correct vs 13 then 14 without it (Opus); 13 then 15 vs 14 then 13 (Haiku). The one abstention it seemed to cause flipped in the second trial. |
+| Known-traps notes (`traps.md`) | **Ceremony**, once the ground rules are written. | **Ceremony**, once the ground rules are written. | `schema_definitions` 40/40 for both, even though Haiku fell for the traps with no context. |
+| `answer-from-definitions` skill | **Ceremony.** Dropping it also cut queries per question. | **Ceremony.** Same. | `context_no_skill` 40/40 for both. |
+| Reconcile step | **Ceremony on this set.** About double the time, nothing caught. | **Ceremony on this set.** About double the time, nothing caught. | Four runs of 34 reconciles and two holdout runs of 10; none changed an answer. Its value can't show when full context leaves nothing to catch. |
 
 ### How the predictions held up
 
 1. *Schema fixes units and uninstrumented abstentions but not business rules.* **Half right.** Units were never a problem even with no context, and business-rule errors were untouched. The apparent abstention on sessions didn't survive a second trial.
-2. *Definitions drive the gain on ambiguous questions; the traps file drives duplicates and partial periods.* **Wrong on the second half.** The definitions file drove everything. For Opus the traps file added nothing once the one-line rules were in definitions, and Opus handled duplicates with no documentation at all.
-3. *The skill mainly turns confident errors into caveated ones.* **Wrong premise.** Without context both models were already caveating most misses. Context raised accuracy instead of changing confidence, and the skill made no measurable difference for Opus.
+2. *Definitions drive the gain on ambiguous questions; the traps file drives duplicates and partial periods.* **Wrong on the second half.** The definitions file drove everything. For both models the traps file added nothing once the one-line rules were in definitions, and Opus handled duplicates with no documentation at all.
+3. *The skill mainly turns confident errors into caveated ones.* **Wrong premise.** Without context both models were already caveating most misses. Context raised accuracy instead of changing confidence, and the skill made no measurable difference for either model.
 4. *Reconciliation catches duplicate and join errors, not definitional ones, at about double the cost.* **Untestable here.** There were no errors left to catch for either model. The time cost was about double, as predicted.
 5. *No condition is perfect on the DST time-zone trap.* **Wrong.** Given the rule in writing, every full-context answer from both models handled it.
 
@@ -288,14 +303,40 @@ Committed before the first holdout agent started. None of these is a finding.
 
 **What would change my mind.** If `full_context` scores 8 or more of 10 for a model, that model applied the written definition of an order rather than the dedup recipe, and the instruction-following objection is weaker than I think. If reconciliation recovers 3 or more answers for a model, it earns its place for traps nobody has documented, which is the one job I argued it might have.
 
+### Holdout results
+
+<!-- cited:start -->
+| Condition | Opus correct | Opus queries per question | Haiku correct | Haiku queries per question |
+|---|---|---|---|---|
+| no_context | 0 [E:run.claude-opus-5.5.holdout.t0.no_context.correct] | 5.2 [E:run.claude-opus-5.5.holdout.t0.no_context.sql_per_q] | 0 [E:run.claude-haiku-5.5.holdout.t0.no_context.correct] | 4.4 [E:run.claude-haiku-5.5.holdout.t0.no_context.sql_per_q] |
+| full_context | 10 [E:run.claude-opus-5.5.holdout.t0.full_context.correct] | 3.9 [E:run.claude-opus-5.5.holdout.t0.full_context.sql_per_q] | 10 [E:run.claude-haiku-5.5.holdout.t0.full_context.correct] | 3.6 [E:run.claude-haiku-5.5.holdout.t0.full_context.sql_per_q] |
+| full_context_reconcile | 10 [E:run.claude-opus-5.5.holdout.t0.full_context_reconcile.correct] | 4.1 [E:run.claude-opus-5.5.holdout.t0.full_context_reconcile.sql_per_q] | 10 [E:run.claude-haiku-5.5.holdout.t0.full_context_reconcile.correct] | 3.2 [E:run.claude-haiku-5.5.holdout.t0.full_context_reconcile.sql_per_q] |
+
+- **Full context caught the undocumented trap, for both models.** Every answer was correct, and every reconcile matched its first route [E:run.claude-opus-5.5.holdout.t0.full_context_reconcile.reconcile_match] [E:run.claude-haiku-5.5.holdout.t0.full_context_reconcile.reconcile_match], so reconciliation changed nothing [E:run.claude-opus-5.5.holdout.t0.full_context_reconcile.reconcile_changed] [E:run.claude-haiku-5.5.holdout.t0.full_context_reconcile.reconcile_changed].
+- **No context failed for the old reasons, not the new one.** Opus missed all 10 and caveated all 10 [E:run.claude-opus-5.5.holdout.t0.no_context.caveated_wrong]; none of its misses is explained by the re-submission rule alone [E:run.claude-opus-5.5.holdout.t0.no_context.wrong_resubmit_only], and 5 are the time zone alone [E:run.claude-opus-5.5.holdout.t0.no_context.wrong_tz_only]. Haiku missed all 10, 2 of them confidently [E:run.claude-haiku-5.5.holdout.t0.no_context.confidently_wrong]; one miss is the re-submission rule alone [E:run.claude-haiku-5.5.holdout.t0.no_context.wrong_resubmit_only].
+<!-- cited:end -->
+
+**Why full context caught it.** The agents noticed the anomaly: nearly every full-context answer's logged checks mention purchase rows that share an `order_id` but not an `event_id`. What told them which count was right was the pack's definition of an order as "one deduplicated `purchase` event, identified by `order_id`", and most of their logged assumptions cite it. One Opus answer records: "Orders deduplicated by order_id (per definition); 628 orders had duplicate purchase rows with different event_ids". Several also caveated the answer with the event-id-only figure, so a reader could see the trap.
+
+So the holdout shows something narrower and more useful than "context generalises": **a definition written at the right grain generalises to quirks its author never imagined.** The pack never said "watch out for re-submitted payments"; it said what an order *is*, and that was enough. It does not show that context handles a trap no definition touches, such as a currency mix-up on some rows. That remains untested, and it is where I'd still expect reconciliation, or nothing, to help.
+
+### How the holdout predictions held up
+
+1. *Full context will fail on money.* **Wrong.** Neither model got any of the seven money questions wrong. I expected the agents to follow the `event_id` dedup recipe; they followed the definition of an order instead.
+2. *Order counts will survive by accident.* **Right, but for a different reason.** All three were right for both models, but the predicted 2–5 of 10 overall was far too low.
+3. *Reconciliation will catch little.* **Held, trivially.** It caught nothing because full context had left nothing to catch.
+4. *No context stays bad.* **Held.** Zero of 10 for both models.
+
+By my own preregistered rule, the instruction-following objection is weaker than I thought: both models cleared 8 of 10. On this evidence, full-context agents weren't only following recipes; they applied the definitions to data the recipes didn't anticipate.
+
 ## Limitations
 
-1. **The context pack documents exactly the traps I planted.** That makes `full_context` an upper bound on what context can do, and part of what it measures is instruction-following: the ground rules in `definitions.md` spell out each fix. Real warehouses have traps nobody has written down yet, which is the case for reconciliation over documentation.
+1. **The context pack documents exactly the traps I planted.** That makes `full_context` an upper bound on what context can do, and part of what it measures is instruction-following: the ground rules in `definitions.md` spell out each fix. The holdout answers part of this: a trap the pack never mentions was still caught, because a definition covered it. A trap that no definition touches is still untested, and that is the case for reconciliation over documentation.
 2. **Synthetic data and one author.** The traps, definitions and gold queries are mine. A definition I wrote ambiguously would show up as model error. The pandas cross-check in the tests reconciles a sample of gold answers by an independent route, but not all of them.
-3. **Small n.** 40 questions gives wide intervals. Opus ran two trials of the core conditions; the ablations and Haiku ran once. Only large effects are distinguishable from noise, and the second trial showed individual answers do flip in the lighter conditions.
+3. **Small n.** 40 questions gives wide intervals. Each model ran two trials of the core conditions; the ablations ran once per model, and the holdout ran once on 10 questions with one planted trap. Only large effects are distinguishable from noise, and the second trials showed individual answers do flip in the lighter conditions.
 4. **Status is a proxy for confidence.** "Confidently wrong" relies on the model's own choice of `answered` vs `answered_with_caveat`. Models calibrate that differently, and the same model labelled the same wrong value differently across trials.
 5. **Scalar answers only.** The set grades numbers, not charts, narratives or the quality of a written insight. The cited-memo skill is checked for traceability, not for being a good memo.
-6. **Two models from one family, run through Copilot.** The models were pinned, but sampling settings like temperature couldn't be. Each agent also had Copilot's own system prompt and tools on top of the protocol. The ablations were run for Opus only, so "ceremony" verdicts for the traps notes and skill don't transfer to Haiku, which did trip over the traps without context.
+6. **Two models from one family, run through Copilot.** The models were pinned, but sampling settings like temperature couldn't be. Each agent also had Copilot's own system prompt and tools on top of the protocol. Models from other families may fail differently.
 7. **Isolation was by instruction, not enforcement.** The agents had general file access and were told to stay in their folder. Logs and post-run audits after every batch found no stray files in the bundles or the repo. In the first run, one agent ran its first command from the repo folder, created and deleted an empty work folder, then redid its work in the right place. File *reads* outside the folder can't be audited. The bundles sat outside the repo and contained no answers, so the main exposure was reading another condition's context folder. Nothing in the logs or the answers suggests that happened.
 8. **No token or dollar cost.** Copilot doesn't expose per-call token counts to the harness, so cost is shown as queries and wall time. The API path in `runners.py` records real tokens and cost when a key is available.
 
@@ -318,6 +359,9 @@ python src/cli.py bundle --root <folder outside the repo> --python <python with 
 #   Question id: <id>. Question: <text>."
 python src/cli.py import-agent-run --root <same folder> --model <model id> --out full
 #   add --trial 1 (and a new --out) when importing a repeat trial of the same model
+# holdout: --variant holdout builds bundles on data/analyst_holdout.db for the 10 holdout questions
+python src/cli.py bundle --root <another folder> --python <python> --variant holdout \
+    --conditions no_context,full_context,full_context_reconcile
 python src/cli.py report
 ```
 
@@ -339,12 +383,12 @@ Use `--conditions all` to include the two ablations and `--trials N` for repeate
 |---|---|
 | `context/` | The context pack: `schema.md`, `definitions.md`, `traps.md` |
 | `skills/` | The three agent skills |
-| `src/analyst_eval/warehouse.py` | Builds the trap-laden warehouse from case 01's generator |
-| `src/analyst_eval/gold.py`, `questions.py`, `answer_key.py` | Definitions as views, the 40 questions, the answer key with measured traps |
+| `src/analyst_eval/warehouse.py` | Builds the trap-laden warehouse from case 01's generator, and the holdout warehouse with one undocumented trap |
+| `src/analyst_eval/gold.py`, `questions.py`, `answer_key.py` | Definitions as views, the 40 questions and the holdout subset, the answer keys with measured traps |
 | `src/analyst_eval/agent.py`, `conditions.py`, `runners.py` | Agent loop, the conditions, pluggable model runners (Anthropic, OpenAI-compatible, replay) |
 | `src/analyst_eval/agent_runs.py`, `bundle_tool.py` | Blind bundles for Copilot-agent runs, the logged analyst tool, log import and validation |
 | `src/analyst_eval/reconcile.py`, `grading.py`, `runs.py`, `report.py` | Data-diff, grading, run persistence and replay validation, results tables |
 | `src/analyst_eval/evidence.py`, `memo_lint.py` | Evidence for this memo and the linter that checks it |
-| `questions/answer_key.json` | Gold and naive answers and live traps per question (regenerated and compared in CI) |
+| `questions/answer_key.json`, `answer_key_holdout.json` | Gold and naive answers and live traps per question, for each warehouse (regenerated and compared in CI) |
 | `results/` | `evidence.json` (memo evidence) and `summary.md` (per-condition results) |
 | `runs/` | Saved, validated model runs |

@@ -941,6 +941,402 @@
     "how": "questions with the same graded outcome in all 2 trials",
     "value": 40.0
   },
+  "run.claude-haiku-5.5.holdout.t0.full_context.accuracy_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent correct",
+    "value": 100.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context.caveated_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered_with_caveat",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context.confidently_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context.correct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "correct answers",
+    "value": 10.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context.matched_naive": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong answers equal to the naive query's",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context.material_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent within 1% of gold",
+    "value": 100.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context.material_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers more than 1% from gold",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context.median_seconds": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "median seconds from first to last tool call",
+    "value": 36.4235
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context.n": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers in full_context",
+    "value": 10.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context.sql_per_q": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "mean logged queries per question",
+    "value": 3.6
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context.wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers not correct",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context.wrong_cleaning": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 31 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with some combination of the data-cleaning rules (duplicates, internal_accounts, resubmitted_orders, system_events, timezone) switched off",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context.wrong_kept_internal": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 31 combinations of switched-off rules"
+    ],
+    "how": "wrong answers explained only by combinations that keep internal accounts in",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context.wrong_resubmit_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 31 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with only the re-submitted-orders rule switched off (every documented rule applied, re-submissions counted)",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context.wrong_tz_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed with only the timezone rule switched off"
+    ],
+    "how": "wrong answers equal to gold computed in UTC instead of Pacific time",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context_reconcile.accuracy_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent correct",
+    "value": 100.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context_reconcile.caveated_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered_with_caveat",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context_reconcile.confidently_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context_reconcile.correct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "correct answers",
+    "value": 10.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context_reconcile.matched_naive": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong answers equal to the naive query's",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context_reconcile.material_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent within 1% of gold",
+    "value": 100.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context_reconcile.material_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers more than 1% from gold",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context_reconcile.median_seconds": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "median seconds from first to last tool call",
+    "value": 45.701
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context_reconcile.n": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers in full_context_reconcile",
+    "value": 10.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context_reconcile.reconcile_changed": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "reconciles that changed the answer",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context_reconcile.reconcile_match": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "reconciles where routes matched",
+    "value": 10.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context_reconcile.reconciled": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers that went through reconcile",
+    "value": 10.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context_reconcile.sql_per_q": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "mean logged queries per question",
+    "value": 3.2
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context_reconcile.wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers not correct",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context_reconcile.wrong_cleaning": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 31 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with some combination of the data-cleaning rules (duplicates, internal_accounts, resubmitted_orders, system_events, timezone) switched off",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context_reconcile.wrong_kept_internal": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 31 combinations of switched-off rules"
+    ],
+    "how": "wrong answers explained only by combinations that keep internal accounts in",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context_reconcile.wrong_resubmit_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 31 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with only the re-submitted-orders rule switched off (every documented rule applied, re-submissions counted)",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.full_context_reconcile.wrong_tz_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed with only the timezone rule switched off"
+    ],
+    "how": "wrong answers equal to gold computed in UTC instead of Pacific time",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.no_context.accuracy_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent correct",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.no_context.caveated_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered_with_caveat",
+    "value": 7.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.no_context.confidently_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered",
+    "value": 2.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.no_context.correct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "correct answers",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.no_context.matched_naive": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong answers equal to the naive query's",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.no_context.material_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent within 1% of gold",
+    "value": 10.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.no_context.material_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers more than 1% from gold",
+    "value": 9.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.no_context.median_seconds": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "median seconds from first to last tool call",
+    "value": 36.0855
+  },
+  "run.claude-haiku-5.5.holdout.t0.no_context.n": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers in no_context",
+    "value": 10.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.no_context.sql_per_q": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "mean logged queries per question",
+    "value": 4.4
+  },
+  "run.claude-haiku-5.5.holdout.t0.no_context.wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers not correct",
+    "value": 10.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.no_context.wrong_cleaning": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 31 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with some combination of the data-cleaning rules (duplicates, internal_accounts, resubmitted_orders, system_events, timezone) switched off",
+    "value": 4.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.no_context.wrong_kept_internal": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 31 combinations of switched-off rules"
+    ],
+    "how": "wrong answers explained only by combinations that keep internal accounts in",
+    "value": 2.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.no_context.wrong_resubmit_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 31 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with only the re-submitted-orders rule switched off (every documented rule applied, re-submissions counted)",
+    "value": 1.0
+  },
+  "run.claude-haiku-5.5.holdout.t0.no_context.wrong_tz_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed with only the timezone rule switched off"
+    ],
+    "how": "wrong answers equal to gold computed in UTC instead of Pacific time",
+    "value": 1.0
+  },
   "run.claude-haiku-5.5.no_context.n_repeated": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
@@ -2202,6 +2598,402 @@
     ],
     "how": "questions with the same graded outcome in all 2 trials",
     "value": 40.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context.accuracy_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent correct",
+    "value": 100.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context.caveated_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered_with_caveat",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context.confidently_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context.correct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "correct answers",
+    "value": 10.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context.matched_naive": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong answers equal to the naive query's",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context.material_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent within 1% of gold",
+    "value": 100.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context.material_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers more than 1% from gold",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context.median_seconds": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "median seconds from first to last tool call",
+    "value": 28.7385
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context.n": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers in full_context",
+    "value": 10.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context.sql_per_q": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "mean logged queries per question",
+    "value": 3.9
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context.wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers not correct",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context.wrong_cleaning": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 31 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with some combination of the data-cleaning rules (duplicates, internal_accounts, resubmitted_orders, system_events, timezone) switched off",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context.wrong_kept_internal": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 31 combinations of switched-off rules"
+    ],
+    "how": "wrong answers explained only by combinations that keep internal accounts in",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context.wrong_resubmit_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 31 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with only the re-submitted-orders rule switched off (every documented rule applied, re-submissions counted)",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context.wrong_tz_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed with only the timezone rule switched off"
+    ],
+    "how": "wrong answers equal to gold computed in UTC instead of Pacific time",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context_reconcile.accuracy_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent correct",
+    "value": 100.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context_reconcile.caveated_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered_with_caveat",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context_reconcile.confidently_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context_reconcile.correct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "correct answers",
+    "value": 10.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context_reconcile.matched_naive": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong answers equal to the naive query's",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context_reconcile.material_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent within 1% of gold",
+    "value": 100.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context_reconcile.material_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers more than 1% from gold",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context_reconcile.median_seconds": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "median seconds from first to last tool call",
+    "value": 45.235
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context_reconcile.n": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers in full_context_reconcile",
+    "value": 10.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context_reconcile.reconcile_changed": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "reconciles that changed the answer",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context_reconcile.reconcile_match": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "reconciles where routes matched",
+    "value": 10.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context_reconcile.reconciled": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers that went through reconcile",
+    "value": 10.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context_reconcile.sql_per_q": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "mean logged queries per question",
+    "value": 4.1
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context_reconcile.wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers not correct",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context_reconcile.wrong_cleaning": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 31 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with some combination of the data-cleaning rules (duplicates, internal_accounts, resubmitted_orders, system_events, timezone) switched off",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context_reconcile.wrong_kept_internal": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 31 combinations of switched-off rules"
+    ],
+    "how": "wrong answers explained only by combinations that keep internal accounts in",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context_reconcile.wrong_resubmit_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 31 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with only the re-submitted-orders rule switched off (every documented rule applied, re-submissions counted)",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.full_context_reconcile.wrong_tz_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed with only the timezone rule switched off"
+    ],
+    "how": "wrong answers equal to gold computed in UTC instead of Pacific time",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.no_context.accuracy_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent correct",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.no_context.caveated_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered_with_caveat",
+    "value": 10.0
+  },
+  "run.claude-opus-5.5.holdout.t0.no_context.confidently_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.no_context.correct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "correct answers",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.no_context.matched_naive": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong answers equal to the naive query's",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.no_context.material_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent within 1% of gold",
+    "value": 50.0
+  },
+  "run.claude-opus-5.5.holdout.t0.no_context.material_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers more than 1% from gold",
+    "value": 5.0
+  },
+  "run.claude-opus-5.5.holdout.t0.no_context.median_seconds": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "median seconds from first to last tool call",
+    "value": 44.4075
+  },
+  "run.claude-opus-5.5.holdout.t0.no_context.n": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers in no_context",
+    "value": 10.0
+  },
+  "run.claude-opus-5.5.holdout.t0.no_context.sql_per_q": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "mean logged queries per question",
+    "value": 5.2
+  },
+  "run.claude-opus-5.5.holdout.t0.no_context.wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers not correct",
+    "value": 10.0
+  },
+  "run.claude-opus-5.5.holdout.t0.no_context.wrong_cleaning": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 31 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with some combination of the data-cleaning rules (duplicates, internal_accounts, resubmitted_orders, system_events, timezone) switched off",
+    "value": 6.0
+  },
+  "run.claude-opus-5.5.holdout.t0.no_context.wrong_kept_internal": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 31 combinations of switched-off rules"
+    ],
+    "how": "wrong answers explained only by combinations that keep internal accounts in",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.no_context.wrong_resubmit_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 31 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with only the re-submitted-orders rule switched off (every documented rule applied, re-submissions counted)",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.holdout.t0.no_context.wrong_tz_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed with only the timezone rule switched off"
+    ],
+    "how": "wrong answers equal to gold computed in UTC instead of Pacific time",
+    "value": 5.0
   },
   "run.claude-opus-5.5.no_context.n_repeated": {
     "checks": [

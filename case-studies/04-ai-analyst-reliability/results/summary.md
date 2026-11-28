@@ -53,3 +53,49 @@ Accuracy by trap (questions where the trap is live):
 | system_events | 0.0% | 4.2% | 100.0% | 100.0% | 100.0% | 100.0% |
 | timezone | 0.0% | 0.0% | 100.0% | 100.0% | 100.0% | 100.0% |
 | units | 100.0% | 100.0% | 100.0% | 100.0% | 100.0% | 100.0% |
+
+## github-copilot / claude-haiku-5.5 — holdout warehouse (one undocumented trap)
+
+Trials: 0. Files: `holdout_github-copilot_claude-haiku-5.5.jsonl`.
+
+| Condition | n | Accuracy | Materially correct (±1%) | Confidently wrong | Caveated wrong | Over-abstained | Matched naive answer | Lift vs no_context (95% CI) | Same outcome across trials | SQL calls per q | Tokens in / out per q | Cost per q | Cost per correct |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| no_context | 10 | 0.0% | 10.0% | 20.0% | 70.0% | 10.0% | 0.0% | - | n/a | 4.4 | n/a | n/a | n/a |
+| full_context | 10 | 100.0% | 100.0% | 0.0% | 0.0% | 0.0% | 0.0% | +100.0 pp (+100.0, +100.0) | n/a | 3.6 | n/a | n/a | n/a |
+| full_context_reconcile | 10 | 100.0% | 100.0% | 0.0% | 0.0% | 0.0% | 0.0% | +100.0 pp (+100.0, +100.0) | n/a | 3.2 | n/a | n/a | n/a |
+
+Accuracy by trap (questions where the trap is live):
+
+| Trap | no_context | full_context | full_context_reconcile |
+|---|---|---|---|
+| definition | 0.0% | 100.0% | 100.0% |
+| duplicates | 0.0% | 100.0% | 100.0% |
+| internal_accounts | 0.0% | 100.0% | 100.0% |
+| partial_period | 0.0% | 100.0% | 100.0% |
+| refunds | 0.0% | 100.0% | 100.0% |
+| resubmitted_orders | 0.0% | 100.0% | 100.0% |
+| system_events | 0.0% | 100.0% | 100.0% |
+| timezone | 0.0% | 100.0% | 100.0% |
+
+## github-copilot / claude-opus-5.5 — holdout warehouse (one undocumented trap)
+
+Trials: 0. Files: `holdout_github-copilot_claude-opus-5.5.jsonl`.
+
+| Condition | n | Accuracy | Materially correct (±1%) | Confidently wrong | Caveated wrong | Over-abstained | Matched naive answer | Lift vs no_context (95% CI) | Same outcome across trials | SQL calls per q | Tokens in / out per q | Cost per q | Cost per correct |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| no_context | 10 | 0.0% | 50.0% | 0.0% | 100.0% | 0.0% | 0.0% | - | n/a | 5.2 | n/a | n/a | n/a |
+| full_context | 10 | 100.0% | 100.0% | 0.0% | 0.0% | 0.0% | 0.0% | +100.0 pp (+100.0, +100.0) | n/a | 3.9 | n/a | n/a | n/a |
+| full_context_reconcile | 10 | 100.0% | 100.0% | 0.0% | 0.0% | 0.0% | 0.0% | +100.0 pp (+100.0, +100.0) | n/a | 4.1 | n/a | n/a | n/a |
+
+Accuracy by trap (questions where the trap is live):
+
+| Trap | no_context | full_context | full_context_reconcile |
+|---|---|---|---|
+| definition | 0.0% | 100.0% | 100.0% |
+| duplicates | 0.0% | 100.0% | 100.0% |
+| internal_accounts | 0.0% | 100.0% | 100.0% |
+| partial_period | 0.0% | 100.0% | 100.0% |
+| refunds | 0.0% | 100.0% | 100.0% |
+| resubmitted_orders | 0.0% | 100.0% | 100.0% |
+| system_events | 0.0% | 100.0% | 100.0% |
+| timezone | 0.0% | 100.0% | 100.0% |
