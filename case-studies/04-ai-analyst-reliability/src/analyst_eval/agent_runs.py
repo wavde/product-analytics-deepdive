@@ -195,7 +195,8 @@ def _read_log(path: Path) -> list[dict]:
 
 
 def import_bundles(root: Path | str, model: str, out_path: Path,
-                   db_path: Path | str = DB_PATH, questions: list[str] | None = None) -> Path:
+                   db_path: Path | str = DB_PATH, questions: list[str] | None = None,
+                   trial: int = 0) -> Path:
     root = Path(root)
     manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
     qids = questions or manifest["questions"]
@@ -211,6 +212,7 @@ def import_bundles(root: Path | str, model: str, out_path: Path,
         for c in manifest["conditions"]:
             for qid in qids:
                 rec = record_from_log(_read_log(root / c / "logs" / f"{qid}.jsonl"), qid, c)
+                rec["trial"] = trial
                 rec["value_matches_final_sql"] = _value_matches(con, rec)
                 answers.append(rec)
     finally:
@@ -223,7 +225,7 @@ def import_bundles(root: Path | str, model: str, out_path: Path,
         "conditions": manifest["conditions"],
         "answer_key_sha": file_sha(ANSWER_KEY_PATH),
         "agent_config": {"max_sql": manifest["max_sql"], "sql_timeout": SQL_TIMEOUT},
-        "trials": 1, "pricing": None,
+        "trials": 1, "trial_index": trial, "pricing": None,
         "dataset": {"n_users": DEFAULT_N_USERS, "seed": DEFAULT_SEED},
         "db_sha": manifest["db_sha"],
         "engine": manifest.get("engine"),

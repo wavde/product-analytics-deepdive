@@ -150,7 +150,8 @@ def cmd_import_agent_run(args) -> None:
     if out.exists() and not args.overwrite:
         raise SystemExit(f"{out} exists; pass --overwrite.")
     import_bundles(Path(args.root), args.model, out,
-                   questions=None if args.questions == "all" else args.questions.split(","))
+                   questions=None if args.questions == "all" else args.questions.split(","),
+                   trial=args.trial)
     problems = validate_run(out, DB_PATH)
     for p in problems:
         print(p)
@@ -193,6 +194,7 @@ def main(argv: list[str] | None = None) -> None:
     sp.add_argument("--model", required=True)
     sp.add_argument("--out", required=True, help="file name prefix under runs/")
     sp.add_argument("--questions", default="all", help="all | comma list of ids")
+    sp.add_argument("--trial", type=int, default=0, help="trial index for repeat runs")
     sp.add_argument("--overwrite", action="store_true")
     sp.set_defaults(fn=cmd_import_agent_run)
     sub.add_parser("report").set_defaults(fn=cmd_report)

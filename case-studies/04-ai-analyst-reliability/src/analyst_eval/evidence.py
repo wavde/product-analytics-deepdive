@@ -8,13 +8,18 @@ cited-memo skill.
 from __future__ import annotations
 
 import json
+import statistics
+from collections import defaultdict
 from pathlib import Path
 
 import duckdb
 
 from analyst_eval import DB_PATH, RESULTS_DIR
 from analyst_eval.answer_key import ANSWER_KEY_PATH, load_answer_key
-from analyst_eval.gold import Fixes
+from analyst_eval.gold import Fixes, create_gold_views
+from analyst_eval.grading import grade_answer
+from analyst_eval.questions import QUESTIONS_BY_ID, TOLERANCE
+from analyst_eval.runs import list_runs, load_run
 
 EVIDENCE_PATH = RESULTS_DIR / "evidence.json"
 KEY_CHECKS = [
@@ -111,18 +116,14 @@ RUN_CHECKS = ["every logged query re-executed against a fresh build (cli.py vali
 
 
 def _run_evidence(con, key: dict[str, dict]) -> dict[str, dict]:
-    """Evidence derived from the saved Copilot-agent run, if there is one."""
-    import statistics
-
-    from analyst_eval.gold import create_gold_views
-    from analyst_eval.grading import grade_answer
-    from analyst_eval.questions import QUESTIONS_BY_ID, TOLERANCE
-    from analyst_eval.runs import list_runs, load_run
-
-    runs = [p for p in list_runs() if load_run(p)[0].get("runner_kind") == "copilot-agent"]
-    if not runs:
+    """Evidence from saved Copilot-agent runs, keyed run.<model>.t<trial>.<condition>.*"""
+    by_model: dict[str, list[dict]] = defaultdict(list)
+    for p in list_runs():
+        meta, answers, _ = load_run(p)
+        if meta.get("runner_kind") == "copilot-agent":
+            by_model[meta["model"]] += answers
+    if not by_model:
         return {}
-    _, answers, _ = load_run(runs[-1])
 
     create_gold_views(con, Fixes().without("timezone"))
     utc_gold = {}
@@ -131,6 +132,33 @@ def _run_evidence(con, key: dict[str, dict]) -> dict[str, dict]:
             row = con.execute(q.gold_sql).fetchone()
             utc_gold[q.id] = None if row[0] is None else float(row[0])
 
+    ev: dict[str, dict] = {}
+    for model, all_answers in by_model.items():
+        for cond in sorted({a["condition"] for a in all_answers}):
+            xs = [a for a in all_answers if a["condition"] == cond]
+            trials = {a.get("trial", 0) for a in xs}
+            if len(trials) < 2:
+                continue
+            outcomes: dict[str, set] = defaultdict(set)
+            seen: dict[str, set] = defaultdict(set)
+            for a in xs:
+                outcomes[a["question_id"]].add(grade_answer(a, key[a["question_id"]]).outcome)
+                seen[a["question_id"]].add(a.get("trial", 0))
+            full = [q for q in seen if seen[q] == trials]
+            ev[f"run.{model}.{cond}.same_outcome"] = _entry(
+                sum(len(outcomes[q]) == 1 for q in full),
+                f"questions with the same graded outcome in all {len(trials)} trials",
+                RUN_CHECKS)
+            ev[f"run.{model}.{cond}.n_repeated"] = _entry(
+                len(full), "questions run in every trial", RUN_CHECKS)
+        for trial in sorted({a.get("trial", 0) for a in all_answers}):
+            answers = [a for a in all_answers if a.get("trial", 0) == trial]
+            ev.update(_condition_evidence(f"run.{model}.t{trial}.", answers, key, utc_gold))
+    return ev
+
+
+def _condition_evidence(prefix: str, answers: list[dict], key: dict[str, dict],
+                        utc_gold: dict[str, float | None]) -> dict[str, dict]:
     ev: dict[str, dict] = {}
     for cond in sorted({a["condition"] for a in answers}):
         xs = [a for a in answers if a["condition"] == cond]
@@ -144,7 +172,7 @@ def _run_evidence(con, key: dict[str, dict]) -> dict[str, dict]:
             return (a["value"] is not None and alt is not None
                     and abs(alt - a["value"]) <= TOLERANCE.get(q.unit or "", 0))
 
-        p = f"run.{cond}."
+        p = f"{prefix}{cond}."
         ev[p + "n"] = _entry(n, f"answers in {cond}", RUN_CHECKS)
         ev[p + "correct"] = _entry(sum(g.correct for g in grades), "correct answers", RUN_CHECKS)
         ev[p + "accuracy_pct"] = _entry(100 * sum(g.correct for g in grades) / n,

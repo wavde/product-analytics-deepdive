@@ -152,13 +152,16 @@
           "unit_slip_rate": 0.0
         }
       },
-      "file": "full_github-copilot_claude-opus-5.5.jsonl",
+      "files": [
+        "full_github-copilot_claude-opus-5.5.jsonl"
+      ],
       "model": "claude-opus-5.5",
       "provider": "github-copilot",
-      "run_id": "20261127T233649Z_github-copilot_claude-opus-5.5",
       "runner_kind": "copilot-agent",
-      "stopped": null,
-      "trials": 1
+      "stopped": [],
+      "trials": [
+        0
+      ]
     }
   ]
 }

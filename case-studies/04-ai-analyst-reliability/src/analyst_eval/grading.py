@@ -151,6 +151,15 @@ def summarize(
                 by_trap[t].append(g.correct)
         row["accuracy_by_category"] = {c: float(np.mean(v)) for c, v in sorted(by_cat.items())}
         row["accuracy_by_trap"] = {t: float(np.mean(v)) for t, v in sorted(by_trap.items())}
+        outcomes: dict[str, set[str]] = defaultdict(set)
+        counts_by_q: dict[str, int] = defaultdict(int)
+        for g in gs:
+            outcomes[g.question_id].add(g.outcome)
+            counts_by_q[g.question_id] += 1
+        repeated = [q for q, n_q in counts_by_q.items() if n_q > 1]
+        if repeated:
+            row["same_outcome_across_trials"] = (
+                sum(len(outcomes[q]) == 1 for q in repeated) / len(repeated))
         if cond != baseline and base_acc:
             mean, lo, hi = paired_bootstrap_diff(base_acc, per_question_acc(gs))
             row["accuracy_lift_vs_baseline"] = {"mean": mean, "ci95": [lo, hi]}

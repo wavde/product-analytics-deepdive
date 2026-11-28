@@ -1,13 +1,15 @@
 # Results
 
-## github-copilot / claude-opus-5.5 (`full_github-copilot_claude-opus-5.5.jsonl`)
+## github-copilot / claude-opus-5.5
 
-| Condition | n | Accuracy | Materially correct (±1%) | Confidently wrong | Caveated wrong | Over-abstained | Matched naive answer | Lift vs no_context (95% CI) | SQL calls per q | Tokens in / out per q | Cost per q | Cost per correct |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| no_context | 40 | 32.5% | 72.5% | 2.5% | 65.0% | 0.0% | 0.0% | - | 3.8 | n/a | n/a | n/a |
-| schema_only | 40 | 37.5% | 80.0% | 2.5% | 60.0% | 0.0% | 0.0% | +5.0 pp (+0.0, +12.5) | 2.5 | n/a | n/a | n/a |
-| full_context | 40 | 100.0% | 100.0% | 0.0% | 0.0% | 0.0% | 0.0% | +67.5 pp (+52.5, +82.5) | 2.0 | n/a | n/a | n/a |
-| full_context_reconcile | 40 | 100.0% | 100.0% | 0.0% | 0.0% | 0.0% | 0.0% | +67.5 pp (+52.5, +82.5) | 1.9 | n/a | n/a | n/a |
+Trials: 0. Files: `full_github-copilot_claude-opus-5.5.jsonl`.
+
+| Condition | n | Accuracy | Materially correct (±1%) | Confidently wrong | Caveated wrong | Over-abstained | Matched naive answer | Lift vs no_context (95% CI) | Same outcome across trials | SQL calls per q | Tokens in / out per q | Cost per q | Cost per correct |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| no_context | 40 | 32.5% | 72.5% | 2.5% | 65.0% | 0.0% | 0.0% | - | n/a | 3.8 | n/a | n/a | n/a |
+| schema_only | 40 | 37.5% | 80.0% | 2.5% | 60.0% | 0.0% | 0.0% | +5.0 pp (+0.0, +12.5) | n/a | 2.5 | n/a | n/a | n/a |
+| full_context | 40 | 100.0% | 100.0% | 0.0% | 0.0% | 0.0% | 0.0% | +67.5 pp (+52.5, +82.5) | n/a | 2.0 | n/a | n/a | n/a |
+| full_context_reconcile | 40 | 100.0% | 100.0% | 0.0% | 0.0% | 0.0% | 0.0% | +67.5 pp (+52.5, +82.5) | n/a | 1.9 | n/a | n/a | n/a |
 
 Accuracy by trap (questions where the trap is live):
 

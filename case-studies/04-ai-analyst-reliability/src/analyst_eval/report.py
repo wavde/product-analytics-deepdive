@@ -21,19 +21,46 @@ PENDING = (
 
 
 def summarize_runs(paths: list[Path]) -> dict:
+    """One summary per (provider, model), pooling every run file and trial for that model.
+
+    Files for the same model can hold different conditions (e.g. core conditions in one
+    file, ablations in another) or different trials. A (condition, question, trial) that
+    appears in more than one file is an error, not something to average.
+    """
     key = load_answer_key()
-    runs = []
+    groups: dict[tuple[str, str], dict] = {}
     for p in paths:
         meta, answers, end = load_run(p)
-        grades = [grade_answer(a, key[a["question_id"]]) for a in answers]
-        pricing = Pricing(**meta["pricing"]) if meta.get("pricing") else None
+        g = groups.setdefault((meta["provider"], meta["model"]), {
+            "provider": meta["provider"], "model": meta["model"], "files": [],
+            "runner_kind": meta.get("runner_kind", "api"), "stopped": [], "answers": [],
+            "pricing": [],
+        })
+        g["files"].append(p.name)
+        g["answers"] += answers
+        g["pricing"].append(meta.get("pricing"))
+        if (end or {}).get("stopped"):
+            g["stopped"].append(f"{p.name}: {end['stopped']}")
+    runs = []
+    for g in groups.values():
+        seen: dict[tuple, int] = {}
+        for a in g["answers"]:
+            k = (a["condition"], a["question_id"], int(a.get("trial", 0)))
+            seen[k] = seen.get(k, 0) + 1
+        dupes = sorted(k for k, n in seen.items() if n > 1)
+        if dupes:
+            raise ValueError(f"{g['model']}: answers recorded more than once: {dupes[:5]}")
+        grades = [grade_answer(a, key[a["question_id"]]) for a in g["answers"]]
+        prices = {json.dumps(x, sort_keys=True) for x in g["pricing"]}
+        pricing = (Pricing(**g["pricing"][0]) if len(prices) == 1 and g["pricing"][0]
+                   else None)
         runs.append({
-            "run_id": meta["run_id"], "file": p.name, "provider": meta["provider"],
-            "model": meta["model"], "trials": meta["trials"],
-            "runner_kind": meta.get("runner_kind", "api"),
-            "stopped": (end or {}).get("stopped"),
+            "provider": g["provider"], "model": g["model"], "files": sorted(g["files"]),
+            "runner_kind": g["runner_kind"], "stopped": g["stopped"],
+            "trials": sorted({k[2] for k in seen}),
             **summarize(grades, key, pricing),
         })
+    runs.sort(key=lambda r: (r["provider"], r["model"]))
     return {"runs": runs}
 
 
@@ -47,15 +74,17 @@ def render_markdown(summary: dict) -> str:
     lines = ["# Results", ""]
     order = list(CONDITIONS)
     for run in summary["runs"]:
-        lines += [f"## {run['provider']} / {run['model']} (`{run['file']}`)", ""]
-        if run["stopped"]:
-            lines += [f"> Run stopped early: {run['stopped']}.", ""]
+        files = ", ".join(f"`{f}`" for f in run["files"])
+        lines += [f"## {run['provider']} / {run['model']}", "",
+                  f"Trials: {', '.join(str(t) for t in run['trials'])}. Files: {files}.", ""]
+        for s in run["stopped"]:
+            lines += [f"> Run stopped early: {s}.", ""]
         lines += [
             "| Condition | n | Accuracy | Materially correct (±1%) | Confidently wrong "
             "| Caveated wrong | Over-abstained "
-            "| Matched naive answer | Lift vs no_context (95% CI) | SQL calls per q "
-            "| Tokens in / out per q | Cost per q | Cost per correct |",
-            "|---|---|---|---|---|---|---|---|---|---|---|---|---|",
+            "| Matched naive answer | Lift vs no_context (95% CI) | Same outcome across trials "
+            "| SQL calls per q | Tokens in / out per q | Cost per q | Cost per correct |",
+            "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|",
         ]
         conds = sorted(run["conditions"], key=lambda c: order.index(c) if c in order else 99)
         for c in conds:
@@ -72,7 +101,8 @@ def render_markdown(summary: dict) -> str:
                 f"| {_pct(r['materially_correct_rate'])} "
                 f"| {_pct(r['confidently_wrong_rate'])} | {_pct(r['caveated_wrong_rate'])} "
                 f"| {_pct(r['over_abstained_rate'])} | {_pct(r['fell_for_naive_rate'])} "
-                f"| {lift_s} | {r['sql_calls_per_q']:.1f} | {tokens} "
+                f"| {lift_s} | {_pct(r.get('same_outcome_across_trials'))} "
+                f"| {r['sql_calls_per_q']:.1f} | {tokens} "
                 f"| {'n/a' if cost_q is None else f'${cost_q:.4f}'} "
                 f"| {'n/a' if cost_c is None else f'${cost_c:.4f}'} |"
             )

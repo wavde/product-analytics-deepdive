@@ -647,7 +647,7 @@
     "how": "extra rows per 100 logical user-initiated events",
     "value": 3.9773
   },
-  "run.full_context.accuracy_pct": {
+  "run.claude-opus-5.5.t0.full_context.accuracy_pct": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -655,7 +655,7 @@
     "how": "percent correct",
     "value": 100.0
   },
-  "run.full_context.caveated_wrong": {
+  "run.claude-opus-5.5.t0.full_context.caveated_wrong": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -663,7 +663,7 @@
     "how": "wrong with status answered_with_caveat",
     "value": 0.0
   },
-  "run.full_context.confidently_wrong": {
+  "run.claude-opus-5.5.t0.full_context.confidently_wrong": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -671,7 +671,7 @@
     "how": "wrong with status answered",
     "value": 0.0
   },
-  "run.full_context.correct": {
+  "run.claude-opus-5.5.t0.full_context.correct": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -679,7 +679,7 @@
     "how": "correct answers",
     "value": 40.0
   },
-  "run.full_context.matched_naive": {
+  "run.claude-opus-5.5.t0.full_context.matched_naive": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -687,7 +687,7 @@
     "how": "wrong answers equal to the naive query's",
     "value": 0.0
   },
-  "run.full_context.material_pct": {
+  "run.claude-opus-5.5.t0.full_context.material_pct": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -695,7 +695,7 @@
     "how": "percent within 1% of gold",
     "value": 100.0
   },
-  "run.full_context.material_wrong": {
+  "run.claude-opus-5.5.t0.full_context.material_wrong": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -703,7 +703,7 @@
     "how": "answers more than 1% from gold",
     "value": 0.0
   },
-  "run.full_context.median_seconds": {
+  "run.claude-opus-5.5.t0.full_context.median_seconds": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -711,7 +711,7 @@
     "how": "median seconds from first to last tool call",
     "value": 12.517
   },
-  "run.full_context.n": {
+  "run.claude-opus-5.5.t0.full_context.n": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -719,7 +719,7 @@
     "how": "answers in full_context",
     "value": 40.0
   },
-  "run.full_context.sql_per_q": {
+  "run.claude-opus-5.5.t0.full_context.sql_per_q": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -727,7 +727,7 @@
     "how": "mean logged queries per question",
     "value": 2.025
   },
-  "run.full_context.wrong": {
+  "run.claude-opus-5.5.t0.full_context.wrong": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -735,7 +735,7 @@
     "how": "answers not correct",
     "value": 0.0
   },
-  "run.full_context.wrong_tz_only": {
+  "run.claude-opus-5.5.t0.full_context.wrong_tz_only": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json",
@@ -744,7 +744,7 @@
     "how": "wrong answers equal to gold computed in UTC instead of Pacific time",
     "value": 0.0
   },
-  "run.full_context_reconcile.accuracy_pct": {
+  "run.claude-opus-5.5.t0.full_context_reconcile.accuracy_pct": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -752,7 +752,7 @@
     "how": "percent correct",
     "value": 100.0
   },
-  "run.full_context_reconcile.caveated_wrong": {
+  "run.claude-opus-5.5.t0.full_context_reconcile.caveated_wrong": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -760,7 +760,7 @@
     "how": "wrong with status answered_with_caveat",
     "value": 0.0
   },
-  "run.full_context_reconcile.confidently_wrong": {
+  "run.claude-opus-5.5.t0.full_context_reconcile.confidently_wrong": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -768,7 +768,7 @@
     "how": "wrong with status answered",
     "value": 0.0
   },
-  "run.full_context_reconcile.correct": {
+  "run.claude-opus-5.5.t0.full_context_reconcile.correct": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -776,7 +776,7 @@
     "how": "correct answers",
     "value": 40.0
   },
-  "run.full_context_reconcile.matched_naive": {
+  "run.claude-opus-5.5.t0.full_context_reconcile.matched_naive": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -784,7 +784,7 @@
     "how": "wrong answers equal to the naive query's",
     "value": 0.0
   },
-  "run.full_context_reconcile.material_pct": {
+  "run.claude-opus-5.5.t0.full_context_reconcile.material_pct": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -792,7 +792,7 @@
     "how": "percent within 1% of gold",
     "value": 100.0
   },
-  "run.full_context_reconcile.material_wrong": {
+  "run.claude-opus-5.5.t0.full_context_reconcile.material_wrong": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -800,7 +800,7 @@
     "how": "answers more than 1% from gold",
     "value": 0.0
   },
-  "run.full_context_reconcile.median_seconds": {
+  "run.claude-opus-5.5.t0.full_context_reconcile.median_seconds": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -808,7 +808,7 @@
     "how": "median seconds from first to last tool call",
     "value": 24.164
   },
-  "run.full_context_reconcile.n": {
+  "run.claude-opus-5.5.t0.full_context_reconcile.n": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -816,7 +816,7 @@
     "how": "answers in full_context_reconcile",
     "value": 40.0
   },
-  "run.full_context_reconcile.reconcile_changed": {
+  "run.claude-opus-5.5.t0.full_context_reconcile.reconcile_changed": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -824,7 +824,7 @@
     "how": "reconciles that changed the answer",
     "value": 0.0
   },
-  "run.full_context_reconcile.reconcile_match": {
+  "run.claude-opus-5.5.t0.full_context_reconcile.reconcile_match": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -832,7 +832,7 @@
     "how": "reconciles where routes matched",
     "value": 34.0
   },
-  "run.full_context_reconcile.reconciled": {
+  "run.claude-opus-5.5.t0.full_context_reconcile.reconciled": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -840,7 +840,7 @@
     "how": "answers that went through reconcile",
     "value": 34.0
   },
-  "run.full_context_reconcile.sql_per_q": {
+  "run.claude-opus-5.5.t0.full_context_reconcile.sql_per_q": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -848,7 +848,7 @@
     "how": "mean logged queries per question",
     "value": 1.925
   },
-  "run.full_context_reconcile.wrong": {
+  "run.claude-opus-5.5.t0.full_context_reconcile.wrong": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -856,7 +856,7 @@
     "how": "answers not correct",
     "value": 0.0
   },
-  "run.full_context_reconcile.wrong_tz_only": {
+  "run.claude-opus-5.5.t0.full_context_reconcile.wrong_tz_only": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json",
@@ -865,7 +865,7 @@
     "how": "wrong answers equal to gold computed in UTC instead of Pacific time",
     "value": 0.0
   },
-  "run.no_context.accuracy_pct": {
+  "run.claude-opus-5.5.t0.no_context.accuracy_pct": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -873,7 +873,7 @@
     "how": "percent correct",
     "value": 32.5
   },
-  "run.no_context.caveated_wrong": {
+  "run.claude-opus-5.5.t0.no_context.caveated_wrong": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -881,7 +881,7 @@
     "how": "wrong with status answered_with_caveat",
     "value": 26.0
   },
-  "run.no_context.confidently_wrong": {
+  "run.claude-opus-5.5.t0.no_context.confidently_wrong": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -889,7 +889,7 @@
     "how": "wrong with status answered",
     "value": 1.0
   },
-  "run.no_context.correct": {
+  "run.claude-opus-5.5.t0.no_context.correct": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -897,7 +897,7 @@
     "how": "correct answers",
     "value": 13.0
   },
-  "run.no_context.matched_naive": {
+  "run.claude-opus-5.5.t0.no_context.matched_naive": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -905,7 +905,7 @@
     "how": "wrong answers equal to the naive query's",
     "value": 0.0
   },
-  "run.no_context.material_pct": {
+  "run.claude-opus-5.5.t0.no_context.material_pct": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -913,7 +913,7 @@
     "how": "percent within 1% of gold",
     "value": 72.5
   },
-  "run.no_context.material_wrong": {
+  "run.claude-opus-5.5.t0.no_context.material_wrong": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -921,7 +921,7 @@
     "how": "answers more than 1% from gold",
     "value": 11.0
   },
-  "run.no_context.median_seconds": {
+  "run.claude-opus-5.5.t0.no_context.median_seconds": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -929,7 +929,7 @@
     "how": "median seconds from first to last tool call",
     "value": 30.084
   },
-  "run.no_context.n": {
+  "run.claude-opus-5.5.t0.no_context.n": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -937,7 +937,7 @@
     "how": "answers in no_context",
     "value": 40.0
   },
-  "run.no_context.sql_per_q": {
+  "run.claude-opus-5.5.t0.no_context.sql_per_q": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -945,7 +945,7 @@
     "how": "mean logged queries per question",
     "value": 3.825
   },
-  "run.no_context.wrong": {
+  "run.claude-opus-5.5.t0.no_context.wrong": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -953,7 +953,7 @@
     "how": "answers not correct",
     "value": 27.0
   },
-  "run.no_context.wrong_tz_only": {
+  "run.claude-opus-5.5.t0.no_context.wrong_tz_only": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json",
@@ -962,7 +962,7 @@
     "how": "wrong answers equal to gold computed in UTC instead of Pacific time",
     "value": 19.0
   },
-  "run.schema_only.accuracy_pct": {
+  "run.claude-opus-5.5.t0.schema_only.accuracy_pct": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -970,7 +970,7 @@
     "how": "percent correct",
     "value": 37.5
   },
-  "run.schema_only.caveated_wrong": {
+  "run.claude-opus-5.5.t0.schema_only.caveated_wrong": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -978,7 +978,7 @@
     "how": "wrong with status answered_with_caveat",
     "value": 24.0
   },
-  "run.schema_only.confidently_wrong": {
+  "run.claude-opus-5.5.t0.schema_only.confidently_wrong": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -986,7 +986,7 @@
     "how": "wrong with status answered",
     "value": 1.0
   },
-  "run.schema_only.correct": {
+  "run.claude-opus-5.5.t0.schema_only.correct": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -994,7 +994,7 @@
     "how": "correct answers",
     "value": 15.0
   },
-  "run.schema_only.matched_naive": {
+  "run.claude-opus-5.5.t0.schema_only.matched_naive": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -1002,7 +1002,7 @@
     "how": "wrong answers equal to the naive query's",
     "value": 0.0
   },
-  "run.schema_only.material_pct": {
+  "run.claude-opus-5.5.t0.schema_only.material_pct": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -1010,7 +1010,7 @@
     "how": "percent within 1% of gold",
     "value": 80.0
   },
-  "run.schema_only.material_wrong": {
+  "run.claude-opus-5.5.t0.schema_only.material_wrong": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -1018,7 +1018,7 @@
     "how": "answers more than 1% from gold",
     "value": 8.0
   },
-  "run.schema_only.median_seconds": {
+  "run.claude-opus-5.5.t0.schema_only.median_seconds": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -1026,7 +1026,7 @@
     "how": "median seconds from first to last tool call",
     "value": 16.2585
   },
-  "run.schema_only.n": {
+  "run.claude-opus-5.5.t0.schema_only.n": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -1034,7 +1034,7 @@
     "how": "answers in schema_only",
     "value": 40.0
   },
-  "run.schema_only.sql_per_q": {
+  "run.claude-opus-5.5.t0.schema_only.sql_per_q": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -1042,7 +1042,7 @@
     "how": "mean logged queries per question",
     "value": 2.475
   },
-  "run.schema_only.wrong": {
+  "run.claude-opus-5.5.t0.schema_only.wrong": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json"
@@ -1050,7 +1050,7 @@
     "how": "answers not correct",
     "value": 25.0
   },
-  "run.schema_only.wrong_tz_only": {
+  "run.claude-opus-5.5.t0.schema_only.wrong_tz_only": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
       "graded against answer_key.json",
