@@ -1,0 +1,566 @@
+[
+  {
+    "id": "c01",
+    "category": "control",
+    "question": "How many users are based in Germany (country code DE)?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 507.0,
+    "naive": 507.0,
+    "naive_is_wrong": false,
+    "traps": []
+  },
+  {
+    "id": "c02",
+    "category": "control",
+    "question": "How many users signed up on 2025-02-14?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 60.0,
+    "naive": 60.0,
+    "naive_is_wrong": false,
+    "traps": []
+  },
+  {
+    "id": "c03",
+    "category": "control",
+    "question": "How many distinct products were added to a cart at least once in the data?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 1000.0,
+    "naive": 1000.0,
+    "naive_is_wrong": false,
+    "traps": []
+  },
+  {
+    "id": "c04",
+    "category": "control",
+    "question": "How many users signed up in January 2025 on a mobile device?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 1007.0,
+    "naive": 1007.0,
+    "naive_is_wrong": false,
+    "traps": []
+  },
+  {
+    "id": "c05",
+    "category": "control",
+    "question": "How many users from India (country code IN) signed up between 2025-03-01 and 2025-03-30?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 344.0,
+    "naive": 344.0,
+    "naive_is_wrong": false,
+    "traps": []
+  },
+  {
+    "id": "c06",
+    "category": "control",
+    "question": "What was the average order value (gross) in February 2025, in US dollars?",
+    "unit": "usd",
+    "expect_abstain": false,
+    "gold": 29.9549,
+    "naive": 29.9436,
+    "naive_is_wrong": false,
+    "traps": []
+  },
+  {
+    "id": "c07",
+    "category": "control",
+    "question": "What percent of users signed up on a tablet?",
+    "unit": "percent",
+    "expect_abstain": false,
+    "gold": 4.94,
+    "naive": 4.9301,
+    "naive_is_wrong": false,
+    "traps": []
+  },
+  {
+    "id": "t01",
+    "category": "trap",
+    "question": "How many orders were placed in February 2025?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 4095.0,
+    "naive": 4635.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "duplicates",
+      "internal_accounts",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t02",
+    "category": "trap",
+    "question": "What was gross revenue in February 2025, in US dollars?",
+    "unit": "usd",
+    "expect_abstain": false,
+    "gold": 122665.44,
+    "naive": 138788.52,
+    "naive_is_wrong": true,
+    "traps": [
+      "duplicates",
+      "internal_accounts",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t03",
+    "category": "trap",
+    "question": "What was net revenue (gross revenue minus refunds) in February 2025, in US dollars?",
+    "unit": "usd",
+    "expect_abstain": false,
+    "gold": 113915.26,
+    "naive": 132143.26,
+    "naive_is_wrong": true,
+    "traps": [
+      "duplicates",
+      "internal_accounts",
+      "refunds",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t04",
+    "category": "trap",
+    "question": "What was total net revenue (after refunds) from 2025-01-01 through 2025-03-30, in US dollars?",
+    "unit": "usd",
+    "expect_abstain": false,
+    "gold": 372544.12,
+    "naive": 423566.9,
+    "naive_is_wrong": true,
+    "traps": [
+      "duplicates",
+      "internal_accounts",
+      "refunds",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t05",
+    "category": "trap",
+    "question": "For orders placed in January 2025, what percent of gross revenue was refunded?",
+    "unit": "percent",
+    "expect_abstain": false,
+    "gold": 6.4924,
+    "naive": 2.3072,
+    "naive_is_wrong": true,
+    "traps": [
+      "internal_accounts",
+      "refunds",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t06",
+    "category": "trap",
+    "question": "How many daily active users were there on 2025-03-04?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 1148.0,
+    "naive": 3501.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "internal_accounts",
+      "system_events",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t07",
+    "category": "trap",
+    "question": "How many daily active users were there on 2025-03-13?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 1306.0,
+    "naive": 1276.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "internal_accounts",
+      "system_events",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t08",
+    "category": "trap",
+    "question": "How many weekly active users were there in the week of Monday 2025-03-17 through Sunday 2025-03-23?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 3706.0,
+    "naive": 4512.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "internal_accounts",
+      "system_events",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t09",
+    "category": "trap",
+    "question": "How many monthly active users were there in January 2025?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 1482.0,
+    "naive": 1654.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "internal_accounts",
+      "system_events",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t10",
+    "category": "trap",
+    "question": "How many distinct users made at least one purchase between 2025-03-01 and 2025-03-30?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 3057.0,
+    "naive": 3056.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "internal_accounts",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t11",
+    "category": "trap",
+    "question": "In the week of Monday 2025-02-10 through Sunday 2025-02-16, what percent of weekly active users made a purchase?",
+    "unit": "percent",
+    "expect_abstain": false,
+    "gold": 37.781,
+    "naive": 31.4376,
+    "naive_is_wrong": true,
+    "traps": [
+      "internal_accounts",
+      "system_events",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t12",
+    "category": "trap",
+    "question": "How many add-to-cart actions happened on 2025-02-14?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 407.0,
+    "naive": 435.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "duplicates",
+      "internal_accounts",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t13",
+    "category": "trap",
+    "question": "How many user actions (product views, add-to-carts, checkouts and purchases) were recorded in January 2025?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 19487.0,
+    "naive": 21769.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "duplicates",
+      "internal_accounts",
+      "system_events",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t14",
+    "category": "trap",
+    "question": "What was WPAU (distinct purchasers in the trailing 7 days, inclusive) on 2025-03-15?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 1183.0,
+    "naive": 1187.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "internal_accounts",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t15",
+    "category": "trap",
+    "question": "How many orders placed in February 2025 received any refund?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 332.0,
+    "naive": 243.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "duplicates",
+      "refunds",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t16",
+    "category": "trap",
+    "question": "Of users who signed up between Monday 2025-01-06 and Sunday 2025-01-12, what percent were active in the following week (2025-01-13 through 2025-01-19)?",
+    "unit": "percent",
+    "expect_abstain": false,
+    "gold": 80.8673,
+    "naive": 100.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "system_events",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t17",
+    "category": "trap",
+    "question": "Among users on mobile devices who were active in February 2025, what percent made a purchase in February 2025?",
+    "unit": "percent",
+    "expect_abstain": false,
+    "gold": 61.6461,
+    "naive": 56.9488,
+    "naive_is_wrong": true,
+    "traps": [
+      "system_events",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t18",
+    "category": "trap",
+    "question": "What was the largest single order in the data, in US dollars (gross)?",
+    "unit": "usd",
+    "expect_abstain": false,
+    "gold": 176.1,
+    "naive": 17610.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "units"
+    ]
+  },
+  {
+    "id": "t19",
+    "category": "trap",
+    "question": "How many daily active users were there on the most recent complete day?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 1540.0,
+    "naive": 903.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "partial_period",
+      "timezone"
+    ]
+  },
+  {
+    "id": "a01",
+    "category": "ambiguous",
+    "question": "How many active users did we have in February 2025?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 2987.0,
+    "naive": 3192.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "definition",
+      "internal_accounts",
+      "system_events",
+      "timezone"
+    ]
+  },
+  {
+    "id": "a02",
+    "category": "ambiguous",
+    "question": "What was our conversion rate in February 2025?",
+    "unit": "percent",
+    "expect_abstain": false,
+    "gold": 61.3659,
+    "naive": 14.1553,
+    "naive_is_wrong": true,
+    "traps": [
+      "definition",
+      "internal_accounts",
+      "system_events",
+      "timezone"
+    ]
+  },
+  {
+    "id": "a03",
+    "category": "ambiguous",
+    "question": "What was revenue in January 2025?",
+    "unit": "usd",
+    "expect_abstain": false,
+    "gold": 44767.91,
+    "naive": 62664.83,
+    "naive_is_wrong": true,
+    "traps": [
+      "definition",
+      "duplicates",
+      "internal_accounts",
+      "refunds",
+      "timezone"
+    ]
+  },
+  {
+    "id": "a04",
+    "category": "ambiguous",
+    "question": "How many customers do we have?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 3498.0,
+    "naive": 3540.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "definition",
+      "internal_accounts",
+      "refunds"
+    ]
+  },
+  {
+    "id": "a05",
+    "category": "ambiguous",
+    "question": "What was the refund rate in February 2025?",
+    "unit": "percent",
+    "expect_abstain": false,
+    "gold": 7.1334,
+    "naive": 5.2427,
+    "naive_is_wrong": true,
+    "traps": [
+      "definition",
+      "internal_accounts",
+      "refunds"
+    ]
+  },
+  {
+    "id": "a06",
+    "category": "ambiguous",
+    "question": "How many orders did we get last week?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 1981.0,
+    "naive": 2084.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "definition",
+      "duplicates",
+      "internal_accounts",
+      "partial_period",
+      "timezone"
+    ]
+  },
+  {
+    "id": "a07",
+    "category": "ambiguous",
+    "question": "What was ARPU in February 2025, in US dollars?",
+    "unit": "usd",
+    "expect_abstain": false,
+    "gold": 38.137,
+    "naive": 27.7023,
+    "naive_is_wrong": true,
+    "traps": [
+      "definition",
+      "duplicates",
+      "internal_accounts",
+      "refunds",
+      "system_events"
+    ]
+  },
+  {
+    "id": "a08",
+    "category": "ambiguous",
+    "question": "What is the retention rate of users who signed up the week of Monday 2025-01-13?",
+    "unit": "percent",
+    "expect_abstain": false,
+    "gold": 85.2041,
+    "naive": 100.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "definition",
+      "system_events",
+      "timezone"
+    ]
+  },
+  {
+    "id": "u01",
+    "category": "unanswerable",
+    "question": "What was net revenue in April 2025, in US dollars?",
+    "unit": "usd",
+    "expect_abstain": true,
+    "gold": null,
+    "naive": 0.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "partial_period"
+    ]
+  },
+  {
+    "id": "u02",
+    "category": "unanswerable",
+    "question": "What was the purchase conversion rate for users acquired through paid search in February 2025?",
+    "unit": "percent",
+    "expect_abstain": true,
+    "gold": null,
+    "naive": null,
+    "naive_is_wrong": null,
+    "traps": [
+      "not_instrumented"
+    ]
+  },
+  {
+    "id": "u03",
+    "category": "unanswerable",
+    "question": "What was gross margin in February 2025, as a percent?",
+    "unit": "percent",
+    "expect_abstain": true,
+    "gold": null,
+    "naive": null,
+    "naive_is_wrong": null,
+    "traps": [
+      "not_instrumented"
+    ]
+  },
+  {
+    "id": "u04",
+    "category": "unanswerable",
+    "question": "How many sessions did we have in February 2025?",
+    "unit": "count",
+    "expect_abstain": true,
+    "gold": null,
+    "naive": 45907.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "not_instrumented"
+    ]
+  },
+  {
+    "id": "u05",
+    "category": "unanswerable",
+    "question": "How many daily active users were there on 2025-03-31?",
+    "unit": "count",
+    "expect_abstain": true,
+    "gold": null,
+    "naive": 903.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "partial_period"
+    ]
+  },
+  {
+    "id": "u06",
+    "category": "unanswerable",
+    "question": "What is the median age of our purchasers?",
+    "unit": null,
+    "expect_abstain": true,
+    "gold": null,
+    "naive": null,
+    "naive_is_wrong": null,
+    "traps": [
+      "not_instrumented"
+    ]
+  }
+]
