@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 
 from analyst_eval import RESULTS_DIR
-from analyst_eval.answer_key import load_answer_key
+from analyst_eval.answer_key import VARIANTS, load_answer_key, variant_of
 from analyst_eval.conditions import CONDITIONS
 from analyst_eval.grading import grade_answer, summarize
 from analyst_eval.runners import Pricing
@@ -21,20 +21,23 @@ PENDING = (
 
 
 def summarize_runs(paths: list[Path]) -> dict:
-    """One summary per (provider, model), pooling every run file and trial for that model.
+    """One summary per (provider, model, variant), pooling every run file and trial.
 
     Files for the same model can hold different conditions (e.g. core conditions in one
     file, ablations in another) or different trials. A (condition, question, trial) that
-    appears in more than one file is an error, not something to average.
+    appears in more than one file is an error, not something to average. Runs against
+    the holdout warehouse are graded against its own answer key and reported separately.
     """
-    key = load_answer_key()
-    groups: dict[tuple[str, str], dict] = {}
+    keys = {v: load_answer_key(spec["key"]) for v, spec in VARIANTS.items()
+            if spec["key"].exists()}
+    groups: dict[tuple[str, str, str], dict] = {}
     for p in paths:
         meta, answers, end = load_run(p)
-        g = groups.setdefault((meta["provider"], meta["model"]), {
-            "provider": meta["provider"], "model": meta["model"], "files": [],
-            "runner_kind": meta.get("runner_kind", "api"), "stopped": [], "answers": [],
-            "pricing": [],
+        variant = variant_of(meta)
+        g = groups.setdefault((meta["provider"], meta["model"], variant), {
+            "provider": meta["provider"], "model": meta["model"], "variant": variant,
+            "files": [], "runner_kind": meta.get("runner_kind", "api"), "stopped": [],
+            "answers": [], "pricing": [],
         })
         g["files"].append(p.name)
         g["answers"] += answers
@@ -50,17 +53,19 @@ def summarize_runs(paths: list[Path]) -> dict:
         dupes = sorted(k for k, n in seen.items() if n > 1)
         if dupes:
             raise ValueError(f"{g['model']}: answers recorded more than once: {dupes[:5]}")
+        key = keys[g["variant"]]
         grades = [grade_answer(a, key[a["question_id"]]) for a in g["answers"]]
         prices = {json.dumps(x, sort_keys=True) for x in g["pricing"]}
         pricing = (Pricing(**g["pricing"][0]) if len(prices) == 1 and g["pricing"][0]
                    else None)
         runs.append({
-            "provider": g["provider"], "model": g["model"], "files": sorted(g["files"]),
+            "provider": g["provider"], "model": g["model"], "variant": g["variant"],
+            "files": sorted(g["files"]),
             "runner_kind": g["runner_kind"], "stopped": g["stopped"],
             "trials": sorted({k[2] for k in seen}),
             **summarize(grades, key, pricing),
         })
-    runs.sort(key=lambda r: (r["provider"], r["model"]))
+    runs.sort(key=lambda r: (r["variant"] != "main", r["variant"], r["provider"], r["model"]))
     return {"runs": runs}
 
 
@@ -75,7 +80,9 @@ def render_markdown(summary: dict) -> str:
     order = list(CONDITIONS)
     for run in summary["runs"]:
         files = ", ".join(f"`{f}`" for f in run["files"])
-        lines += [f"## {run['provider']} / {run['model']}", "",
+        where = ("" if run.get("variant", "main") == "main"
+                 else f" — {run['variant']} warehouse (one undocumented trap)")
+        lines += [f"## {run['provider']} / {run['model']}{where}", "",
                   f"Trials: {', '.join(str(t) for t in run['trials'])}. Files: {files}.", ""]
         for s in run["stopped"]:
             lines += [f"> Run stopped early: {s}.", ""]

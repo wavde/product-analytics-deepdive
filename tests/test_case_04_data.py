@@ -7,11 +7,11 @@ from datetime import date
 import duckdb
 import pytest
 from analyst_eval import CASE_DIR
-from analyst_eval.answer_key import compute_answer_key, load_answer_key
+from analyst_eval.answer_key import HOLDOUT_KEY_PATH, compute_answer_key, load_answer_key
 from analyst_eval.evidence import build_evidence, load_evidence
 from analyst_eval.gold import Fixes, create_gold_views
 from analyst_eval.memo_lint import lint_memo
-from analyst_eval.questions import QUESTIONS, TOLERANCE
+from analyst_eval.questions import HOLDOUT_QUESTION_IDS, HOLDOUT_QUESTIONS, QUESTIONS, TOLERANCE
 
 COMMITTED_KEY = load_answer_key()
 
@@ -109,6 +109,45 @@ def test_each_fix_can_be_switched_off_independently(rule, expected_events):
         assert dates == [(date(2025, 3, 1),), (date(2025, 3, 10),)]
 
 
+def test_resubmitted_order_counts_once_and_only_its_rule_lets_it_back_in():
+    con = _tiny_warehouse()
+    con.execute("""INSERT INTO events VALUES ('e5', 1, 'purchase', TIMESTAMP '2025-03-01 07:31',
+                   TIMESTAMP '2025-03-01 07:31:02', 7, 'o1', 500)""")
+    orders = "SELECT COUNT(*), SUM(gross_cents) FROM g_orders"
+    create_gold_views(con)
+    assert con.execute(orders).fetchone() == (1, 500)
+    create_gold_views(con, Fixes().without("duplicates"))
+    assert con.execute(orders).fetchone() == (2, 1000)  # e1's retry row is back; e5 is not
+    create_gold_views(con, Fixes().without("resubmitted_orders"))
+    assert con.execute(orders).fetchone() == (2, 1000)  # e5 is back; e1's retry is not
+
+
+@pytest.fixture(scope="module")
+def holdout_full_key(holdout_db):
+    return {r["id"]: r for r in compute_answer_key(holdout_db)}
+
+
+def test_holdout_changes_only_what_it_should(holdout_full_key):
+    live = {q for q, r in holdout_full_key.items() if "resubmitted_orders" in r["traps"]}
+    assert live == set(HOLDOUT_QUESTION_IDS)
+    assert "resubmitted_orders" not in {t for r in COMMITTED_KEY.values() for t in r["traps"]}
+    # Every other question keeps its main-warehouse gold, except t13: it counts purchase
+    # *events*, and a re-submission is a distinct event, so it is left out of the holdout set.
+    moved = {q for q, row in COMMITTED_KEY.items() if holdout_full_key[q]["gold"] != row["gold"]}
+    assert moved == {"t13"}
+
+
+def test_holdout_answer_key_reproduces(holdout_db):
+    committed = load_answer_key(HOLDOUT_KEY_PATH)
+    fresh = {r["id"]: r for r in compute_answer_key(holdout_db, HOLDOUT_QUESTIONS)}
+    assert list(committed) == list(fresh) == list(HOLDOUT_QUESTION_IDS)
+    for qid, row in committed.items():
+        tol = TOLERANCE.get(row["unit"] or "", 0) / 10
+        assert fresh[qid]["gold"] == pytest.approx(row["gold"], abs=tol), qid
+        assert fresh[qid]["naive"] == pytest.approx(row["naive"], abs=tol), qid
+        assert fresh[qid]["traps"] == row["traps"], qid
+
+
 def test_gold_reconciles_with_an_independent_pandas_route(analyst_db):
     """The reconcile-results skill applied to our own ground truth."""
     con = duckdb.connect(str(analyst_db), read_only=True)
@@ -143,9 +182,9 @@ def test_gold_reconciles_with_an_independent_pandas_route(analyst_db):
         assert value == pytest.approx(COMMITTED_KEY[qid]["gold"], abs=1e-3), qid
 
 
-def test_evidence_reproduces_and_readme_claims_match_it(analyst_db):
+def test_evidence_reproduces_and_readme_claims_match_it(analyst_db, holdout_db):
     committed = load_evidence()
-    fresh = build_evidence(analyst_db)
+    fresh = build_evidence(analyst_db, holdout_db_path=holdout_db)
     assert set(fresh) == set(committed)
     for k, entry in committed.items():
         assert fresh[k]["value"] == pytest.approx(entry["value"], abs=1e-3), k

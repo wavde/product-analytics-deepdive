@@ -255,13 +255,25 @@ def _replayable(transcript: list[dict]) -> list[tuple[str, list[str]]]:
     return out
 
 
-def validate_run(path: Path, db_path: Path | str, setup: Setup | None = None) -> list[str]:
+def validate_run(path: Path, db_path: Path | str, setup: Setup | None = None,
+                 holdout_db_path: Path | str | None = None) -> list[str]:
+    """Replay a saved run. ``db_path`` is the main warehouse; runs recorded against the
+    holdout warehouse replay against ``holdout_db_path`` (default: the built one)."""
+    from analyst_eval.answer_key import VARIANTS, variant_of
+
     meta, answers, end = load_run(path)
     mismatch = engine_mismatch(meta)
     if mismatch:
         return [f"{path.name}: cannot replay here: {mismatch}"]
+    variant = variant_of(meta)
+    if variant not in VARIANTS:
+        return [f"{path.name}: unknown variant {variant!r}"]
+    if variant == "holdout":
+        db_path = holdout_db_path or VARIANTS["holdout"]["db"]
     if meta.get("runner_kind") == "copilot-agent":
-        return _validate_agent_run(path, meta, answers, end, db_path)
+        return _validate_agent_run(path, meta, answers, end, db_path, VARIANTS[variant]["key"])
+    if variant != "main":
+        return [f"{path.name}: API runs only support the main warehouse"]
     problems = []
     if meta.get("schema_version") != SCHEMA_VERSION:
         problems.append(f"schema_version {meta.get('schema_version')} != {SCHEMA_VERSION}")
@@ -289,13 +301,13 @@ def validate_run(path: Path, db_path: Path | str, setup: Setup | None = None) ->
 
 
 def _validate_agent_run(path: Path, meta: dict, answers: list[dict], end: dict | None,
-                        db_path: Path | str) -> list[str]:
+                        db_path: Path | str, key_path: Path) -> list[str]:
     from analyst_eval.agent_runs import agent_prompt_hash, validate_agent_answer
 
     problems = []
     if meta.get("schema_version") != SCHEMA_VERSION:
         problems.append(f"schema_version {meta.get('schema_version')} != {SCHEMA_VERSION}")
-    if meta.get("answer_key_sha") != file_sha(ANSWER_KEY_PATH):
+    if meta.get("answer_key_sha") != file_sha(key_path):
         problems.append("answer key changed since this run")
     # Data drift is caught by re-executing every logged query below; a byte hash of the
     # DuckDB file isn't stable across builds.

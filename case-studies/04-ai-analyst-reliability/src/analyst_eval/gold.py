@@ -23,6 +23,10 @@ class Fixes:
     internal_accounts: bool = True
     system_events: bool = True
     timezone: bool = True
+    # One order per order_id ("Order ... identified by order_id" in definitions.md). A no-op
+    # on the main warehouse, where every order_id has one purchase event; it matters on the
+    # holdout warehouse, where some purchases were re-submitted under a new event_id.
+    resubmitted_orders: bool = True
 
     @classmethod
     def names(cls) -> list[str]:
@@ -59,19 +63,26 @@ def create_gold_views(con: duckdb.DuckDBPyConnection, fixes: Fixes = Fixes()) ->
         WHERE TRUE {system}
         """
     )
+    # Keep only the order's first submission (its earliest event_id). Same-event_id retries are
+    # left to the duplicates rule, so switching either rule off measures that trap alone.
+    first_submission = "WHERE event_id = first_event_id" if fixes.resubmitted_orders else ""
     con.execute(
-        """
+        f"""
         CREATE OR REPLACE TEMP VIEW g_orders AS
+        WITH p AS (
+            SELECT *, FIRST_VALUE(event_id) OVER (
+                       PARTITION BY order_id ORDER BY event_ts, event_id) AS first_event_id
+            FROM g_events WHERE event_name = 'purchase'
+        )
         SELECT e.order_id,
                e.user_id,
                e.biz_date                                  AS order_date,
                e.revenue_cents                             AS gross_cents,
                COALESCE(r.refund_cents, 0)                 AS refund_cents,
                e.revenue_cents - COALESCE(r.refund_cents, 0) AS net_cents
-        FROM g_events e
+        FROM (SELECT * FROM p {first_submission}) e
         LEFT JOIN (
             SELECT order_id, SUM(refund_cents) AS refund_cents FROM refunds GROUP BY order_id
         ) r ON r.order_id = e.order_id
-        WHERE e.event_name = 'purchase'
         """
     )

@@ -15,14 +15,17 @@ from pathlib import Path
 
 import duckdb
 
-from analyst_eval import DB_PATH, RESULTS_DIR
-from analyst_eval.answer_key import ANSWER_KEY_PATH, load_answer_key
+from analyst_eval import DB_PATH, HOLDOUT_DB_PATH, RESULTS_DIR
+from analyst_eval.answer_key import ANSWER_KEY_PATH, HOLDOUT_KEY_PATH, load_answer_key, variant_of
 from analyst_eval.gold import Fixes, create_gold_views
 from analyst_eval.grading import grade_answer
 from analyst_eval.questions import QUESTIONS_BY_ID, TOLERANCE
 from analyst_eval.runs import list_runs, load_run
 
 EVIDENCE_PATH = RESULTS_DIR / "evidence.json"
+# The cleaning rules the context pack documents. resubmitted_orders is deliberately left
+# out: it only matters on the holdout warehouse, whose trap the context pack never mentions.
+CLEANING_RULES = ("duplicates", "internal_accounts", "system_events", "timezone")
 KEY_CHECKS = [
     "gold computed through views implementing every ground rule in definitions.md",
     "answer key regenerated from a fresh warehouse build and compared in CI",
@@ -33,7 +36,8 @@ def _entry(value: float, how: str, checks: list[str]) -> dict:
     return {"value": round(float(value), 4), "how": how, "checks": checks}
 
 
-def build_evidence(db_path: Path | str = DB_PATH, key_path: Path = ANSWER_KEY_PATH) -> dict:
+def build_evidence(db_path: Path | str = DB_PATH, key_path: Path = ANSWER_KEY_PATH,
+                   holdout_db_path: Path | str | None = HOLDOUT_DB_PATH) -> dict:
     key = load_answer_key(key_path)
     ev: dict[str, dict] = {}
 
@@ -61,12 +65,12 @@ def build_evidence(db_path: Path | str = DB_PATH, key_path: Path = ANSWER_KEY_PA
         "trap+ambiguous questions where the naive answer is more than 1% from gold",
         KEY_CHECKS)
 
-    for t in sorted(Fixes.names()) + ["refunds", "partial_period", "units", "definition",
-                                      "not_instrumented"]:
+    for t in sorted(CLEANING_RULES) + ["refunds", "partial_period", "units", "definition",
+                                       "not_instrumented"]:
         ev[f"live_{t}"] = _entry(
             sum(t in r["traps"] for r in key.values()),
             f"questions tagged {t}"
-            + (" (measured by disabling only this rule)" if t in Fixes.names() else ""),
+            + (" (measured by disabling only this rule)" if t in CLEANING_RULES else ""),
             KEY_CHECKS)
 
     for qid, r in key.items():
@@ -109,6 +113,8 @@ def build_evidence(db_path: Path | str = DB_PATH, key_path: Path = ANSWER_KEY_PA
         ev.update(_run_evidence(con, key))
     finally:
         con.close()
+    if holdout_db_path is not None and Path(holdout_db_path).exists() and HOLDOUT_KEY_PATH.exists():
+        ev.update(_holdout_evidence(holdout_db_path, load_answer_key(HOLDOUT_KEY_PATH)))
     return ev
 
 
@@ -116,33 +122,42 @@ RUN_CHECKS = ["every logged query re-executed against a fresh build (cli.py vali
               "graded against answer_key.json"]
 
 
-def _run_evidence(con, key: dict[str, dict]) -> dict[str, dict]:
-    """Evidence from saved Copilot-agent runs, keyed run.<model>.t<trial>.<condition>.*"""
-    by_model: dict[str, list[dict]] = defaultdict(list)
-    for p in list_runs():
-        meta, answers, _ = load_run(p)
-        if meta.get("runner_kind") == "copilot-agent":
-            by_model[meta["model"]] += answers
-    if not by_model:
-        return {}
-
-    # Gold recomputed with every non-empty combination of cleaning rules switched off, so a
-    # wrong answer can be attributed to data cleaning (some combination matches) or not.
-    alt_gold: dict[frozenset[str], dict[str, float | None]] = {}
-    names = Fixes.names()
-    for r in range(1, len(names) + 1):
-        for off in combinations(names, r):
+def _alt_gold(con, rules: tuple[str, ...], qids) -> dict[frozenset[str], dict[str, float | None]]:
+    """Gold recomputed with every non-empty combination of ``rules`` switched off, so a wrong
+    answer can be attributed to data cleaning (some combination matches) or not."""
+    alt: dict[frozenset[str], dict[str, float | None]] = {}
+    for r in range(1, len(rules) + 1):
+        for off in combinations(rules, r):
             fixes = Fixes()
             for name in off:
                 fixes = fixes.without(name)
             create_gold_views(con, fixes)
             vals: dict[str, float | None] = {}
-            for q in QUESTIONS_BY_ID.values():
+            for qid in qids:
+                q = QUESTIONS_BY_ID[qid]
                 if q.gold_sql:
                     row = con.execute(q.gold_sql).fetchone()
                     vals[q.id] = None if row[0] is None else float(row[0])
-            alt_gold[frozenset(off)] = vals
+            alt[frozenset(off)] = vals
     create_gold_views(con)
+    return alt
+
+
+def _agent_answers(variant: str) -> dict[str, list[dict]]:
+    by_model: dict[str, list[dict]] = defaultdict(list)
+    for p in list_runs():
+        meta, answers, _ = load_run(p)
+        if meta.get("runner_kind") == "copilot-agent" and variant_of(meta) == variant:
+            by_model[meta["model"]] += answers
+    return by_model
+
+
+def _run_evidence(con, key: dict[str, dict]) -> dict[str, dict]:
+    """Evidence from saved Copilot-agent runs, keyed run.<model>.t<trial>.<condition>.*"""
+    by_model = _agent_answers("main")
+    if not by_model:
+        return {}
+    alt_gold = _alt_gold(con, CLEANING_RULES, list(key))
 
     ev: dict[str, dict] = {}
     for model, all_answers in by_model.items():
@@ -184,6 +199,8 @@ def _condition_evidence(prefix: str, answers: list[dict], key: dict[str, dict],
                         alt_gold: dict[frozenset[str], dict[str, float | None]]
                         ) -> dict[str, dict]:
     ev: dict[str, dict] = {}
+    rules = sorted(set().union(*alt_gold)) if alt_gold else []
+    combos = f"gold recomputed under all {len(alt_gold)} combinations of switched-off rules"
     for cond in sorted({a["condition"] for a in answers}):
         xs = [a for a in answers if a["condition"] == cond]
         grades = [grade_answer(a, key[a["question_id"]]) for a in xs]
@@ -217,13 +234,19 @@ def _condition_evidence(prefix: str, answers: list[dict], key: dict[str, dict],
             RUN_CHECKS + ["gold recomputed with only the timezone rule switched off"])
         ev[p + "wrong_cleaning"] = _entry(
             sum(bool(ms) for ms in matches),
-            "wrong answers equal to gold with some combination of the four data-cleaning "
-            "rules (duplicates, internal accounts, system events, time zone) switched off",
-            RUN_CHECKS + ["gold recomputed under all 15 combinations of switched-off rules"])
+            "wrong answers equal to gold with some combination of the data-cleaning rules ("
+            + ", ".join(rules) + ") switched off",
+            RUN_CHECKS + [combos])
         ev[p + "wrong_kept_internal"] = _entry(
             kept_internal,
             "wrong answers explained only by combinations that keep internal accounts in",
-            RUN_CHECKS + ["gold recomputed under all 15 combinations of switched-off rules"])
+            RUN_CHECKS + [combos])
+        if "resubmitted_orders" in rules:
+            ev[p + "wrong_resubmit_only"] = _entry(
+                sum(frozenset({"resubmitted_orders"}) in ms for ms in matches),
+                "wrong answers equal to gold with only the re-submitted-orders rule "
+                "switched off (every documented rule applied, re-submissions counted)",
+                RUN_CHECKS + [combos])
         ev[p + "sql_per_q"] = _entry(statistics.mean(a["sql_calls"] for a in xs),
                                      "mean logged queries per question", RUN_CHECKS)
         ev[p + "median_seconds"] = _entry(
@@ -238,6 +261,53 @@ def _condition_evidence(prefix: str, answers: list[dict], key: dict[str, dict],
             ev[p + "reconcile_changed"] = _entry(sum(bool(r["changed"]) for r in rc),
                                                  "reconciles that changed the answer",
                                                  RUN_CHECKS)
+    return ev
+
+
+HOLDOUT_CHECKS = ["holdout gold computed through the same views with one extra rule "
+                  "(one order per order_id, first submission kept)",
+                  "holdout answer key regenerated from a fresh build and compared in CI"]
+
+
+def _holdout_evidence(db_path: Path | str, key: dict[str, dict]) -> dict[str, dict]:
+    """Facts about the holdout warehouse, plus runs against it (run.<model>.holdout.t<n>.*)."""
+    ev: dict[str, dict] = {}
+    con = duckdb.connect(str(db_path), read_only=True)
+    try:
+        con.execute("SET TimeZone = 'UTC'")
+        events, orders = con.execute(
+            "SELECT COUNT(DISTINCT event_id), COUNT(DISTINCT order_id) FROM events "
+            "WHERE event_name = 'purchase'").fetchone()
+        ev["holdout.resubmitted_events"] = _entry(
+            events - orders, "purchase event_ids beyond one per order_id",
+            ["COUNT(DISTINCT event_id) vs COUNT(DISTINCT order_id) on purchase rows"])
+        ev["holdout.n_questions"] = _entry(len(key), "rows in answer_key_holdout.json",
+                                           ["count"])
+        ev["holdout.live_resubmitted_orders"] = _entry(
+            sum("resubmitted_orders" in r["traps"] for r in key.values()),
+            "holdout questions whose gold moves when only the re-submitted-orders rule is off",
+            HOLDOUT_CHECKS)
+        alt_gold = _alt_gold(con, (*CLEANING_RULES, "resubmitted_orders"), list(key))
+        no_resub = alt_gold[frozenset({"resubmitted_orders"})]
+        for qid, r in key.items():
+            if r["gold"] is None or no_resub.get(qid) is None:
+                continue
+            ev[f"holdout.{qid}.gold"] = _entry(r["gold"], f"holdout gold for {qid}",
+                                               HOLDOUT_CHECKS)
+            ev[f"holdout.{qid}.event_dedup"] = _entry(
+                no_resub[qid], f"{qid} with every documented rule but re-submissions counted",
+                HOLDOUT_CHECKS)
+            if r["gold"]:
+                ev[f"holdout.{qid}.event_dedup_error_pct"] = _entry(
+                    100 * (no_resub[qid] - r["gold"]) / r["gold"],
+                    f"(event_dedup - gold) / gold for {qid}", HOLDOUT_CHECKS)
+        for model, all_answers in _agent_answers("holdout").items():
+            for trial in sorted({a.get("trial", 0) for a in all_answers}):
+                answers = [a for a in all_answers if a.get("trial", 0) == trial]
+                ev.update(_condition_evidence(f"run.{model}.holdout.t{trial}.", answers, key,
+                                              alt_gold))
+    finally:
+        con.close()
     return ev
 
 

@@ -18,3 +18,10 @@ def analyst_db(tmp_path_factory) -> Path:
     from analyst_eval.warehouse import build
 
     return build(tmp_path_factory.mktemp("case04") / "analyst.db")
+
+
+@pytest.fixture(scope="session")
+def holdout_db(tmp_path_factory) -> Path:
+    from analyst_eval.warehouse import build_holdout
+
+    return build_holdout(tmp_path_factory.mktemp("case04h") / "analyst_holdout.db")

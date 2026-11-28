@@ -262,6 +262,32 @@ Recorded now so the results can't be rationalised afterwards. None of these is a
 
 **Decision rule for "ceremony".** A context component is ceremony if removing it changes neither accuracy nor the confidently-wrong rate by more than the 95% CI of the paired difference, while costing more tokens. A component that only moves the materially-correct rate by less than its CI is reported as "cosmetic" for decision-making.
 
+## Holdout: a trap nobody wrote down
+
+The first limitation below is the obvious attack on the 40/40: the context pack documents exactly the traps I planted, so full context partly measures instruction-following. The holdout tests that directly with one new trap the pack never mentions.
+
+**The trap.** A payment client sometimes submits a purchase twice. The second submission is a *new* event: new `event_id`, same `order_id` and amount, a few seconds to three minutes later. Deduplicating on `event_id`, the ground rule the pack spells out, doesn't remove it. Counting one row per `order_id` does. That matches the pack's own definition ("Order: one deduplicated purchase event, identified by `order_id`"), so the gold answers don't move the goalposts. Nothing in `schema.md`, `definitions.md`, `traps.md` or the skills was changed.
+
+<!-- cited:start -->
+- The holdout warehouse is the main one plus 628 re-submitted purchase events [E:holdout.resubmitted_events]. Every other row is identical.
+- 10 questions [E:holdout.n_questions] change when only the new rule is switched off [E:holdout.live_resubmitted_orders], and those 10 are the holdout set. The error is not small: counting re-submissions overstates February gross revenue by 5.3% [E:holdout.t02.event_dedup_error_pct] ($129,181 [E:holdout.t02.event_dedup] against $122,665.44 [E:holdout.t02.gold]).
+<!-- cited:end -->
+
+One other question, `t13` (user actions in January), also changes on this warehouse because a re-submission is a distinct purchase event. Whether that counts as a "user action" is genuinely ambiguous, so `t13` was left out before any run. Every remaining question has the same gold answer on both warehouses (checked in the tests).
+
+**Runs.** The 10 questions under `no_context`, `full_context` and `full_context_reconcile`, for both models, one trial: 60 answers.
+
+### Holdout predictions, written before any holdout run
+
+Committed before the first holdout agent started. None of these is a finding.
+
+1. **Full context will fail on money.** The seven money questions (`t02`, `t03`, `t04`, `t05`, `a03`, `a05`, `a07`) are naturally computed as sums over `event_id`-deduplicated purchase rows, which double-counts re-submissions. Prediction: under `full_context`, each model gets at least 5 of the 7 wrong, and at least 4 of those equal the gold answer with only the re-submission rule switched off.
+2. **Order counts will survive by accident.** For the three order-count questions (`t01`, `t15`, `a06`), `COUNT(DISTINCT order_id)` is the natural query and is immune to the trap. Prediction: at least 2 of the 3 right per model under `full_context`. So `full_context` scores between 2 and 5 of 10 per model.
+3. **Reconciliation will catch little.** The reconcile skill's second route for money is "an orders CTE with refunds joined on `order_id`", which only exposes the trap if that CTE is grouped by `order_id`. Prediction: reconciliation changes at most 2 holdout answers per model, and `full_context_reconcile` lands within 2 of `full_context`.
+4. **No context stays bad.** Without context the time zone and the definitions still break most of these questions. Prediction: at most 2 of 10 correct per model.
+
+**What would change my mind.** If `full_context` scores 8 or more of 10 for a model, that model applied the written definition of an order rather than the dedup recipe, and the instruction-following objection is weaker than I think. If reconciliation recovers 3 or more answers for a model, it earns its place for traps nobody has documented, which is the one job I argued it might have.
+
 ## Limitations
 
 1. **The context pack documents exactly the traps I planted.** That makes `full_context` an upper bound on what context can do, and part of what it measures is instruction-following: the ground rules in `definitions.md` spell out each fix. Real warehouses have traps nobody has written down yet, which is the case for reconciliation over documentation.

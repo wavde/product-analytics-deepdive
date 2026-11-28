@@ -11,11 +11,24 @@ from pathlib import Path
 
 import duckdb
 
-from analyst_eval import DB_PATH, QUESTIONS_DIR
+from analyst_eval import DB_PATH, HOLDOUT_DB_PATH, QUESTIONS_DIR
 from analyst_eval.gold import Fixes, create_gold_views
-from analyst_eval.questions import QUESTIONS, Question
+from analyst_eval.questions import HOLDOUT_QUESTIONS, QUESTIONS, Question
 
 ANSWER_KEY_PATH = QUESTIONS_DIR / "answer_key.json"
+HOLDOUT_KEY_PATH = QUESTIONS_DIR / "answer_key_holdout.json"
+
+# A "variant" is a warehouse plus its answer key. "main" is the warehouse the context pack
+# documents; "holdout" adds one trap the context pack doesn't mention.
+VARIANTS = {
+    "main": {"db": DB_PATH, "key": ANSWER_KEY_PATH, "questions": QUESTIONS},
+    "holdout": {"db": HOLDOUT_DB_PATH, "key": HOLDOUT_KEY_PATH,
+                "questions": HOLDOUT_QUESTIONS},
+}
+
+
+def variant_of(meta: dict) -> str:
+    return meta.get("variant", "main")
 
 
 def _scalar(con: duckdb.DuckDBPyConnection, sql: str) -> float | None:

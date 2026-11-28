@@ -392,3 +392,10 @@ QUESTIONS: list[Question] = [
 ]
 
 QUESTIONS_BY_ID = {q.id: q for q in QUESTIONS}
+
+# Holdout set, fixed before any holdout run: exactly the questions whose holdout gold moves
+# when only the undocumented re-submitted-orders rule is switched off (tests check this). t13
+# also changes on the holdout warehouse -- a re-submission is a distinct purchase event -- but
+# whether that is a "user action" is ambiguous, so it is not part of the holdout set.
+HOLDOUT_QUESTION_IDS = ("t01", "t02", "t03", "t04", "t05", "t15", "a03", "a05", "a06", "a07")
+HOLDOUT_QUESTIONS = [QUESTIONS_BY_ID[q] for q in HOLDOUT_QUESTION_IDS]

@@ -1,0 +1,170 @@
+[
+  {
+    "id": "t01",
+    "category": "trap",
+    "question": "How many orders were placed in February 2025?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 4095.0,
+    "naive": 4845.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "duplicates",
+      "internal_accounts",
+      "resubmitted_orders",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t02",
+    "category": "trap",
+    "question": "What was gross revenue in February 2025, in US dollars?",
+    "unit": "usd",
+    "expect_abstain": false,
+    "gold": 122665.44,
+    "naive": 145391.68,
+    "naive_is_wrong": true,
+    "traps": [
+      "duplicates",
+      "internal_accounts",
+      "resubmitted_orders",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t03",
+    "category": "trap",
+    "question": "What was net revenue (gross revenue minus refunds) in February 2025, in US dollars?",
+    "unit": "usd",
+    "expect_abstain": false,
+    "gold": 113915.26,
+    "naive": 138746.42,
+    "naive_is_wrong": true,
+    "traps": [
+      "duplicates",
+      "internal_accounts",
+      "refunds",
+      "resubmitted_orders",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t04",
+    "category": "trap",
+    "question": "What was total net revenue (after refunds) from 2025-01-01 through 2025-03-30, in US dollars?",
+    "unit": "usd",
+    "expect_abstain": false,
+    "gold": 372544.12,
+    "naive": 443072.52,
+    "naive_is_wrong": true,
+    "traps": [
+      "duplicates",
+      "internal_accounts",
+      "refunds",
+      "resubmitted_orders",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t05",
+    "category": "trap",
+    "question": "For orders placed in January 2025, what percent of gross revenue was refunded?",
+    "unit": "percent",
+    "expect_abstain": false,
+    "gold": 6.4924,
+    "naive": 2.2273,
+    "naive_is_wrong": true,
+    "traps": [
+      "internal_accounts",
+      "refunds",
+      "resubmitted_orders",
+      "timezone"
+    ]
+  },
+  {
+    "id": "t15",
+    "category": "trap",
+    "question": "How many orders placed in February 2025 received any refund?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 332.0,
+    "naive": 243.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "duplicates",
+      "refunds",
+      "resubmitted_orders",
+      "timezone"
+    ]
+  },
+  {
+    "id": "a03",
+    "category": "ambiguous",
+    "question": "What was revenue in January 2025?",
+    "unit": "usd",
+    "expect_abstain": false,
+    "gold": 44767.91,
+    "naive": 64914.56,
+    "naive_is_wrong": true,
+    "traps": [
+      "definition",
+      "duplicates",
+      "internal_accounts",
+      "refunds",
+      "resubmitted_orders",
+      "timezone"
+    ]
+  },
+  {
+    "id": "a05",
+    "category": "ambiguous",
+    "question": "What was the refund rate in February 2025?",
+    "unit": "percent",
+    "expect_abstain": false,
+    "gold": 7.1334,
+    "naive": 5.0155,
+    "naive_is_wrong": true,
+    "traps": [
+      "definition",
+      "internal_accounts",
+      "refunds",
+      "resubmitted_orders"
+    ]
+  },
+  {
+    "id": "a06",
+    "category": "ambiguous",
+    "question": "How many orders did we get last week?",
+    "unit": "count",
+    "expect_abstain": false,
+    "gold": 1981.0,
+    "naive": 2170.0,
+    "naive_is_wrong": true,
+    "traps": [
+      "definition",
+      "duplicates",
+      "internal_accounts",
+      "partial_period",
+      "resubmitted_orders",
+      "timezone"
+    ]
+  },
+  {
+    "id": "a07",
+    "category": "ambiguous",
+    "question": "What was ARPU in February 2025, in US dollars?",
+    "unit": "usd",
+    "expect_abstain": false,
+    "gold": 38.137,
+    "naive": 29.0203,
+    "naive_is_wrong": true,
+    "traps": [
+      "definition",
+      "duplicates",
+      "internal_accounts",
+      "refunds",
+      "resubmitted_orders",
+      "system_events"
+    ]
+  }
+]

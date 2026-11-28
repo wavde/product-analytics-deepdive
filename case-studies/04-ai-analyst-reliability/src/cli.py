@@ -19,17 +19,22 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from analyst_eval import CASE_DIR, DB_PATH, RUNS_DIR  # noqa: E402
+from analyst_eval import CASE_DIR, DB_PATH, HOLDOUT_DB_PATH, RUNS_DIR  # noqa: E402
 from analyst_eval.agent import AgentConfig  # noqa: E402
-from analyst_eval.answer_key import compute_answer_key, write_answer_key  # noqa: E402
+from analyst_eval.answer_key import (  # noqa: E402
+    HOLDOUT_KEY_PATH,
+    VARIANTS,
+    compute_answer_key,
+    write_answer_key,
+)
 from analyst_eval.conditions import CONDITIONS, CORE_CONDITIONS  # noqa: E402
 from analyst_eval.evidence import build_evidence, load_evidence, write_evidence  # noqa: E402
 from analyst_eval.memo_lint import lint_memo  # noqa: E402
-from analyst_eval.questions import QUESTIONS, QUESTIONS_BY_ID  # noqa: E402
+from analyst_eval.questions import HOLDOUT_QUESTIONS, QUESTIONS, QUESTIONS_BY_ID  # noqa: E402
 from analyst_eval.report import write_summary  # noqa: E402
 from analyst_eval.runners import AnthropicRunner, OpenAICompatibleRunner, Pricing  # noqa: E402
 from analyst_eval.runs import estimate_tokens, list_runs, run_eval, validate_run  # noqa: E402
-from analyst_eval.warehouse import build  # noqa: E402
+from analyst_eval.warehouse import build, build_holdout  # noqa: E402
 
 
 def _conditions(arg: str) -> list[str]:
@@ -60,9 +65,12 @@ def _pricing(args) -> Pricing | None:
 
 def cmd_build(_args) -> None:
     build()
+    build_holdout()
     write_answer_key(compute_answer_key())
+    write_answer_key(compute_answer_key(HOLDOUT_DB_PATH, HOLDOUT_QUESTIONS), HOLDOUT_KEY_PATH)
     write_evidence(build_evidence())
-    print(f"Built {DB_PATH}, questions/answer_key.json and results/evidence.json")
+    print(f"Built {DB_PATH.name}, {HOLDOUT_DB_PATH.name}, their answer keys and "
+          "results/evidence.json")
 
 
 def cmd_plan(args) -> None:
@@ -107,8 +115,8 @@ def cmd_validate(_args) -> None:
     if not paths:
         print("No saved runs to validate.")
         return
-    if not DB_PATH.exists():
-        build()
+    if not DB_PATH.exists() or not HOLDOUT_DB_PATH.exists():
+        cmd_build(_args)
     problems = [p for path in paths for p in validate_run(path, DB_PATH)]
     for p in problems:
         print(p)
@@ -135,12 +143,14 @@ def cmd_lint_memo(args) -> None:
 def cmd_bundle(args) -> None:
     from analyst_eval.agent_runs import build_bundles
 
-    if not DB_PATH.exists():
+    if not DB_PATH.exists() or not HOLDOUT_DB_PATH.exists():
         cmd_build(args)
-    m = build_bundles(Path(args.root), _conditions(args.conditions), _questions(args.questions),
-                      args.python)
-    print(f"Wrote {len(m['conditions'])} blind bundle(s) for {len(m['questions'])} "
-          f"question(s) under {args.root}")
+    questions = (VARIANTS[args.variant]["questions"] if args.questions == "all"
+                 else _questions(args.questions))
+    m = build_bundles(Path(args.root), _conditions(args.conditions), questions,
+                      args.python, variant=args.variant)
+    print(f"Wrote {len(m['conditions'])} blind {args.variant} bundle(s) for "
+          f"{len(m['questions'])} question(s) under {args.root}")
 
 
 def cmd_import_agent_run(args) -> None:
@@ -188,6 +198,8 @@ def main(argv: list[str] | None = None) -> None:
     sp.add_argument("--python", required=True, help="python with duckdb, for the agents")
     sp.add_argument("--conditions", default="core")
     sp.add_argument("--questions", default="all")
+    sp.add_argument("--variant", choices=list(VARIANTS), default="main",
+                    help="main warehouse, or holdout (one trap the context pack omits)")
     sp.set_defaults(fn=cmd_bundle)
     sp = sub.add_parser("import-agent-run", help="turn bundle logs into a validated run")
     sp.add_argument("--root", required=True)

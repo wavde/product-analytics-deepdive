@@ -18,10 +18,9 @@ import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
-from analyst_eval import DB_PATH
 from analyst_eval import bundle_tool as tool
 from analyst_eval.agent import reconcile_changed
-from analyst_eval.answer_key import ANSWER_KEY_PATH
+from analyst_eval.answer_key import VARIANTS
 from analyst_eval.conditions import CONDITIONS, context_parts, read_skill
 from analyst_eval.questions import QUESTIONS_BY_ID, TOLERANCE, Question
 from analyst_eval.runs import SCHEMA_VERSION, canonical_transcript, file_sha, is_volatile
@@ -105,15 +104,18 @@ def _duckdb_version(python: str) -> str:
 
 
 def build_bundles(root: Path | str, conditions: list[str], questions: list[Question],
-                  python: str, db_path: Path | str = DB_PATH) -> dict:
+                  python: str, db_path: Path | str | None = None,
+                  variant: str = "main") -> dict:
     """Write one blind folder per condition under ``root``."""
     root = Path(root)
+    db_path = Path(db_path or VARIANTS[variant]["db"])
     manifest = {
         "created_at": datetime.now(timezone.utc).isoformat(),
+        "variant": variant,
         "max_sql": MAX_SQL,
         "questions": [q.id for q in questions],
         "conditions": {c: agent_prompt_hash(c) for c in conditions},
-        "db_sha": file_sha(Path(db_path)),
+        "db_sha": file_sha(db_path),
         "engine": {"duckdb": _duckdb_version(python)},
     }
     for c in conditions:
@@ -195,10 +197,12 @@ def _read_log(path: Path) -> list[dict]:
 
 
 def import_bundles(root: Path | str, model: str, out_path: Path,
-                   db_path: Path | str = DB_PATH, questions: list[str] | None = None,
+                   db_path: Path | str | None = None, questions: list[str] | None = None,
                    trial: int = 0) -> Path:
     root = Path(root)
     manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
+    variant = manifest.get("variant", "main")
+    db_path = db_path or VARIANTS[variant]["db"]
     qids = questions or manifest["questions"]
     unknown = sorted(set(qids) - set(manifest["questions"]))
     if unknown:
@@ -223,13 +227,15 @@ def import_bundles(root: Path | str, model: str, out_path: Path,
         "provider": "github-copilot", "model": model, "temperature": None,
         "started_at": manifest["created_at"],
         "conditions": manifest["conditions"],
-        "answer_key_sha": file_sha(ANSWER_KEY_PATH),
+        "answer_key_sha": file_sha(VARIANTS[variant]["key"]),
         "agent_config": {"max_sql": manifest["max_sql"], "sql_timeout": SQL_TIMEOUT},
         "trials": 1, "trial_index": trial, "pricing": None,
         "dataset": {"n_users": DEFAULT_N_USERS, "seed": DEFAULT_SEED},
         "db_sha": manifest["db_sha"],
         "engine": manifest.get("engine"),
     }
+    if variant != "main":
+        meta["variant"] = variant
     end = {"type": "end", "finished_at": datetime.now(timezone.utc).isoformat(),
            "input_tokens": 0, "output_tokens": 0, "stopped": None}
     out_path.parent.mkdir(parents=True, exist_ok=True)

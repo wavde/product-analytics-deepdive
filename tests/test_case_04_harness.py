@@ -316,7 +316,7 @@ def test_memo_lint():
                                                                           (1200.5, 2)]
 
 
-def test_saved_runs_are_valid_and_results_are_current(analyst_db):
+def test_saved_runs_are_valid_and_results_are_current(analyst_db, holdout_db):
     paths = list_runs()
     if not paths:
         assert SUMMARY_MD.read_text(encoding="utf-8") == PENDING
@@ -326,7 +326,8 @@ def test_saved_runs_are_valid_and_results_are_current(analyst_db):
     assert json.loads(json.dumps(summarize_runs(paths), sort_keys=True)) == committed
     unreplayable = {p.name: m for p in paths if (m := engine_mismatch(load_run(p)[0]))}
     replayable = [p for p in paths if p.name not in unreplayable]
-    problems = [p for path in replayable for p in validate_run(path, analyst_db)]
+    problems = [p for path in replayable
+                for p in validate_run(path, analyst_db, holdout_db_path=holdout_db)]
     assert not problems, "\n".join(problems)
     if unreplayable:
         pytest.skip(f"replay needs the recording engine: {unreplayable}")
