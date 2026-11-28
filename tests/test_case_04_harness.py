@@ -316,7 +316,7 @@ def test_memo_lint():
                                                                           (1200.5, 2)]
 
 
-def test_saved_runs_are_valid_and_results_are_current(analyst_db):
+def test_saved_runs_are_valid_and_results_are_current(analyst_db, holdout_db):
     paths = list_runs()
     if not paths:
         assert SUMMARY_MD.read_text(encoding="utf-8") == PENDING
@@ -326,7 +326,8 @@ def test_saved_runs_are_valid_and_results_are_current(analyst_db):
     assert json.loads(json.dumps(summarize_runs(paths), sort_keys=True)) == committed
     unreplayable = {p.name: m for p in paths if (m := engine_mismatch(load_run(p)[0]))}
     replayable = [p for p in paths if p.name not in unreplayable]
-    problems = [p for path in replayable for p in validate_run(path, analyst_db)]
+    problems = [p for path in replayable
+                for p in validate_run(path, analyst_db, holdout_db_path=holdout_db)]
     assert not problems, "\n".join(problems)
     if unreplayable:
         pytest.skip(f"replay needs the recording engine: {unreplayable}")
@@ -406,3 +407,21 @@ def test_live_runners_speak_their_wire_format(kind, monkeypatch):
         assert seen["path"] == "/v1/messages"
         assert seen["headers"].get("x-api-key") == "sk-test"
         assert seen["body"]["system"] == "SYS"
+
+
+def test_report_pools_trials_by_model_and_rejects_duplicates(analyst_db, tmp_path):
+    runner = CallableRunner(scripted("gold_sql", "gold"), model="scripted")
+    qs = [QUESTIONS_BY_ID["c01"], QUESTIONS_BY_ID["t01"]]
+    two_trials = run_eval(runner, analyst_db, qs, ["full_context"], 2, tmp_path / "a.jsonl",
+                          log=lambda *_: None, setup=create_gold_views)
+    other_cond = run_eval(runner, analyst_db, qs, ["no_context"], 1, tmp_path / "b.jsonl",
+                          log=lambda *_: None, setup=create_gold_views)
+    (run,) = summarize_runs([two_trials, other_cond])["runs"]
+    assert run["files"] == ["a.jsonl", "b.jsonl"] and run["trials"] == [0, 1]
+    assert run["conditions"]["full_context"]["n_answers"] == 4
+    assert run["conditions"]["full_context"]["same_outcome_across_trials"] == 1.0
+    assert "same_outcome_across_trials" not in run["conditions"]["no_context"]
+    dup = run_eval(runner, analyst_db, qs, ["no_context"], 1, tmp_path / "c.jsonl",
+                   log=lambda *_: None, setup=create_gold_views)
+    with pytest.raises(ValueError, match="more than once"):
+        summarize_runs([other_cond, dup])

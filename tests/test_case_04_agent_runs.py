@@ -157,3 +157,36 @@ def test_volatile_output_is_not_compared_but_other_edits_still_are(bundles, anal
     lines[i] = json.dumps(rec)
     out.write_text("\n".join(lines) + "\n", encoding="utf-8")
     assert any("event 1" in p for p in validate_run(out, analyst_db))
+
+
+def test_reconcile_changed_ignores_float_reserialisation():
+    from analyst_eval.agent import reconcile_changed
+
+    base = {"initial_status": "answered", "final_status": "answered"}
+    assert not reconcile_changed({**base, "initial_value": 38.13701372614664,
+                                  "final_value": 38.137013726146634})
+    assert reconcile_changed({**base, "initial_value": 38.14, "final_value": 41.14})
+    assert reconcile_changed({**base, "initial_value": 1.0, "final_value": None})
+    assert reconcile_changed({"initial_status": "answered", "final_status": "answered_with_caveat",
+                              "initial_value": 1.0, "final_value": 1.0})
+
+
+def test_holdout_bundle_imports_and_replays_only_against_the_holdout_warehouse(
+        analyst_db, holdout_db, tmp_path):
+    from analyst_eval.answer_key import HOLDOUT_KEY_PATH
+    from analyst_eval.runs import file_sha
+
+    build_bundles(tmp_path, ["full_context"], [QUESTIONS_BY_ID["t01"]], sys.executable,
+                  holdout_db, variant="holdout")
+    folder = tmp_path / "full_context"
+    _call(folder, "sql", "t01", "q.sql",
+          "SELECT COUNT(*) FROM events WHERE event_name = 'purchase'")
+    gold = load_answer_key(HOLDOUT_KEY_PATH)["t01"]["gold"]
+    _call(folder, "answer", "t01", "a.json", {"status": "answered", "value": gold,
+                                              "unit": "count", "final_sql": T01_INDEPENDENT})
+    out = import_bundles(tmp_path, "scripted", tmp_path / "run.jsonl", holdout_db)
+    meta, answers, _ = load_run(out)
+    assert meta["variant"] == "holdout"
+    assert meta["answer_key_sha"] == file_sha(HOLDOUT_KEY_PATH)
+    assert validate_run(out, analyst_db, holdout_db_path=holdout_db) == []
+    assert validate_run(out, analyst_db, holdout_db_path=analyst_db)

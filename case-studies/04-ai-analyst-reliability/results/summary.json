@@ -2,6 +2,294 @@
   "runs": [
     {
       "conditions": {
+        "context_no_skill": {
+          "accuracy_by_category": {
+            "ambiguous": 1.0,
+            "control": 1.0,
+            "trap": 1.0,
+            "unanswerable": 1.0
+          },
+          "accuracy_by_trap": {
+            "definition": 1.0,
+            "duplicates": 1.0,
+            "internal_accounts": 1.0,
+            "not_instrumented": 1.0,
+            "partial_period": 1.0,
+            "refunds": 1.0,
+            "system_events": 1.0,
+            "timezone": 1.0,
+            "units": 1.0
+          },
+          "accuracy_lift_vs_baseline": {
+            "ci95": [
+              0.5125,
+              0.8
+            ],
+            "mean": 0.6625
+          },
+          "caveated_wrong_rate": 0.0,
+          "confidently_wrong_rate": 0.0,
+          "correct_rate": 1.0,
+          "fell_for_naive_rate": 0.0,
+          "input_tokens_per_q": 0.0,
+          "materially_correct_rate": 1.0,
+          "n_answers": 40,
+          "n_questions": 40,
+          "no_answer_rate": 0.0,
+          "output_tokens_per_q": 0.0,
+          "over_abstained_rate": 0.0,
+          "sql_calls_per_q": 1.525,
+          "unit_slip_rate": 0.0
+        },
+        "full_context": {
+          "accuracy_by_category": {
+            "ambiguous": 1.0,
+            "control": 1.0,
+            "trap": 1.0,
+            "unanswerable": 1.0
+          },
+          "accuracy_by_trap": {
+            "definition": 1.0,
+            "duplicates": 1.0,
+            "internal_accounts": 1.0,
+            "not_instrumented": 1.0,
+            "partial_period": 1.0,
+            "refunds": 1.0,
+            "system_events": 1.0,
+            "timezone": 1.0,
+            "units": 1.0
+          },
+          "accuracy_lift_vs_baseline": {
+            "ci95": [
+              0.5125,
+              0.8
+            ],
+            "mean": 0.6625
+          },
+          "caveated_wrong_rate": 0.0,
+          "confidently_wrong_rate": 0.0,
+          "correct_rate": 1.0,
+          "fell_for_naive_rate": 0.0,
+          "input_tokens_per_q": 0.0,
+          "materially_correct_rate": 1.0,
+          "n_answers": 80,
+          "n_questions": 40,
+          "no_answer_rate": 0.0,
+          "output_tokens_per_q": 0.0,
+          "over_abstained_rate": 0.0,
+          "same_outcome_across_trials": 1.0,
+          "sql_calls_per_q": 2.05,
+          "unit_slip_rate": 0.0
+        },
+        "full_context_reconcile": {
+          "accuracy_by_category": {
+            "ambiguous": 1.0,
+            "control": 1.0,
+            "trap": 1.0,
+            "unanswerable": 1.0
+          },
+          "accuracy_by_trap": {
+            "definition": 1.0,
+            "duplicates": 1.0,
+            "internal_accounts": 1.0,
+            "not_instrumented": 1.0,
+            "partial_period": 1.0,
+            "refunds": 1.0,
+            "system_events": 1.0,
+            "timezone": 1.0,
+            "units": 1.0
+          },
+          "accuracy_lift_vs_baseline": {
+            "ci95": [
+              0.5125,
+              0.8
+            ],
+            "mean": 0.6625
+          },
+          "caveated_wrong_rate": 0.0,
+          "confidently_wrong_rate": 0.0,
+          "correct_rate": 1.0,
+          "fell_for_naive_rate": 0.0,
+          "input_tokens_per_q": 0.0,
+          "materially_correct_rate": 1.0,
+          "n_answers": 80,
+          "n_questions": 40,
+          "no_answer_rate": 0.0,
+          "output_tokens_per_q": 0.0,
+          "over_abstained_rate": 0.0,
+          "same_outcome_across_trials": 1.0,
+          "sql_calls_per_q": 2.1,
+          "unit_slip_rate": 0.0
+        },
+        "no_context": {
+          "accuracy_by_category": {
+            "ambiguous": 0.125,
+            "control": 1.0,
+            "trap": 0.05263157894736842,
+            "unanswerable": 0.75
+          },
+          "accuracy_by_trap": {
+            "definition": 0.125,
+            "duplicates": 0.1,
+            "internal_accounts": 0.047619047619047616,
+            "not_instrumented": 0.875,
+            "partial_period": 0.25,
+            "refunds": 0.125,
+            "system_events": 0.08333333333333333,
+            "timezone": 0.0,
+            "units": 1.0
+          },
+          "caveated_wrong_rate": 0.55,
+          "confidently_wrong_rate": 0.1,
+          "correct_rate": 0.3375,
+          "fell_for_naive_rate": 0.1625,
+          "input_tokens_per_q": 0.0,
+          "materially_correct_rate": 0.525,
+          "n_answers": 80,
+          "n_questions": 40,
+          "no_answer_rate": 0.0,
+          "output_tokens_per_q": 0.0,
+          "over_abstained_rate": 0.0125,
+          "same_outcome_across_trials": 0.8,
+          "sql_calls_per_q": 4.0375,
+          "unit_slip_rate": 0.0
+        },
+        "schema_definitions": {
+          "accuracy_by_category": {
+            "ambiguous": 1.0,
+            "control": 1.0,
+            "trap": 1.0,
+            "unanswerable": 1.0
+          },
+          "accuracy_by_trap": {
+            "definition": 1.0,
+            "duplicates": 1.0,
+            "internal_accounts": 1.0,
+            "not_instrumented": 1.0,
+            "partial_period": 1.0,
+            "refunds": 1.0,
+            "system_events": 1.0,
+            "timezone": 1.0,
+            "units": 1.0
+          },
+          "accuracy_lift_vs_baseline": {
+            "ci95": [
+              0.5125,
+              0.8
+            ],
+            "mean": 0.6625
+          },
+          "caveated_wrong_rate": 0.0,
+          "confidently_wrong_rate": 0.0,
+          "correct_rate": 1.0,
+          "fell_for_naive_rate": 0.0,
+          "input_tokens_per_q": 0.0,
+          "materially_correct_rate": 1.0,
+          "n_answers": 40,
+          "n_questions": 40,
+          "no_answer_rate": 0.0,
+          "output_tokens_per_q": 0.0,
+          "over_abstained_rate": 0.0,
+          "sql_calls_per_q": 1.825,
+          "unit_slip_rate": 0.0
+        },
+        "schema_only": {
+          "accuracy_by_category": {
+            "ambiguous": 0.0625,
+            "control": 1.0,
+            "trap": 0.05263157894736842,
+            "unanswerable": 0.9166666666666666
+          },
+          "accuracy_by_trap": {
+            "definition": 0.0625,
+            "duplicates": 0.05,
+            "internal_accounts": 0.023809523809523808,
+            "not_instrumented": 1.0,
+            "partial_period": 0.375,
+            "refunds": 0.0625,
+            "system_events": 0.041666666666666664,
+            "timezone": 0.0,
+            "units": 1.0
+          },
+          "accuracy_lift_vs_baseline": {
+            "ci95": [
+              -0.025,
+              0.0625
+            ],
+            "mean": 0.0125
+          },
+          "caveated_wrong_rate": 0.6125,
+          "confidently_wrong_rate": 0.0375,
+          "correct_rate": 0.35,
+          "fell_for_naive_rate": 0.0375,
+          "input_tokens_per_q": 0.0,
+          "materially_correct_rate": 0.6125,
+          "n_answers": 80,
+          "n_questions": 40,
+          "no_answer_rate": 0.0,
+          "output_tokens_per_q": 0.0,
+          "over_abstained_rate": 0.0,
+          "same_outcome_across_trials": 0.875,
+          "sql_calls_per_q": 2.3125,
+          "unit_slip_rate": 0.0
+        }
+      },
+      "files": [
+        "haiku_ablation_github-copilot_claude-haiku-5.5.jsonl",
+        "haiku_github-copilot_claude-haiku-5.5.jsonl",
+        "haiku_t1_github-copilot_claude-haiku-5.5.jsonl"
+      ],
+      "model": "claude-haiku-5.5",
+      "provider": "github-copilot",
+      "runner_kind": "copilot-agent",
+      "stopped": [],
+      "trials": [
+        0,
+        1
+      ],
+      "variant": "main"
+    },
+    {
+      "conditions": {
+        "context_no_skill": {
+          "accuracy_by_category": {
+            "ambiguous": 1.0,
+            "control": 1.0,
+            "trap": 1.0,
+            "unanswerable": 1.0
+          },
+          "accuracy_by_trap": {
+            "definition": 1.0,
+            "duplicates": 1.0,
+            "internal_accounts": 1.0,
+            "not_instrumented": 1.0,
+            "partial_period": 1.0,
+            "refunds": 1.0,
+            "system_events": 1.0,
+            "timezone": 1.0,
+            "units": 1.0
+          },
+          "accuracy_lift_vs_baseline": {
+            "ci95": [
+              0.525,
+              0.8
+            ],
+            "mean": 0.6625
+          },
+          "caveated_wrong_rate": 0.0,
+          "confidently_wrong_rate": 0.0,
+          "correct_rate": 1.0,
+          "fell_for_naive_rate": 0.0,
+          "input_tokens_per_q": 0.0,
+          "materially_correct_rate": 1.0,
+          "n_answers": 40,
+          "n_questions": 40,
+          "no_answer_rate": 0.0,
+          "output_tokens_per_q": 0.0,
+          "over_abstained_rate": 0.0,
+          "sql_calls_per_q": 1.15,
+          "unit_slip_rate": 0.0
+        },
         "full_context": {
           "accuracy_by_category": {
             "ambiguous": 1.0,
@@ -23,9 +311,9 @@
           "accuracy_lift_vs_baseline": {
             "ci95": [
               0.525,
-              0.825
+              0.8
             ],
-            "mean": 0.675
+            "mean": 0.6625
           },
           "caveated_wrong_rate": 0.0,
           "confidently_wrong_rate": 0.0,
@@ -33,12 +321,13 @@
           "fell_for_naive_rate": 0.0,
           "input_tokens_per_q": 0.0,
           "materially_correct_rate": 1.0,
-          "n_answers": 40,
+          "n_answers": 80,
           "n_questions": 40,
           "no_answer_rate": 0.0,
           "output_tokens_per_q": 0.0,
           "over_abstained_rate": 0.0,
-          "sql_calls_per_q": 2.025,
+          "same_outcome_across_trials": 1.0,
+          "sql_calls_per_q": 1.8375,
           "unit_slip_rate": 0.0
         },
         "full_context_reconcile": {
@@ -62,9 +351,82 @@
           "accuracy_lift_vs_baseline": {
             "ci95": [
               0.525,
-              0.825
+              0.8
             ],
-            "mean": 0.675
+            "mean": 0.6625
+          },
+          "caveated_wrong_rate": 0.0,
+          "confidently_wrong_rate": 0.0,
+          "correct_rate": 1.0,
+          "fell_for_naive_rate": 0.0,
+          "input_tokens_per_q": 0.0,
+          "materially_correct_rate": 1.0,
+          "n_answers": 80,
+          "n_questions": 40,
+          "no_answer_rate": 0.0,
+          "output_tokens_per_q": 0.0,
+          "over_abstained_rate": 0.0,
+          "same_outcome_across_trials": 1.0,
+          "sql_calls_per_q": 1.75,
+          "unit_slip_rate": 0.0
+        },
+        "no_context": {
+          "accuracy_by_category": {
+            "ambiguous": 0.0,
+            "control": 1.0,
+            "trap": 0.05263157894736842,
+            "unanswerable": 0.9166666666666666
+          },
+          "accuracy_by_trap": {
+            "definition": 0.0,
+            "duplicates": 0.0,
+            "internal_accounts": 0.0,
+            "not_instrumented": 0.875,
+            "partial_period": 0.5,
+            "refunds": 0.0,
+            "system_events": 0.0,
+            "timezone": 0.0,
+            "units": 1.0
+          },
+          "caveated_wrong_rate": 0.6125,
+          "confidently_wrong_rate": 0.0375,
+          "correct_rate": 0.3375,
+          "fell_for_naive_rate": 0.0,
+          "input_tokens_per_q": 0.0,
+          "materially_correct_rate": 0.725,
+          "n_answers": 80,
+          "n_questions": 40,
+          "no_answer_rate": 0.0,
+          "output_tokens_per_q": 0.0,
+          "over_abstained_rate": 0.0125,
+          "same_outcome_across_trials": 0.925,
+          "sql_calls_per_q": 3.925,
+          "unit_slip_rate": 0.0
+        },
+        "schema_definitions": {
+          "accuracy_by_category": {
+            "ambiguous": 1.0,
+            "control": 1.0,
+            "trap": 1.0,
+            "unanswerable": 1.0
+          },
+          "accuracy_by_trap": {
+            "definition": 1.0,
+            "duplicates": 1.0,
+            "internal_accounts": 1.0,
+            "not_instrumented": 1.0,
+            "partial_period": 1.0,
+            "refunds": 1.0,
+            "system_events": 1.0,
+            "timezone": 1.0,
+            "units": 1.0
+          },
+          "accuracy_lift_vs_baseline": {
+            "ci95": [
+              0.525,
+              0.8
+            ],
+            "mean": 0.6625
           },
           "caveated_wrong_rate": 0.0,
           "confidently_wrong_rate": 0.0,
@@ -77,88 +439,296 @@
           "no_answer_rate": 0.0,
           "output_tokens_per_q": 0.0,
           "over_abstained_rate": 0.0,
-          "sql_calls_per_q": 1.925,
-          "unit_slip_rate": 0.0
-        },
-        "no_context": {
-          "accuracy_by_category": {
-            "ambiguous": 0.0,
-            "control": 1.0,
-            "trap": 0.05263157894736842,
-            "unanswerable": 0.8333333333333334
-          },
-          "accuracy_by_trap": {
-            "definition": 0.0,
-            "duplicates": 0.0,
-            "internal_accounts": 0.0,
-            "not_instrumented": 0.75,
-            "partial_period": 0.5,
-            "refunds": 0.0,
-            "system_events": 0.0,
-            "timezone": 0.0,
-            "units": 1.0
-          },
-          "caveated_wrong_rate": 0.65,
-          "confidently_wrong_rate": 0.025,
-          "correct_rate": 0.325,
-          "fell_for_naive_rate": 0.0,
-          "input_tokens_per_q": 0.0,
-          "materially_correct_rate": 0.725,
-          "n_answers": 40,
-          "n_questions": 40,
-          "no_answer_rate": 0.0,
-          "output_tokens_per_q": 0.0,
-          "over_abstained_rate": 0.0,
-          "sql_calls_per_q": 3.825,
+          "sql_calls_per_q": 1.65,
           "unit_slip_rate": 0.0
         },
         "schema_only": {
           "accuracy_by_category": {
-            "ambiguous": 0.125,
+            "ambiguous": 0.0625,
             "control": 1.0,
             "trap": 0.05263157894736842,
-            "unanswerable": 1.0
+            "unanswerable": 0.9166666666666666
           },
           "accuracy_by_trap": {
-            "definition": 0.125,
-            "duplicates": 0.1,
-            "internal_accounts": 0.047619047619047616,
-            "not_instrumented": 1.0,
+            "definition": 0.0625,
+            "duplicates": 0.05,
+            "internal_accounts": 0.023809523809523808,
+            "not_instrumented": 0.875,
             "partial_period": 0.5,
-            "refunds": 0.125,
-            "system_events": 0.08333333333333333,
+            "refunds": 0.0625,
+            "system_events": 0.041666666666666664,
             "timezone": 0.0,
             "units": 1.0
           },
           "accuracy_lift_vs_baseline": {
             "ci95": [
               0.0,
-              0.125
+              0.0375
             ],
-            "mean": 0.05
+            "mean": 0.0125
           },
-          "caveated_wrong_rate": 0.6,
+          "caveated_wrong_rate": 0.625,
           "confidently_wrong_rate": 0.025,
-          "correct_rate": 0.375,
+          "correct_rate": 0.35,
           "fell_for_naive_rate": 0.0,
           "input_tokens_per_q": 0.0,
-          "materially_correct_rate": 0.8,
-          "n_answers": 40,
+          "materially_correct_rate": 0.7625,
+          "n_answers": 80,
           "n_questions": 40,
           "no_answer_rate": 0.0,
           "output_tokens_per_q": 0.0,
           "over_abstained_rate": 0.0,
-          "sql_calls_per_q": 2.475,
+          "same_outcome_across_trials": 0.95,
+          "sql_calls_per_q": 2.25,
           "unit_slip_rate": 0.0
         }
       },
-      "file": "full_github-copilot_claude-opus-5.5.jsonl",
+      "files": [
+        "ablation_github-copilot_claude-opus-5.5.jsonl",
+        "full_github-copilot_claude-opus-5.5.jsonl",
+        "full_t1_github-copilot_claude-opus-5.5.jsonl"
+      ],
       "model": "claude-opus-5.5",
       "provider": "github-copilot",
-      "run_id": "20261127T233649Z_github-copilot_claude-opus-5.5",
       "runner_kind": "copilot-agent",
-      "stopped": null,
-      "trials": 1
+      "stopped": [],
+      "trials": [
+        0,
+        1
+      ],
+      "variant": "main"
+    },
+    {
+      "conditions": {
+        "full_context": {
+          "accuracy_by_category": {
+            "ambiguous": 1.0,
+            "trap": 1.0
+          },
+          "accuracy_by_trap": {
+            "definition": 1.0,
+            "duplicates": 1.0,
+            "internal_accounts": 1.0,
+            "partial_period": 1.0,
+            "refunds": 1.0,
+            "resubmitted_orders": 1.0,
+            "system_events": 1.0,
+            "timezone": 1.0
+          },
+          "accuracy_lift_vs_baseline": {
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "mean": 1.0
+          },
+          "caveated_wrong_rate": 0.0,
+          "confidently_wrong_rate": 0.0,
+          "correct_rate": 1.0,
+          "fell_for_naive_rate": 0.0,
+          "input_tokens_per_q": 0.0,
+          "materially_correct_rate": 1.0,
+          "n_answers": 10,
+          "n_questions": 10,
+          "no_answer_rate": 0.0,
+          "output_tokens_per_q": 0.0,
+          "over_abstained_rate": 0.0,
+          "sql_calls_per_q": 3.6,
+          "unit_slip_rate": 0.0
+        },
+        "full_context_reconcile": {
+          "accuracy_by_category": {
+            "ambiguous": 1.0,
+            "trap": 1.0
+          },
+          "accuracy_by_trap": {
+            "definition": 1.0,
+            "duplicates": 1.0,
+            "internal_accounts": 1.0,
+            "partial_period": 1.0,
+            "refunds": 1.0,
+            "resubmitted_orders": 1.0,
+            "system_events": 1.0,
+            "timezone": 1.0
+          },
+          "accuracy_lift_vs_baseline": {
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "mean": 1.0
+          },
+          "caveated_wrong_rate": 0.0,
+          "confidently_wrong_rate": 0.0,
+          "correct_rate": 1.0,
+          "fell_for_naive_rate": 0.0,
+          "input_tokens_per_q": 0.0,
+          "materially_correct_rate": 1.0,
+          "n_answers": 10,
+          "n_questions": 10,
+          "no_answer_rate": 0.0,
+          "output_tokens_per_q": 0.0,
+          "over_abstained_rate": 0.0,
+          "sql_calls_per_q": 3.2,
+          "unit_slip_rate": 0.0
+        },
+        "no_context": {
+          "accuracy_by_category": {
+            "ambiguous": 0.0,
+            "trap": 0.0
+          },
+          "accuracy_by_trap": {
+            "definition": 0.0,
+            "duplicates": 0.0,
+            "internal_accounts": 0.0,
+            "partial_period": 0.0,
+            "refunds": 0.0,
+            "resubmitted_orders": 0.0,
+            "system_events": 0.0,
+            "timezone": 0.0
+          },
+          "caveated_wrong_rate": 0.7,
+          "confidently_wrong_rate": 0.2,
+          "correct_rate": 0.0,
+          "fell_for_naive_rate": 0.0,
+          "input_tokens_per_q": 0.0,
+          "materially_correct_rate": 0.1,
+          "n_answers": 10,
+          "n_questions": 10,
+          "no_answer_rate": 0.0,
+          "output_tokens_per_q": 0.0,
+          "over_abstained_rate": 0.1,
+          "sql_calls_per_q": 4.4,
+          "unit_slip_rate": 0.0
+        }
+      },
+      "files": [
+        "holdout_github-copilot_claude-haiku-5.5.jsonl"
+      ],
+      "model": "claude-haiku-5.5",
+      "provider": "github-copilot",
+      "runner_kind": "copilot-agent",
+      "stopped": [],
+      "trials": [
+        0
+      ],
+      "variant": "holdout"
+    },
+    {
+      "conditions": {
+        "full_context": {
+          "accuracy_by_category": {
+            "ambiguous": 1.0,
+            "trap": 1.0
+          },
+          "accuracy_by_trap": {
+            "definition": 1.0,
+            "duplicates": 1.0,
+            "internal_accounts": 1.0,
+            "partial_period": 1.0,
+            "refunds": 1.0,
+            "resubmitted_orders": 1.0,
+            "system_events": 1.0,
+            "timezone": 1.0
+          },
+          "accuracy_lift_vs_baseline": {
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "mean": 1.0
+          },
+          "caveated_wrong_rate": 0.0,
+          "confidently_wrong_rate": 0.0,
+          "correct_rate": 1.0,
+          "fell_for_naive_rate": 0.0,
+          "input_tokens_per_q": 0.0,
+          "materially_correct_rate": 1.0,
+          "n_answers": 10,
+          "n_questions": 10,
+          "no_answer_rate": 0.0,
+          "output_tokens_per_q": 0.0,
+          "over_abstained_rate": 0.0,
+          "sql_calls_per_q": 3.9,
+          "unit_slip_rate": 0.0
+        },
+        "full_context_reconcile": {
+          "accuracy_by_category": {
+            "ambiguous": 1.0,
+            "trap": 1.0
+          },
+          "accuracy_by_trap": {
+            "definition": 1.0,
+            "duplicates": 1.0,
+            "internal_accounts": 1.0,
+            "partial_period": 1.0,
+            "refunds": 1.0,
+            "resubmitted_orders": 1.0,
+            "system_events": 1.0,
+            "timezone": 1.0
+          },
+          "accuracy_lift_vs_baseline": {
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "mean": 1.0
+          },
+          "caveated_wrong_rate": 0.0,
+          "confidently_wrong_rate": 0.0,
+          "correct_rate": 1.0,
+          "fell_for_naive_rate": 0.0,
+          "input_tokens_per_q": 0.0,
+          "materially_correct_rate": 1.0,
+          "n_answers": 10,
+          "n_questions": 10,
+          "no_answer_rate": 0.0,
+          "output_tokens_per_q": 0.0,
+          "over_abstained_rate": 0.0,
+          "sql_calls_per_q": 4.1,
+          "unit_slip_rate": 0.0
+        },
+        "no_context": {
+          "accuracy_by_category": {
+            "ambiguous": 0.0,
+            "trap": 0.0
+          },
+          "accuracy_by_trap": {
+            "definition": 0.0,
+            "duplicates": 0.0,
+            "internal_accounts": 0.0,
+            "partial_period": 0.0,
+            "refunds": 0.0,
+            "resubmitted_orders": 0.0,
+            "system_events": 0.0,
+            "timezone": 0.0
+          },
+          "caveated_wrong_rate": 1.0,
+          "confidently_wrong_rate": 0.0,
+          "correct_rate": 0.0,
+          "fell_for_naive_rate": 0.0,
+          "input_tokens_per_q": 0.0,
+          "materially_correct_rate": 0.5,
+          "n_answers": 10,
+          "n_questions": 10,
+          "no_answer_rate": 0.0,
+          "output_tokens_per_q": 0.0,
+          "over_abstained_rate": 0.0,
+          "sql_calls_per_q": 5.2,
+          "unit_slip_rate": 0.0
+        }
+      },
+      "files": [
+        "holdout_github-copilot_claude-opus-5.5.jsonl"
+      ],
+      "model": "claude-opus-5.5",
+      "provider": "github-copilot",
+      "runner_kind": "copilot-agent",
+      "stopped": [],
+      "trials": [
+        0
+      ],
+      "variant": "holdout"
     }
   ]
 }

@@ -18,5 +18,17 @@ tool or answer key changed since the run. After adding a run, regenerate
 `results/summary.md` with `python src/cli.py report` and update the README's results
 section.
 
-`full_github-copilot_claude-opus-5.5.jsonl` holds 160 answers (40 questions × 4 core
-conditions, one trial).
+Saved runs:
+
+| File | Model | Conditions | Trial | Answers |
+|---|---|---|---|---|
+| `full_github-copilot_claude-opus-5.5.jsonl` | `claude-opus-5.5` | 4 core | 0 | 160 |
+| `full_t1_github-copilot_claude-opus-5.5.jsonl` | `claude-opus-5.5` | 4 core | 1 | 160 |
+| `ablation_github-copilot_claude-opus-5.5.jsonl` | `claude-opus-5.5` | `schema_definitions`, `context_no_skill` | 0 | 80 |
+| `haiku_github-copilot_claude-haiku-5.5.jsonl` | `claude-haiku-5.5` | 4 core | 0 | 160 |
+| `haiku_t1_github-copilot_claude-haiku-5.5.jsonl` | `claude-haiku-5.5` | 4 core | 1 | 160 |
+| `haiku_ablation_github-copilot_claude-haiku-5.5.jsonl` | `claude-haiku-5.5` | `schema_definitions`, `context_no_skill` | 0 | 80 |
+| `holdout_github-copilot_claude-opus-5.5.jsonl` | `claude-opus-5.5` | `no_context`, `full_context`, `full_context_reconcile` on the holdout warehouse | 0 | 30 |
+| `holdout_github-copilot_claude-haiku-5.5.jsonl` | `claude-haiku-5.5` | `no_context`, `full_context`, `full_context_reconcile` on the holdout warehouse | 0 | 30 |
+
+The report pools files by model and warehouse, keyed on (condition, question, trial), and refuses duplicates. Holdout files carry `"variant": "holdout"` in their `meta` line; they are replayed against `data/analyst_holdout.db` and graded against `questions/answer_key_holdout.json`.

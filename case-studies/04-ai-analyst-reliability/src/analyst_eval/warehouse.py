@@ -30,7 +30,7 @@ import duckdb
 import numpy as np
 import pandas as pd
 
-from analyst_eval import DB_PATH, REPO_ROOT
+from analyst_eval import DB_PATH, HOLDOUT_DB_PATH, REPO_ROOT
 
 sys.path.insert(0, str(REPO_ROOT / "case-studies" / "01-funnel-and-retention" / "src"))
 from generate_data import simulate  # noqa: E402
@@ -48,6 +48,7 @@ DUPLICATE_RATE = 0.04
 REFUND_RATE = 0.08
 FULL_REFUND_SHARE = 0.75
 PUSH_REACH = 0.40
+RESUBMIT_RATE = 0.05  # holdout warehouse only
 
 USER_EVENTS = ("view_product", "add_to_cart", "checkout", "purchase")
 SYSTEM_EVENTS = ("email_delivered", "push_delivered")
@@ -222,6 +223,44 @@ def build(
     db_path: Path | str = DB_PATH, n_users: int = DEFAULT_N_USERS, seed: int = DEFAULT_SEED
 ) -> Path:
     frames = build_frames(n_users=n_users, seed=seed)
+    write_warehouse(frames, db_path)
+    return Path(db_path)
+
+
+def add_resubmitted_orders(frames: dict[str, pd.DataFrame], seed: int = DEFAULT_SEED,
+                           rate: float = RESUBMIT_RATE) -> dict[str, pd.DataFrame]:
+    """The holdout trap: some checkouts were submitted twice by the payment client.
+
+    The second submission is a new event (new ``event_id``, a few seconds to minutes
+    later) for the same ``order_id`` and amount. Deduplicating on ``event_id``, the rule
+    the context pack documents, doesn't remove it; one row per ``order_id`` does. Nothing
+    in the context pack mentions it. Uses its own random stream, so the main warehouse
+    is untouched.
+    """
+    rng = np.random.default_rng([seed, 99])
+    events = frames["events"]
+    first = events.drop_duplicates("event_id", keep="first")
+    real = first[(first["event_name"] == "purchase") & (first["user_id"] < QA_FIRST_ID)]
+    picked = real[rng.random(len(real)) < rate].sort_values("event_ts").copy()
+    gap = pd.to_timedelta(rng.uniform(5, 180, size=len(picked)), unit="s")
+    picked["event_ts"] = picked["event_ts"] + gap
+    picked["ingested_at"] = picked["event_ts"] + pd.to_timedelta(
+        rng.uniform(0.5, 5.0, size=len(picked)), unit="s")
+    picked = picked[picked["ingested_at"] <= WATERMARK]
+    next_id = int(first.loc[first["event_id"].str.startswith("ev_"), "event_id"]
+                  .str[3:].astype(int).max()) + 1
+    picked["event_id"] = [f"ev_{next_id + i:07d}" for i in range(len(picked))]
+    out = pd.concat([events, picked], ignore_index=True)
+    out = out.sort_values(["ingested_at", "event_id"], kind="stable").reset_index(drop=True)
+    return {**frames, "events": out}
+
+
+def build_holdout(
+    db_path: Path | str = HOLDOUT_DB_PATH, n_users: int = DEFAULT_N_USERS,
+    seed: int = DEFAULT_SEED,
+) -> Path:
+    """The main warehouse plus one undocumented trap (re-submitted orders)."""
+    frames = add_resubmitted_orders(build_frames(n_users=n_users, seed=seed), seed=seed)
     write_warehouse(frames, db_path)
     return Path(db_path)
 
