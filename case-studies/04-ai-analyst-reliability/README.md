@@ -2,7 +2,11 @@
 
 **Audience:** Data science and analytics leads deciding how much to invest in context for AI analyst agents
 **Author:** Senior Data Scientist, Analytics
-**Status:** Complete for one model. 160 graded answers from `claude-opus-5.5` (40 questions × 4 conditions, one trial), run as GitHub Copilot sub-agents in blind folders. Every logged query has been re-run against a fresh build to validate the results.
+**Status:** Complete. 560 graded answers, run as GitHub Copilot sub-agents in blind folders:
+- `claude-opus-5.5`: the four core conditions twice (two independent trials), plus the two ablations once.
+- `claude-haiku-5.5`: the four core conditions once.
+
+Every logged query has been re-run against a fresh build to validate the results.
 
 ## Question
 
@@ -11,14 +15,15 @@
 ## TL;DR
 
 <!-- cited:start -->
-- **Written business conventions are what work.** With the full context pack the model answered 40 of 40 correctly [E:run.claude-opus-5.5.t0.full_context.correct] [E:run.claude-opus-5.5.t0.full_context.n]. With no context it got 13 [E:run.claude-opus-5.5.t0.no_context.correct], and with the schema catalog alone 15 [E:run.claude-opus-5.5.t0.schema_only.correct].
-- **The model wasn't naive without context.** By exploring the data it found the duplicate events, QA accounts and messaging rows on its own. None of its wrong answers equalled the naive first-draft query's answer [E:run.claude-opus-5.5.t0.no_context.matched_naive].
-- **What it couldn't find was convention.** 19 of its 27 misses [E:run.claude-opus-5.5.t0.no_context.wrong_tz_only] [E:run.claude-opus-5.5.t0.no_context.wrong] are exactly the right answer computed in UTC instead of the business's Pacific time. The rest are definitional: gross vs net revenue, refund rate by count vs by dollars, retention window.
-- **It flagged its uncertainty.** 26 of the 27 misses carried a caveat [E:run.claude-opus-5.5.t0.no_context.caveated_wrong] [E:run.claude-opus-5.5.t0.no_context.wrong]. Only 1 was confidently wrong [E:run.claude-opus-5.5.t0.no_context.confidently_wrong].
-- **Reconciliation was ceremony on this set.** There were 34 independent recomputations [E:run.claude-opus-5.5.t0.full_context_reconcile.reconciled]. All of them matched [E:run.claude-opus-5.5.t0.full_context_reconcile.reconcile_match], none changed an answer [E:run.claude-opus-5.5.t0.full_context_reconcile.reconcile_changed], and median time per question rose from 12.5 to 24.2 seconds [E:run.claude-opus-5.5.t0.full_context.median_seconds] [E:run.claude-opus-5.5.t0.full_context_reconcile.median_seconds].
+- **Written business conventions are what work.** With the full context pack `claude-opus-5.5` answered 40 of 40 correctly [E:run.claude-opus-5.5.t0.full_context.correct] [E:run.claude-opus-5.5.t0.full_context.n]. With no context it got 13 [E:run.claude-opus-5.5.t0.no_context.correct], and with the schema catalog alone 15 [E:run.claude-opus-5.5.t0.schema_only.correct].
+- **It reproduced.** A second, independent trial scored 14 with no context [E:run.claude-opus-5.5.t1.no_context.correct], 13 with schema only [E:run.claude-opus-5.5.t1.schema_only.correct] and 40 with full context [E:run.claude-opus-5.5.t1.full_context.correct]. Without context, 37 of 40 questions [E:run.claude-opus-5.5.no_context.same_outcome] [E:run.claude-opus-5.5.no_context.n_repeated] got the same graded outcome both times.
+- **The definitions file did all the work for Opus.** Schema plus definitions alone scored 40 of 40 [E:run.claude-opus-5.5.t0.schema_definitions.correct]. The traps notes and the procedural skill added nothing measurable on top.
+- **A weaker model needed the same pack and was rescued by it.** `claude-haiku-5.5` scored 14 with no context [E:run.claude-haiku-5.5.t0.no_context.correct] and 40 with full context [E:run.claude-haiku-5.5.t0.full_context.correct]. Unlike Opus, it fell for planted traps: 6 of its misses equalled the naive query's answer [E:run.claude-haiku-5.5.t0.no_context.matched_naive], against none for Opus [E:run.claude-opus-5.5.t0.no_context.matched_naive].
+- **Opus wasn't naive without context; it just couldn't read minds.** 19 of its 27 misses [E:run.claude-opus-5.5.t0.no_context.wrong_tz_only] [E:run.claude-opus-5.5.t0.no_context.wrong] are exactly the right answer computed in UTC instead of the business's Pacific time. 26 of the 27 carried a caveat [E:run.claude-opus-5.5.t0.no_context.caveated_wrong] [E:run.claude-opus-5.5.t0.no_context.wrong].
+- **Reconciliation was ceremony on this set, for both models.** Three runs each forced 34 independent recomputations [E:run.claude-opus-5.5.t0.full_context_reconcile.reconciled] [E:run.claude-opus-5.5.t1.full_context_reconcile.reconciled] [E:run.claude-haiku-5.5.t0.full_context_reconcile.reconciled], and none changed an answer [E:run.claude-opus-5.5.t0.full_context_reconcile.reconcile_changed] [E:run.claude-opus-5.5.t1.full_context_reconcile.reconcile_changed] [E:run.claude-haiku-5.5.t0.full_context_reconcile.reconcile_changed]. It roughly doubled median time: 12.5 to 24.2 seconds for Opus [E:run.claude-opus-5.5.t0.full_context.median_seconds] [E:run.claude-opus-5.5.t0.full_context_reconcile.median_seconds], 21.7 to 49.6 for Haiku [E:run.claude-haiku-5.5.t0.full_context.median_seconds] [E:run.claude-haiku-5.5.t0.full_context_reconcile.median_seconds].
 <!-- cited:end -->
 
-**Practitioner takeaway:** write down what the data can't tell a model: reporting time zone, how refunds are attributed, what "active", "revenue" and "retention" mean, and when a period is complete. Don't spend context on traps a capable model finds by profiling the data. Keep reconciliation for weaker models or warehouses with real join bugs; here it found nothing to fix.
+**Practitioner takeaway:** write down what the data can't tell a model: reporting time zone, how refunds are attributed, what "active", "revenue" and "retention" mean, when a period is complete, and the one-line ground rules (exclude internal accounts, one row per event id, user-initiated events only). For the strong model that was the whole job; a page of trap essays and a procedural skill added nothing. The weaker model *did* trip over the data quirks without context, and the same pack fixed it. Keep reconciliation for warehouses with real join bugs; here it found nothing to fix for either model.
 
 The test has teeth. A reasonable first-draft query, the kind an analyst new to this warehouse would write, gets every trap and ambiguous question wrong:
 
@@ -82,8 +87,8 @@ Two controls started life as trap questions: average order value and tablet shar
 | `schema_only` | + `context/schema.md` (column catalog) | Is a data dictionary enough? |
 | `full_context` | + `definitions.md`, `traps.md`, `answer-from-definitions` skill | The full context pack |
 | `full_context_reconcile` | Full context, then a forced independent recomputation and data-diff | Does verification beat more context? |
-| `schema_definitions` *(optional)* | Schema + definitions only | Ablation: are the traps notes ceremony? |
-| `context_no_skill` *(optional)* | Schema + definitions + traps, no skill | Ablation: is the procedural skill ceremony? |
+| `schema_definitions` | Schema + definitions only | Ablation: are the traps notes and skill ceremony? (run for Opus) |
+| `context_no_skill` | Schema + definitions + traps, no skill | Ablation: is the procedural skill ceremony? (run for Opus) |
 
 The protocol (identical in every condition) gives the model a read-only DuckDB tool and asks for a final JSON answer with `status` of `answered`, `answered_with_caveat` or `abstained`, the value, the SQL that produced it, assumptions and checks.
 
@@ -134,15 +139,17 @@ The last row is the uncomfortable one for any grading scheme: two real errors th
 
 No API key was available, so the experiment ran inside GitHub Copilot.
 
-- **The analysts:** each answer came from a fresh `claude-opus-5.5` sub-agent working on one question in one condition.
+- **The analysts:** each answer came from a fresh sub-agent of the model under test, working on one question in one condition.
 - **The blind folder:** each agent worked in a folder outside the repo containing only:
   - the raw database
   - that condition's `AGENT.md`, which holds the same protocol and context the API harness would send as a system prompt
   - `tool.py`, its only way to query the data and submit an answer
 - **What's excluded:** there was no answer key, gold SQL or grading code in the folder.
-- **The record:** `tool.py` logs every query, result and answer itself, so the record doesn't depend on what the agent reported. `cli.py import-agent-run` turns those logs into `runs/full_github-copilot_claude-opus-5.5.jsonl`. Validation re-runs every logged query against a freshly built warehouse; CI does the same.
+- **The record:** `tool.py` logs every query, result and answer itself, so the record doesn't depend on what the agent reported. `cli.py import-agent-run` turns those logs into the run files in `runs/`: `full_` (Opus, first trial), `full_t1_` (Opus, second trial), `ablation_` (Opus ablations) and `haiku_`. Validation re-runs every logged query against a freshly built warehouse; CI does the same.
+- **The second trial** used fresh bundles and fresh agents, with nothing carried over from the first. The Haiku run used bundles identical to Opus's; only the model differed.
+- **One harness fix after the runs:** the importer flagged a reconciliation as having "changed" the answer when the same number came back with different trailing float digits (`38.13701372614664` vs `38.137013726146634`). Change detection now uses a relative tolerance of 1e-9; the affected run was re-imported from its raw logs, not edited.
 
-### Scorecard
+### Scorecard: `claude-opus-5.5`, first trial
 
 <!-- cited:start -->
 | Condition | Correct | Within one percent | Confidently wrong | Wrong with caveat | Queries per question | Median seconds |
@@ -155,33 +162,93 @@ No API key was available, so the experiment ran inside GitHub Copilot.
 
 Each condition has 40 answers. Accuracy by live trap and the paired-bootstrap lift over `no_context` are in [`results/summary.md`](results/summary.md), which is generated from the validated run. Tokens and dollar cost can't be measured through Copilot, so the cost columns there read `n/a`. Queries per question and wall time stand in for cost.
 
-### What the errors were
+### What the errors were (Opus, first trial)
 
 <!-- cited:start -->
 - **Time zone dominates.** Without context, 19 of 27 misses [E:run.claude-opus-5.5.t0.no_context.wrong_tz_only] [E:run.claude-opus-5.5.t0.no_context.wrong] match the gold answer recomputed with only the Pacific-time rule switched off. With the schema alone it is 21 of 25 [E:run.claude-opus-5.5.t0.schema_only.wrong_tz_only] [E:run.claude-opus-5.5.t0.schema_only.wrong]. Every agent saw UTC-looking timestamps, and several said in their caveat that the reporting zone was unknown. None could get it right without being told.
 - **Most of those misses are small.** Only 11 no-context answers [E:run.claude-opus-5.5.t0.no_context.material_wrong] and 8 schema-only answers [E:run.claude-opus-5.5.t0.schema_only.material_wrong] were more than one percent off. The big ones were definitional: "revenue" answered gross, "refund rate" answered by order count, "ARPU" before refunds, and daily counts where a third of a day moves.
-- **The discoverable traps weren't a problem.** No answer in any condition equalled the naive query's answer [E:run.claude-opus-5.5.t0.no_context.matched_naive] [E:run.claude-opus-5.5.t0.schema_only.matched_naive]. With no documentation, the agents found duplicate event ids, the internal-account flag, messaging events and the load watermark by profiling the data.
+- **The discoverable traps weren't a problem for Opus.** None of its answers in either lighter condition equalled the naive query's answer [E:run.claude-opus-5.5.t0.no_context.matched_naive] [E:run.claude-opus-5.5.t0.schema_only.matched_naive]. With no documentation, the agents found duplicate event ids, the internal-account flag, messaging events and the load watermark by profiling the data.
 <!-- cited:end -->
+
+### Second trial: is it stable?
+
+The four core conditions were rerun for `claude-opus-5.5` with fresh bundles and fresh agents.
+
+<!-- cited:start -->
+| Condition | Correct, first trial | Correct, second trial | Same graded outcome in both |
+|---|---|---|---|
+| no_context | 13 [E:run.claude-opus-5.5.t0.no_context.correct] | 14 [E:run.claude-opus-5.5.t1.no_context.correct] | 37 of 40 [E:run.claude-opus-5.5.no_context.same_outcome] [E:run.claude-opus-5.5.no_context.n_repeated] |
+| schema_only | 15 [E:run.claude-opus-5.5.t0.schema_only.correct] | 13 [E:run.claude-opus-5.5.t1.schema_only.correct] | 38 of 40 [E:run.claude-opus-5.5.schema_only.same_outcome] [E:run.claude-opus-5.5.schema_only.n_repeated] |
+| full_context | 40 [E:run.claude-opus-5.5.t0.full_context.correct] | 40 [E:run.claude-opus-5.5.t1.full_context.correct] | 40 of 40 [E:run.claude-opus-5.5.full_context.same_outcome] [E:run.claude-opus-5.5.full_context.n_repeated] |
+| full_context_reconcile | 40 [E:run.claude-opus-5.5.t0.full_context_reconcile.correct] | 40 [E:run.claude-opus-5.5.t1.full_context_reconcile.correct] | 40 of 40 [E:run.claude-opus-5.5.full_context_reconcile.same_outcome] [E:run.claude-opus-5.5.full_context_reconcile.n_repeated] |
+
+- **The headline held.** In the second trial the time zone again explained 20 of 26 no-context misses [E:run.claude-opus-5.5.t1.no_context.wrong_tz_only] [E:run.claude-opus-5.5.t1.no_context.wrong], and the second reconcile run changed no answers either [E:run.claude-opus-5.5.t1.full_context_reconcile.reconcile_changed].
+<!-- cited:end -->
+
+The five questions that changed outcome are informative. All of them came from the lighter conditions:
+
+- **Sessions (`u04`).** The sessions question was abstained on under `schema_only` in the first trial and under `no_context` in the second; in the other cell each time, the agent built a 30-minute sessionisation instead. So my first-trial reading that the schema catalog "produces the abstention" was noise.
+- **ARPU (`a07`).** Correct under `schema_only` in one trial, gross-before-refunds in the other.
+- **Retention (`a08`).** Caveated and wrong under `no_context` in one trial, abstained (over-cautiously) in the other.
+- **Week-1 activity (`t16`).** The same wrong value both times, once caveated and once not. The confident/caveated label is itself noisy, which matters for any metric built on it, including "confidently wrong".
+
+With full context there was nothing to vary: 80 of 80 answers correct in each full-context condition across the two trials.
+
+### Ablations: which part of the pack did the work?
+
+Run once, for `claude-opus-5.5`.
+
+<!-- cited:start -->
+| Condition | What's in context | Correct | Queries per question | Median seconds |
+|---|---|---|---|---|
+| full_context (first trial) | schema, definitions, traps, skill | 40 [E:run.claude-opus-5.5.t0.full_context.correct] | 2.0 [E:run.claude-opus-5.5.t0.full_context.sql_per_q] | 12.5 [E:run.claude-opus-5.5.t0.full_context.median_seconds] |
+| context_no_skill | schema, definitions, traps | 40 [E:run.claude-opus-5.5.t0.context_no_skill.correct] | 1.15 [E:run.claude-opus-5.5.t0.context_no_skill.sql_per_q] | 11.9 [E:run.claude-opus-5.5.t0.context_no_skill.median_seconds] |
+| schema_definitions | schema, definitions | 40 [E:run.claude-opus-5.5.t0.schema_definitions.correct] | 1.65 [E:run.claude-opus-5.5.t0.schema_definitions.sql_per_q] | 14.1 [E:run.claude-opus-5.5.t0.schema_definitions.median_seconds] |
+<!-- cited:end -->
+
+- **The traps notes and the skill added nothing measurable for Opus.** Every arm that had the definitions file scored 40 of 40. Without the skill the agents ran fewer queries, not more; the skill asks for pre-flight checks, which is the likely reason.
+- **Read this carefully.** `definitions.md` isn't only metric definitions. It states the ground rules that implement each trap fix in one line apiece: exclude internal accounts, one row per `event_id`, only user-initiated events count as activity, report in Pacific time, attribute refunds to the order date, report complete periods only. So the ablation shows that the trap *descriptions* in `traps.md` and the procedural skill were redundant once those rules were written down. It does not show that the fixes were unnecessary; the arms without the rules are `no_context` and `schema_only`, which is where every error was.
+- **Untested:** the same ablations on the weaker model. Given how differently it failed without context (below), I wouldn't extend this verdict to Haiku without running them.
+
+### A weaker model: `claude-haiku-5.5`
+
+Same bundles, same questions, one trial.
+
+<!-- cited:start -->
+| Condition | Correct | Within one percent | Confidently wrong | Wrong with caveat | Matched naive answer | Queries per question | Median seconds |
+|---|---|---|---|---|---|---|---|
+| no_context | 14 [E:run.claude-haiku-5.5.t0.no_context.correct] | 52.5% [E:run.claude-haiku-5.5.t0.no_context.material_pct] | 3 [E:run.claude-haiku-5.5.t0.no_context.confidently_wrong] | 23 [E:run.claude-haiku-5.5.t0.no_context.caveated_wrong] | 6 [E:run.claude-haiku-5.5.t0.no_context.matched_naive] | 4.0 [E:run.claude-haiku-5.5.t0.no_context.sql_per_q] | 60.5 [E:run.claude-haiku-5.5.t0.no_context.median_seconds] |
+| schema_only | 13 [E:run.claude-haiku-5.5.t0.schema_only.correct] | 57.5% [E:run.claude-haiku-5.5.t0.schema_only.material_pct] | 1 [E:run.claude-haiku-5.5.t0.schema_only.confidently_wrong] | 26 [E:run.claude-haiku-5.5.t0.schema_only.caveated_wrong] | 2 [E:run.claude-haiku-5.5.t0.schema_only.matched_naive] | 2.3 [E:run.claude-haiku-5.5.t0.schema_only.sql_per_q] | 27.5 [E:run.claude-haiku-5.5.t0.schema_only.median_seconds] |
+| full_context | 40 [E:run.claude-haiku-5.5.t0.full_context.correct] | 100% [E:run.claude-haiku-5.5.t0.full_context.material_pct] | 0 [E:run.claude-haiku-5.5.t0.full_context.confidently_wrong] | 0 [E:run.claude-haiku-5.5.t0.full_context.caveated_wrong] | 0 [E:run.claude-haiku-5.5.t0.full_context.matched_naive] | 2.1 [E:run.claude-haiku-5.5.t0.full_context.sql_per_q] | 21.7 [E:run.claude-haiku-5.5.t0.full_context.median_seconds] |
+| full_context_reconcile | 40 [E:run.claude-haiku-5.5.t0.full_context_reconcile.correct] | 100% [E:run.claude-haiku-5.5.t0.full_context_reconcile.material_pct] | 0 [E:run.claude-haiku-5.5.t0.full_context_reconcile.confidently_wrong] | 0 [E:run.claude-haiku-5.5.t0.full_context_reconcile.caveated_wrong] | 0 [E:run.claude-haiku-5.5.t0.full_context_reconcile.matched_naive] | 2.0 [E:run.claude-haiku-5.5.t0.full_context_reconcile.sql_per_q] | 49.6 [E:run.claude-haiku-5.5.t0.full_context_reconcile.median_seconds] |
+
+- **Same score, different failure.** Without context Haiku matched Opus on the headline count, but only 6 of its 26 misses [E:run.claude-haiku-5.5.t0.no_context.wrong_tz_only] [E:run.claude-haiku-5.5.t0.no_context.wrong] were the time zone alone, against 19 of 27 for Opus [E:run.claude-opus-5.5.t0.no_context.wrong_tz_only] [E:run.claude-opus-5.5.t0.no_context.wrong].
+- **It missed the discoverable traps.** 8 no-context misses [E:run.claude-haiku-5.5.t0.no_context.wrong_kept_internal] are explained only by keeping the internal QA accounts in, against 1 for Opus [E:run.claude-opus-5.5.t0.no_context.wrong_kept_internal]. It counted email and push deliveries as daily activity, reporting the naive 3,501 DAU [E:t06.naive] where the answer is 1,148 [E:t06.gold].
+- **The errors are still the kind a written rule fixes.** 20 of its 26 no-context misses [E:run.claude-haiku-5.5.t0.no_context.wrong_cleaning] [E:run.claude-haiku-5.5.t0.no_context.wrong] equal the gold answer with some combination of the four data-cleaning rules switched off. The rest are definitional.
+- **Its errors were bigger.** 19 no-context answers [E:run.claude-haiku-5.5.t0.no_context.material_wrong] were more than one percent off, against 11 for Opus [E:run.claude-opus-5.5.t0.no_context.material_wrong]. Haiku still caveated most misses (23 of 26 [E:run.claude-haiku-5.5.t0.no_context.caveated_wrong] [E:run.claude-haiku-5.5.t0.no_context.wrong]).
+<!-- cited:end -->
+
+It also answered the half-loaded last day's DAU with a caveat in both lighter conditions, where Opus abstained. With the full pack, every Haiku answer was correct, including abstaining on that day.
 
 ### Which context earned its place
 
-| Component | Verdict for this model | Evidence |
-|---|---|---|
-| Metric definitions + reporting conventions (`definitions.md`) | **Essential.** The only fix for time zone, refund attribution and ambiguous terms. | Every miss in the two lighter conditions is a convention the data can't reveal. Both full-context conditions scored 40/40. |
-| Schema catalog (`schema.md`) | **Marginal.** It reduced exploration (fewer queries, shorter runs) and turned one sessionisation into an abstention, but barely moved accuracy. | 15 vs 13 correct. The lift CI includes zero (`results/summary.md`). |
-| Known-traps notes (`traps.md`) | **Probably ceremony for the discoverable traps** (duplicates, QA accounts, messaging events), since agents without it found them anyway. **Untested in isolation**, because the ablations that split it out weren't run. | Matched-naive count is zero without any traps notes. |
-| `answer-from-definitions` skill | **Untested in isolation**, for the same reason. | — |
-| Reconcile step | **Ceremony on this set.** It never disagreed and never changed an answer, and it roughly doubled median time. Its value can't be shown when full context leaves nothing to catch. | See the TL;DR figures. |
+| Component | `claude-opus-5.5` | `claude-haiku-5.5` | Evidence |
+|---|---|---|---|
+| Definitions + ground rules (`definitions.md`) | **Essential, and sufficient.** | **Essential**; sufficiency untested. | Both models went from 13–15 correct without it to 40/40 with it. For Opus, schema + definitions alone scored 40/40. |
+| Schema catalog (`schema.md`) | **Marginal.** Fewer queries and shorter runs, no reliable accuracy change. | **Marginal.** Same pattern. | 15 then 13 correct vs 13 then 14 without it (Opus); 13 vs 14 (Haiku). The one abstention it seemed to cause flipped in the second trial. |
+| Known-traps notes (`traps.md`) | **Ceremony**, once the ground rules are written. | **Untested in isolation.** Haiku did fall for the traps without any context, so don't assume. | `schema_definitions` 40/40 for Opus. |
+| `answer-from-definitions` skill | **Ceremony.** Dropping it also cut queries per question. | **Untested in isolation.** | `context_no_skill` 40/40 for Opus. |
+| Reconcile step | **Ceremony on this set.** About double the time, nothing caught. | **Ceremony on this set.** About double the time, nothing caught. | Three runs of 34 reconciles, none changed an answer. Its value can't show when full context leaves nothing to catch. |
 
 ### How the predictions held up
 
-1. *Schema fixes units and uninstrumented abstentions but not business rules.* **Mostly right.** Units were never a problem even with no context, and the schema did produce the abstention on sessions. Business-rule errors were untouched.
-2. *Definitions drive the gain on ambiguous questions; the traps file drives duplicates and partial periods.* **Half right.** Definitions did carry the ambiguous questions, but the agents handled duplicates with no traps file at all. The ablations needed to settle this weren't run.
-3. *The skill mainly turns confident errors into caveated ones.* **Wrong premise.** Without context the agents were already caveating almost every miss. Context raised accuracy instead of changing confidence.
-4. *Reconciliation catches duplicate and join errors, not definitional ones, at about double the cost.* **Untestable here.** There were no errors left to catch. The time cost was about double, as predicted.
-5. *No condition is perfect on the DST time-zone trap.* **Wrong.** Given the rule in writing, every full-context answer handled it.
+1. *Schema fixes units and uninstrumented abstentions but not business rules.* **Half right.** Units were never a problem even with no context, and business-rule errors were untouched. The apparent abstention on sessions didn't survive a second trial.
+2. *Definitions drive the gain on ambiguous questions; the traps file drives duplicates and partial periods.* **Wrong on the second half.** The definitions file drove everything. For Opus the traps file added nothing once the one-line rules were in definitions, and Opus handled duplicates with no documentation at all.
+3. *The skill mainly turns confident errors into caveated ones.* **Wrong premise.** Without context both models were already caveating most misses. Context raised accuracy instead of changing confidence, and the skill made no measurable difference for Opus.
+4. *Reconciliation catches duplicate and join errors, not definitional ones, at about double the cost.* **Untestable here.** There were no errors left to catch for either model. The time cost was about double, as predicted.
+5. *No condition is perfect on the DST time-zone trap.* **Wrong.** Given the rule in writing, every full-context answer from both models handled it.
 
-The surprise is the second-order point: a strong model is a better data profiler than I assumed, and a worse mind-reader. Context work should go into conventions, not data quirks.
+The surprise is the second-order point. A strong model is a better data profiler than I assumed, and a worse mind-reader; a weaker model is worse at both. But one short page of written conventions and ground rules closed the gap for both, and everything layered on top of it was ceremony on this set.
 
 ## Predictions, written before any run
 
@@ -197,13 +264,13 @@ Recorded now so the results can't be rationalised afterwards. None of these is a
 
 ## Limitations
 
-1. **The context pack documents exactly the traps I planted.** That makes `full_context` an upper bound on what context can do. Real warehouses have traps nobody has written down yet, which is the case for reconciliation over documentation.
+1. **The context pack documents exactly the traps I planted.** That makes `full_context` an upper bound on what context can do, and part of what it measures is instruction-following: the ground rules in `definitions.md` spell out each fix. Real warehouses have traps nobody has written down yet, which is the case for reconciliation over documentation.
 2. **Synthetic data and one author.** The traps, definitions and gold queries are mine. A definition I wrote ambiguously would show up as model error. The pandas cross-check in the tests reconciles a sample of gold answers by an independent route, but not all of them.
-3. **Small n.** 40 questions gives wide intervals. The harness supports repeated trials; with one model and one trial, only large effects will be distinguishable from noise.
-4. **Status is a proxy for confidence.** "Confidently wrong" relies on the model's own choice of `answered` vs `answered_with_caveat`. Models calibrate that differently.
+3. **Small n.** 40 questions gives wide intervals. Opus ran two trials of the core conditions; the ablations and Haiku ran once. Only large effects are distinguishable from noise, and the second trial showed individual answers do flip in the lighter conditions.
+4. **Status is a proxy for confidence.** "Confidently wrong" relies on the model's own choice of `answered` vs `answered_with_caveat`. Models calibrate that differently, and the same model labelled the same wrong value differently across trials.
 5. **Scalar answers only.** The set grades numbers, not charts, narratives or the quality of a written insight. The cited-memo skill is checked for traceability, not for being a good memo.
-6. **One model, one trial, run through Copilot.** The model was pinned, but sampling settings like temperature couldn't be. Each agent also had Copilot's own system prompt and tools on top of the protocol. A second trial, or a different model, could move individual answers. Weaker models may well need the traps notes and reconciliation that looked like ceremony here.
-7. **Isolation was by instruction, not enforcement.** The agents had general file access and were told to stay in their folder. Logs and a post-run audit found no stray files in the bundles or the repo. One agent ran its first command from the repo folder, created and deleted an empty work folder, then redid its work in the right place. File *reads* outside the folder can't be audited. The bundles sat outside the repo and contained no answers, so the main exposure was reading another condition's context folder. Nothing in the logs or the answers suggests that happened.
+6. **Two models from one family, run through Copilot.** The models were pinned, but sampling settings like temperature couldn't be. Each agent also had Copilot's own system prompt and tools on top of the protocol. The ablations were run for Opus only, so "ceremony" verdicts for the traps notes and skill don't transfer to Haiku, which did trip over the traps without context.
+7. **Isolation was by instruction, not enforcement.** The agents had general file access and were told to stay in their folder. Logs and post-run audits after every batch found no stray files in the bundles or the repo. In the first run, one agent ran its first command from the repo folder, created and deleted an empty work folder, then redid its work in the right place. File *reads* outside the folder can't be audited. The bundles sat outside the repo and contained no answers, so the main exposure was reading another condition's context folder. Nothing in the logs or the answers suggests that happened.
 8. **No token or dollar cost.** Copilot doesn't expose per-call token counts to the harness, so cost is shown as queries and wall time. The API path in `runners.py` records real tokens and cost when a key is available.
 
 ## How to run
@@ -224,6 +291,7 @@ python src/cli.py bundle --root <folder outside the repo> --python <python with 
 # run one agent per (condition, question): "Read <root>/<condition>/AGENT.md and follow it.
 #   Question id: <id>. Question: <text>."
 python src/cli.py import-agent-run --root <same folder> --model <model id> --out full
+#   add --trial 1 (and a new --out) when importing a repeat trial of the same model
 python src/cli.py report
 ```
 

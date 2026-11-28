@@ -647,6 +647,669 @@
     "how": "extra rows per 100 logical user-initiated events",
     "value": 3.9773
   },
+  "run.claude-haiku-5.5.t0.full_context.accuracy_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent correct",
+    "value": 100.0
+  },
+  "run.claude-haiku-5.5.t0.full_context.caveated_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered_with_caveat",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.t0.full_context.confidently_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.t0.full_context.correct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "correct answers",
+    "value": 40.0
+  },
+  "run.claude-haiku-5.5.t0.full_context.matched_naive": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong answers equal to the naive query's",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.t0.full_context.material_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent within 1% of gold",
+    "value": 100.0
+  },
+  "run.claude-haiku-5.5.t0.full_context.material_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers more than 1% from gold",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.t0.full_context.median_seconds": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "median seconds from first to last tool call",
+    "value": 21.665
+  },
+  "run.claude-haiku-5.5.t0.full_context.n": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers in full_context",
+    "value": 40.0
+  },
+  "run.claude-haiku-5.5.t0.full_context.sql_per_q": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "mean logged queries per question",
+    "value": 2.125
+  },
+  "run.claude-haiku-5.5.t0.full_context.wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers not correct",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.t0.full_context.wrong_cleaning": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with some combination of the four data-cleaning rules (duplicates, internal accounts, system events, time zone) switched off",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.t0.full_context.wrong_kept_internal": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers explained only by combinations that keep internal accounts in",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.t0.full_context.wrong_tz_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed with only the timezone rule switched off"
+    ],
+    "how": "wrong answers equal to gold computed in UTC instead of Pacific time",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.t0.full_context_reconcile.accuracy_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent correct",
+    "value": 100.0
+  },
+  "run.claude-haiku-5.5.t0.full_context_reconcile.caveated_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered_with_caveat",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.t0.full_context_reconcile.confidently_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.t0.full_context_reconcile.correct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "correct answers",
+    "value": 40.0
+  },
+  "run.claude-haiku-5.5.t0.full_context_reconcile.matched_naive": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong answers equal to the naive query's",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.t0.full_context_reconcile.material_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent within 1% of gold",
+    "value": 100.0
+  },
+  "run.claude-haiku-5.5.t0.full_context_reconcile.material_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers more than 1% from gold",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.t0.full_context_reconcile.median_seconds": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "median seconds from first to last tool call",
+    "value": 49.6485
+  },
+  "run.claude-haiku-5.5.t0.full_context_reconcile.n": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers in full_context_reconcile",
+    "value": 40.0
+  },
+  "run.claude-haiku-5.5.t0.full_context_reconcile.reconcile_changed": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "reconciles that changed the answer",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.t0.full_context_reconcile.reconcile_match": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "reconciles where routes matched",
+    "value": 34.0
+  },
+  "run.claude-haiku-5.5.t0.full_context_reconcile.reconciled": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers that went through reconcile",
+    "value": 34.0
+  },
+  "run.claude-haiku-5.5.t0.full_context_reconcile.sql_per_q": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "mean logged queries per question",
+    "value": 2.0
+  },
+  "run.claude-haiku-5.5.t0.full_context_reconcile.wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers not correct",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.t0.full_context_reconcile.wrong_cleaning": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with some combination of the four data-cleaning rules (duplicates, internal accounts, system events, time zone) switched off",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.t0.full_context_reconcile.wrong_kept_internal": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers explained only by combinations that keep internal accounts in",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.t0.full_context_reconcile.wrong_tz_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed with only the timezone rule switched off"
+    ],
+    "how": "wrong answers equal to gold computed in UTC instead of Pacific time",
+    "value": 0.0
+  },
+  "run.claude-haiku-5.5.t0.no_context.accuracy_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent correct",
+    "value": 35.0
+  },
+  "run.claude-haiku-5.5.t0.no_context.caveated_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered_with_caveat",
+    "value": 23.0
+  },
+  "run.claude-haiku-5.5.t0.no_context.confidently_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered",
+    "value": 3.0
+  },
+  "run.claude-haiku-5.5.t0.no_context.correct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "correct answers",
+    "value": 14.0
+  },
+  "run.claude-haiku-5.5.t0.no_context.matched_naive": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong answers equal to the naive query's",
+    "value": 6.0
+  },
+  "run.claude-haiku-5.5.t0.no_context.material_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent within 1% of gold",
+    "value": 52.5
+  },
+  "run.claude-haiku-5.5.t0.no_context.material_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers more than 1% from gold",
+    "value": 19.0
+  },
+  "run.claude-haiku-5.5.t0.no_context.median_seconds": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "median seconds from first to last tool call",
+    "value": 60.4845
+  },
+  "run.claude-haiku-5.5.t0.no_context.n": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers in no_context",
+    "value": 40.0
+  },
+  "run.claude-haiku-5.5.t0.no_context.sql_per_q": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "mean logged queries per question",
+    "value": 4.05
+  },
+  "run.claude-haiku-5.5.t0.no_context.wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers not correct",
+    "value": 26.0
+  },
+  "run.claude-haiku-5.5.t0.no_context.wrong_cleaning": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with some combination of the four data-cleaning rules (duplicates, internal accounts, system events, time zone) switched off",
+    "value": 20.0
+  },
+  "run.claude-haiku-5.5.t0.no_context.wrong_kept_internal": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers explained only by combinations that keep internal accounts in",
+    "value": 8.0
+  },
+  "run.claude-haiku-5.5.t0.no_context.wrong_tz_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed with only the timezone rule switched off"
+    ],
+    "how": "wrong answers equal to gold computed in UTC instead of Pacific time",
+    "value": 6.0
+  },
+  "run.claude-haiku-5.5.t0.schema_only.accuracy_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent correct",
+    "value": 32.5
+  },
+  "run.claude-haiku-5.5.t0.schema_only.caveated_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered_with_caveat",
+    "value": 26.0
+  },
+  "run.claude-haiku-5.5.t0.schema_only.confidently_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered",
+    "value": 1.0
+  },
+  "run.claude-haiku-5.5.t0.schema_only.correct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "correct answers",
+    "value": 13.0
+  },
+  "run.claude-haiku-5.5.t0.schema_only.matched_naive": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong answers equal to the naive query's",
+    "value": 2.0
+  },
+  "run.claude-haiku-5.5.t0.schema_only.material_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent within 1% of gold",
+    "value": 57.5
+  },
+  "run.claude-haiku-5.5.t0.schema_only.material_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers more than 1% from gold",
+    "value": 17.0
+  },
+  "run.claude-haiku-5.5.t0.schema_only.median_seconds": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "median seconds from first to last tool call",
+    "value": 27.478
+  },
+  "run.claude-haiku-5.5.t0.schema_only.n": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers in schema_only",
+    "value": 40.0
+  },
+  "run.claude-haiku-5.5.t0.schema_only.sql_per_q": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "mean logged queries per question",
+    "value": 2.275
+  },
+  "run.claude-haiku-5.5.t0.schema_only.wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers not correct",
+    "value": 27.0
+  },
+  "run.claude-haiku-5.5.t0.schema_only.wrong_cleaning": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with some combination of the four data-cleaning rules (duplicates, internal accounts, system events, time zone) switched off",
+    "value": 21.0
+  },
+  "run.claude-haiku-5.5.t0.schema_only.wrong_kept_internal": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers explained only by combinations that keep internal accounts in",
+    "value": 6.0
+  },
+  "run.claude-haiku-5.5.t0.schema_only.wrong_tz_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed with only the timezone rule switched off"
+    ],
+    "how": "wrong answers equal to gold computed in UTC instead of Pacific time",
+    "value": 9.0
+  },
+  "run.claude-opus-5.5.full_context.n_repeated": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "questions run in every trial",
+    "value": 40.0
+  },
+  "run.claude-opus-5.5.full_context.same_outcome": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "questions with the same graded outcome in all 2 trials",
+    "value": 40.0
+  },
+  "run.claude-opus-5.5.full_context_reconcile.n_repeated": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "questions run in every trial",
+    "value": 40.0
+  },
+  "run.claude-opus-5.5.full_context_reconcile.same_outcome": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "questions with the same graded outcome in all 2 trials",
+    "value": 40.0
+  },
+  "run.claude-opus-5.5.no_context.n_repeated": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "questions run in every trial",
+    "value": 40.0
+  },
+  "run.claude-opus-5.5.no_context.same_outcome": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "questions with the same graded outcome in all 2 trials",
+    "value": 37.0
+  },
+  "run.claude-opus-5.5.schema_only.n_repeated": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "questions run in every trial",
+    "value": 40.0
+  },
+  "run.claude-opus-5.5.schema_only.same_outcome": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "questions with the same graded outcome in all 2 trials",
+    "value": 38.0
+  },
+  "run.claude-opus-5.5.t0.context_no_skill.accuracy_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent correct",
+    "value": 100.0
+  },
+  "run.claude-opus-5.5.t0.context_no_skill.caveated_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered_with_caveat",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t0.context_no_skill.confidently_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t0.context_no_skill.correct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "correct answers",
+    "value": 40.0
+  },
+  "run.claude-opus-5.5.t0.context_no_skill.matched_naive": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong answers equal to the naive query's",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t0.context_no_skill.material_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent within 1% of gold",
+    "value": 100.0
+  },
+  "run.claude-opus-5.5.t0.context_no_skill.material_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers more than 1% from gold",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t0.context_no_skill.median_seconds": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "median seconds from first to last tool call",
+    "value": 11.8905
+  },
+  "run.claude-opus-5.5.t0.context_no_skill.n": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers in context_no_skill",
+    "value": 40.0
+  },
+  "run.claude-opus-5.5.t0.context_no_skill.sql_per_q": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "mean logged queries per question",
+    "value": 1.15
+  },
+  "run.claude-opus-5.5.t0.context_no_skill.wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers not correct",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t0.context_no_skill.wrong_cleaning": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with some combination of the four data-cleaning rules (duplicates, internal accounts, system events, time zone) switched off",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t0.context_no_skill.wrong_kept_internal": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers explained only by combinations that keep internal accounts in",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t0.context_no_skill.wrong_tz_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed with only the timezone rule switched off"
+    ],
+    "how": "wrong answers equal to gold computed in UTC instead of Pacific time",
+    "value": 0.0
+  },
   "run.claude-opus-5.5.t0.full_context.accuracy_pct": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
@@ -733,6 +1396,24 @@
       "graded against answer_key.json"
     ],
     "how": "answers not correct",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t0.full_context.wrong_cleaning": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with some combination of the four data-cleaning rules (duplicates, internal accounts, system events, time zone) switched off",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t0.full_context.wrong_kept_internal": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers explained only by combinations that keep internal accounts in",
     "value": 0.0
   },
   "run.claude-opus-5.5.t0.full_context.wrong_tz_only": {
@@ -856,6 +1537,24 @@
     "how": "answers not correct",
     "value": 0.0
   },
+  "run.claude-opus-5.5.t0.full_context_reconcile.wrong_cleaning": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with some combination of the four data-cleaning rules (duplicates, internal accounts, system events, time zone) switched off",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t0.full_context_reconcile.wrong_kept_internal": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers explained only by combinations that keep internal accounts in",
+    "value": 0.0
+  },
   "run.claude-opus-5.5.t0.full_context_reconcile.wrong_tz_only": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
@@ -953,6 +1652,24 @@
     "how": "answers not correct",
     "value": 27.0
   },
+  "run.claude-opus-5.5.t0.no_context.wrong_cleaning": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with some combination of the four data-cleaning rules (duplicates, internal accounts, system events, time zone) switched off",
+    "value": 20.0
+  },
+  "run.claude-opus-5.5.t0.no_context.wrong_kept_internal": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers explained only by combinations that keep internal accounts in",
+    "value": 1.0
+  },
   "run.claude-opus-5.5.t0.no_context.wrong_tz_only": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
@@ -961,6 +1678,121 @@
     ],
     "how": "wrong answers equal to gold computed in UTC instead of Pacific time",
     "value": 19.0
+  },
+  "run.claude-opus-5.5.t0.schema_definitions.accuracy_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent correct",
+    "value": 100.0
+  },
+  "run.claude-opus-5.5.t0.schema_definitions.caveated_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered_with_caveat",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t0.schema_definitions.confidently_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t0.schema_definitions.correct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "correct answers",
+    "value": 40.0
+  },
+  "run.claude-opus-5.5.t0.schema_definitions.matched_naive": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong answers equal to the naive query's",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t0.schema_definitions.material_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent within 1% of gold",
+    "value": 100.0
+  },
+  "run.claude-opus-5.5.t0.schema_definitions.material_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers more than 1% from gold",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t0.schema_definitions.median_seconds": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "median seconds from first to last tool call",
+    "value": 14.1405
+  },
+  "run.claude-opus-5.5.t0.schema_definitions.n": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers in schema_definitions",
+    "value": 40.0
+  },
+  "run.claude-opus-5.5.t0.schema_definitions.sql_per_q": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "mean logged queries per question",
+    "value": 1.65
+  },
+  "run.claude-opus-5.5.t0.schema_definitions.wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers not correct",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t0.schema_definitions.wrong_cleaning": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with some combination of the four data-cleaning rules (duplicates, internal accounts, system events, time zone) switched off",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t0.schema_definitions.wrong_kept_internal": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers explained only by combinations that keep internal accounts in",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t0.schema_definitions.wrong_tz_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed with only the timezone rule switched off"
+    ],
+    "how": "wrong answers equal to gold computed in UTC instead of Pacific time",
+    "value": 0.0
   },
   "run.claude-opus-5.5.t0.schema_only.accuracy_pct": {
     "checks": [
@@ -1050,6 +1882,24 @@
     "how": "answers not correct",
     "value": 25.0
   },
+  "run.claude-opus-5.5.t0.schema_only.wrong_cleaning": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with some combination of the four data-cleaning rules (duplicates, internal accounts, system events, time zone) switched off",
+    "value": 21.0
+  },
+  "run.claude-opus-5.5.t0.schema_only.wrong_kept_internal": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers explained only by combinations that keep internal accounts in",
+    "value": 0.0
+  },
   "run.claude-opus-5.5.t0.schema_only.wrong_tz_only": {
     "checks": [
       "every logged query re-executed against a fresh build (cli.py validate)",
@@ -1058,6 +1908,490 @@
     ],
     "how": "wrong answers equal to gold computed in UTC instead of Pacific time",
     "value": 21.0
+  },
+  "run.claude-opus-5.5.t1.full_context.accuracy_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent correct",
+    "value": 100.0
+  },
+  "run.claude-opus-5.5.t1.full_context.caveated_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered_with_caveat",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t1.full_context.confidently_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t1.full_context.correct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "correct answers",
+    "value": 40.0
+  },
+  "run.claude-opus-5.5.t1.full_context.matched_naive": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong answers equal to the naive query's",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t1.full_context.material_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent within 1% of gold",
+    "value": 100.0
+  },
+  "run.claude-opus-5.5.t1.full_context.material_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers more than 1% from gold",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t1.full_context.median_seconds": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "median seconds from first to last tool call",
+    "value": 19.454
+  },
+  "run.claude-opus-5.5.t1.full_context.n": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers in full_context",
+    "value": 40.0
+  },
+  "run.claude-opus-5.5.t1.full_context.sql_per_q": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "mean logged queries per question",
+    "value": 1.65
+  },
+  "run.claude-opus-5.5.t1.full_context.wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers not correct",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t1.full_context.wrong_cleaning": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with some combination of the four data-cleaning rules (duplicates, internal accounts, system events, time zone) switched off",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t1.full_context.wrong_kept_internal": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers explained only by combinations that keep internal accounts in",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t1.full_context.wrong_tz_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed with only the timezone rule switched off"
+    ],
+    "how": "wrong answers equal to gold computed in UTC instead of Pacific time",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t1.full_context_reconcile.accuracy_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent correct",
+    "value": 100.0
+  },
+  "run.claude-opus-5.5.t1.full_context_reconcile.caveated_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered_with_caveat",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t1.full_context_reconcile.confidently_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t1.full_context_reconcile.correct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "correct answers",
+    "value": 40.0
+  },
+  "run.claude-opus-5.5.t1.full_context_reconcile.matched_naive": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong answers equal to the naive query's",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t1.full_context_reconcile.material_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent within 1% of gold",
+    "value": 100.0
+  },
+  "run.claude-opus-5.5.t1.full_context_reconcile.material_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers more than 1% from gold",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t1.full_context_reconcile.median_seconds": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "median seconds from first to last tool call",
+    "value": 29.0735
+  },
+  "run.claude-opus-5.5.t1.full_context_reconcile.n": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers in full_context_reconcile",
+    "value": 40.0
+  },
+  "run.claude-opus-5.5.t1.full_context_reconcile.reconcile_changed": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "reconciles that changed the answer",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t1.full_context_reconcile.reconcile_match": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "reconciles where routes matched",
+    "value": 34.0
+  },
+  "run.claude-opus-5.5.t1.full_context_reconcile.reconciled": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers that went through reconcile",
+    "value": 34.0
+  },
+  "run.claude-opus-5.5.t1.full_context_reconcile.sql_per_q": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "mean logged queries per question",
+    "value": 1.575
+  },
+  "run.claude-opus-5.5.t1.full_context_reconcile.wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers not correct",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t1.full_context_reconcile.wrong_cleaning": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with some combination of the four data-cleaning rules (duplicates, internal accounts, system events, time zone) switched off",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t1.full_context_reconcile.wrong_kept_internal": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers explained only by combinations that keep internal accounts in",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t1.full_context_reconcile.wrong_tz_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed with only the timezone rule switched off"
+    ],
+    "how": "wrong answers equal to gold computed in UTC instead of Pacific time",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t1.no_context.accuracy_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent correct",
+    "value": 35.0
+  },
+  "run.claude-opus-5.5.t1.no_context.caveated_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered_with_caveat",
+    "value": 23.0
+  },
+  "run.claude-opus-5.5.t1.no_context.confidently_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered",
+    "value": 2.0
+  },
+  "run.claude-opus-5.5.t1.no_context.correct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "correct answers",
+    "value": 14.0
+  },
+  "run.claude-opus-5.5.t1.no_context.matched_naive": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong answers equal to the naive query's",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t1.no_context.material_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent within 1% of gold",
+    "value": 72.5
+  },
+  "run.claude-opus-5.5.t1.no_context.material_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers more than 1% from gold",
+    "value": 11.0
+  },
+  "run.claude-opus-5.5.t1.no_context.median_seconds": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "median seconds from first to last tool call",
+    "value": 38.6015
+  },
+  "run.claude-opus-5.5.t1.no_context.n": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers in no_context",
+    "value": 40.0
+  },
+  "run.claude-opus-5.5.t1.no_context.sql_per_q": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "mean logged queries per question",
+    "value": 4.025
+  },
+  "run.claude-opus-5.5.t1.no_context.wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers not correct",
+    "value": 26.0
+  },
+  "run.claude-opus-5.5.t1.no_context.wrong_cleaning": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with some combination of the four data-cleaning rules (duplicates, internal accounts, system events, time zone) switched off",
+    "value": 21.0
+  },
+  "run.claude-opus-5.5.t1.no_context.wrong_kept_internal": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers explained only by combinations that keep internal accounts in",
+    "value": 1.0
+  },
+  "run.claude-opus-5.5.t1.no_context.wrong_tz_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed with only the timezone rule switched off"
+    ],
+    "how": "wrong answers equal to gold computed in UTC instead of Pacific time",
+    "value": 20.0
+  },
+  "run.claude-opus-5.5.t1.schema_only.accuracy_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent correct",
+    "value": 32.5
+  },
+  "run.claude-opus-5.5.t1.schema_only.caveated_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered_with_caveat",
+    "value": 26.0
+  },
+  "run.claude-opus-5.5.t1.schema_only.confidently_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong with status answered",
+    "value": 1.0
+  },
+  "run.claude-opus-5.5.t1.schema_only.correct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "correct answers",
+    "value": 13.0
+  },
+  "run.claude-opus-5.5.t1.schema_only.matched_naive": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "wrong answers equal to the naive query's",
+    "value": 0.0
+  },
+  "run.claude-opus-5.5.t1.schema_only.material_pct": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "percent within 1% of gold",
+    "value": 72.5
+  },
+  "run.claude-opus-5.5.t1.schema_only.material_wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers more than 1% from gold",
+    "value": 11.0
+  },
+  "run.claude-opus-5.5.t1.schema_only.median_seconds": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "median seconds from first to last tool call",
+    "value": 20.9155
+  },
+  "run.claude-opus-5.5.t1.schema_only.n": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers in schema_only",
+    "value": 40.0
+  },
+  "run.claude-opus-5.5.t1.schema_only.sql_per_q": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "mean logged queries per question",
+    "value": 2.025
+  },
+  "run.claude-opus-5.5.t1.schema_only.wrong": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json"
+    ],
+    "how": "answers not correct",
+    "value": 27.0
+  },
+  "run.claude-opus-5.5.t1.schema_only.wrong_cleaning": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers equal to gold with some combination of the four data-cleaning rules (duplicates, internal accounts, system events, time zone) switched off",
+    "value": 21.0
+  },
+  "run.claude-opus-5.5.t1.schema_only.wrong_kept_internal": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed under all 15 combinations of switched-off rules"
+    ],
+    "how": "wrong answers explained only by combinations that keep internal accounts in",
+    "value": 1.0
+  },
+  "run.claude-opus-5.5.t1.schema_only.wrong_tz_only": {
+    "checks": [
+      "every logged query re-executed against a fresh build (cli.py validate)",
+      "graded against answer_key.json",
+      "gold recomputed with only the timezone rule switched off"
+    ],
+    "how": "wrong answers equal to gold computed in UTC instead of Pacific time",
+    "value": 20.0
   },
   "t01.gold": {
     "checks": [
